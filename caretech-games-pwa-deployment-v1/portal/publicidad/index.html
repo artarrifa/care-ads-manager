@@ -228,6 +228,103 @@
       cursor: pointer;
     }
 
+    /* B2B Value Proposition Grid */
+    .b2b-value-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 20px 0 32px;
+      text-align: left;
+    }
+    .b2b-value-card {
+      background: rgba(13, 31, 61, 0.7);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      transition: var(--transition);
+    }
+    .b2b-value-card:hover {
+      border-color: rgba(59, 130, 246, 0.5);
+      transform: translateY(-2px);
+    }
+    .b2b-icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .b2b-value-card h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .b2b-value-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    /* Dashboard de Métricas B2B */
+    .metrics-dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin: 20px 0 36px;
+    }
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      position: relative;
+      transition: var(--transition);
+    }
+    .metric-card:hover {
+      border-color: rgba(59, 130, 246, 0.5);
+      transform: translateY(-2px);
+    }
+    .metric-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .metric-icon { font-size: 1.4rem; }
+    .metric-badge-trend {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.15);
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .metric-val {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .metric-label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+    .metric-sub {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
     /* Live Preview Column */
     .preview-sticky-wrap {
       position: sticky;
@@ -255,18 +352,40 @@
       justify-content: space-between;
     }
 
+    /* Simulación Tapete de Juego Solitario */
+    .game-felt-mockup {
+      background: radial-gradient(circle, #0e4428 0%, #072716 100%);
+      border: 2px solid #166534;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+    }
+
     .live-banner-display {
       background: linear-gradient(90deg, #0d2752 0%, #133975 100%);
-      border: 1px solid rgba(59, 130, 246, 0.5);
+      border: 1px solid rgba(59, 130, 246, 0.6);
       border-radius: 8px;
-      padding: 10px 14px;
+      padding: 8px 12px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+    .live-badge-type {
+      background: rgba(37, 99, 235, 0.4);
+      border: 1px solid rgba(59, 130, 246, 0.6);
+      color: #bfdbfe;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
     }
     .live-banner-logo {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       border-radius: 8px;
       background: #2563eb;
       display: flex;
@@ -281,15 +400,19 @@
     .live-banner-text {
       flex-grow: 1;
       overflow: hidden;
+      min-width: 0;
     }
     .live-banner-title {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 800;
       color: #fff;
       line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .live-banner-desc {
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       color: #94a3b8;
       white-space: nowrap;
       overflow: hidden;
@@ -297,22 +420,38 @@
     }
     .live-banner-actions {
       display: flex;
-      gap: 6px;
+      align-items: center;
+      gap: 5px;
       flex-shrink: 0;
     }
     .live-btn {
-      padding: 5px 10px;
+      padding: 5px 9px;
       border-radius: 6px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
       gap: 4px;
+      transition: all 0.2s;
     }
     .live-btn-web { background: #2563eb; color: #fff; }
     .live-btn-donate { background: #ec4899; color: #fff; }
     .live-btn-shop { background: #10b981; color: #fff; }
+    .live-btn-close {
+      color: #94a3b8;
+      font-size: 1.1rem;
+      line-height: 1;
+      padding: 0 3px;
+      cursor: default;
+    }
+    .preview-context-help {
+      font-size: 0.74rem;
+      color: #86efac;
+      margin-top: 10px;
+      text-align: center;
+      opacity: 0.9;
+    }
 
     /* Order Summary Box */
     .summary-card {
@@ -414,12 +553,12 @@
         <div class="logo-badge"><i class="fa-solid fa-gamepad"></i></div>
         <div class="logo-text">CARE<span>GAMES ADS</span></div>
       </a>
-      <div>
-        <a href="/games/solitario/" style="color: var(--accent-cyan); text-decoration: none; font-size: 0.9rem; font-weight: 600; margin-right: 18px;">
-          <i class="fa-solid fa-play"></i> Probar Solitario
+      <div style="display: flex; align-items: center; gap: 18px;">
+        <a href="/games/" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600;">
+          <i class="fa-solid fa-arrow-left"></i> Volver al Portal
         </a>
-        <a href="/games/admin/" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">
-          <i class="fa-solid fa-lock"></i> Panel Admin
+        <a href="/games/solitario/" style="color: var(--accent-cyan); text-decoration: none; font-size: 0.9rem; font-weight: 600;">
+          <i class="fa-solid fa-play"></i> Ver Solitario en Vivo
         </a>
       </div>
     </div>
@@ -427,11 +566,97 @@
 
   <main class="container">
     <section class="hero">
-      <div class="hero-tag"><i class="fa-solid fa-bullhorn"></i> Tienda de Publicidad y Patrocinios V2</div>
-      <h1 class="hero-title">Publica tu Anuncio en <span>CareTech Games</span></h1>
+      <div class="hero-tag"><i class="fa-solid fa-bullhorn"></i> Patrocinios Éticos & Publicidad de Alto Impacto</div>
+      <h1 class="hero-title">Conecta tu Marca con una Audiencia que <span>Valora tu Presencia</span></h1>
       <p class="hero-desc">
-        Configura tu banner horizontal interactivo con enlaces a tu web, botón de donaciones y tienda en línea. Conectado en tiempo real a Solitario Care.
+        No somos un portal de juegos común. Somos un ecosistema de bienestar mental, salud cognitiva y teleasistencia donde adultos mayores y familias juegan con calma y gratitud. Sin ruidos molestos ni trampas, tu mensaje es 100% visible y libre de bloqueadores de anuncios (AdBlock).
       </p>
+
+      <!-- Los 4 Pilares del Gancho B2B -->
+      <div class="b2b-value-grid">
+        <div class="b2b-value-card">
+          <div class="b2b-icon-wrap" style="color: #60a5fa; background: rgba(96, 165, 250, 0.15);">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <h4>Inmune a AdBlockers</h4>
+            <p>Banners nativos y respetuosos sincronizados por servidor. Los bloqueadores no los eliminan.</p>
+          </div>
+        </div>
+
+        <div class="b2b-value-card">
+          <div class="b2b-icon-wrap" style="color: #34d399; background: rgba(52, 211, 153, 0.15);">
+            <i class="fa-solid fa-eye"></i>
+          </div>
+          <div>
+            <h4>Atención Visual Sostenida</h4>
+            <p>Sesiones de 10 a 20 minutos con la vista en el tablero, superando con creces el scroll fugaz de redes sociales.</p>
+          </div>
+        </div>
+
+        <div class="b2b-value-card">
+          <div class="b2b-icon-wrap" style="color: #f472b6; background: rgba(244, 114, 182, 0.15);">
+            <i class="fa-solid fa-heart"></i>
+          </div>
+          <div>
+            <h4>Simpatía y Gratitud</h4>
+            <p>El usuario agradece que apoyes una plataforma gratuita sin videos forzados ni sonidos estridentes.</p>
+          </div>
+        </div>
+
+        <div class="b2b-value-card">
+          <div class="b2b-icon-wrap" style="color: #ef4444; background: rgba(239, 68, 68, 0.15);">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div>
+            <h4>Entorno de Confianza SOS</h4>
+            <p>Tu marca convive con teleasistencia médica y seguridad para personas al cuidado y adultos mayores.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard de Métricas Transparentes -->
+      <div class="metrics-dashboard-grid">
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-icon" style="color: #60a5fa;"><i class="fa-solid fa-gamepad"></i></span>
+            <span class="metric-badge-trend">+18% este mes</span>
+          </div>
+          <div class="metric-val">+15.000</div>
+          <div class="metric-label">Partidas Jugadas / Mes</div>
+          <div class="metric-sub">Exposición continua y sostenida en Solitario Care</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-icon" style="color: #34d399;"><i class="fa-solid fa-stopwatch"></i></span>
+            <span class="metric-badge-trend">Alta Atención</span>
+          </div>
+          <div class="metric-val">14.5 min</div>
+          <div class="metric-label">Tiempo Promedio por Sesión</div>
+          <div class="metric-sub">Concentración mental activa sin distracciones</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-icon" style="color: #f472b6;"><i class="fa-solid fa-volume-xmark"></i></span>
+            <span class="metric-badge-trend">0% Popups</span>
+          </div>
+          <div class="metric-val">99.4%</div>
+          <div class="metric-label">Tasa de Visibilidad Real</div>
+          <div class="metric-sub">Cero rebote por ruidos molestos o videos forzados</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-icon" style="color: #fbbf24;"><i class="fa-solid fa-earth-americas"></i></span>
+            <span class="metric-badge-trend">Regional</span>
+          </div>
+          <div class="metric-val">4 Países Clave</div>
+          <div class="metric-label">Alcance Principal</div>
+          <div class="metric-sub">🇨🇴 Colombia &bull; 🇪🇸 España &bull; 🇲🇽 México &bull; 🇺🇸 USA</div>
+        </div>
+      </div>
     </section>
 
     <div class="ads-builder-grid">
@@ -482,11 +707,11 @@
         <div class="row-2 form-group">
           <div>
             <label class="form-label"><i class="fa-solid fa-heart" style="color: #f472b6;"></i> Enlace 2: Donaciones (ad_donation_click)</label>
-            <input type="url" id="ad-donation-url" class="form-input" placeholder="https://donar.miempresa.com (Opcional)">
+            <input type="url" id="ad-donation-url" class="form-input" placeholder="https://donar.miempresa.com (Opcional)" oninput="updateLivePreview()">
           </div>
           <div>
             <label class="form-label"><i class="fa-solid fa-cart-shopping" style="color: #34d399;"></i> Enlace 3: Tienda / Ofertas (ad_shop_click)</label>
-            <input type="url" id="ad-shop-url" class="form-input" placeholder="https://tienda.miempresa.com (Opcional)">
+            <input type="url" id="ad-shop-url" class="form-input" placeholder="https://tienda.miempresa.com (Opcional)" oninput="updateLivePreview()">
           </div>
         </div>
 
@@ -549,22 +774,41 @@
       <div class="preview-sticky-wrap">
         <div class="banner-preview-box">
           <div class="preview-label">
-            <span><i class="fa-solid fa-eye"></i> Vista Previa en Vivo</span>
-            <span style="color: #34d399;">Duración: 60s / slot</span>
+            <span><i class="fa-solid fa-eye"></i> Simulación en Tablero Real</span>
+            <span style="color: #34d399;"><i class="fa-solid fa-clock"></i> 60s / slot</span>
           </div>
 
-          <div class="live-banner-display">
-            <div class="live-banner-logo" id="prev-logo">
-              <i class="fa-solid fa-bullhorn"></i>
+          <!-- Mesa de simulación con aspecto real de Solitario Care -->
+          <div class="game-felt-mockup">
+            <div class="live-banner-display">
+              <span class="live-badge-type" id="prev-badge">ANUNCIO</span>
+              
+              <div class="live-banner-logo" id="prev-logo">
+                <i class="fa-solid fa-bullhorn"></i>
+              </div>
+              
+              <div class="live-banner-text">
+                <div class="live-banner-title" id="prev-title">Mi Empresa o Causa</div>
+                <div class="live-banner-desc" id="prev-desc">Descubre nuestros servicios y aprovecha las ofertas exclusivas hoy.</div>
+              </div>
+
+              <!-- Los 3 Botones Interactivos Reales -->
+              <div class="live-banner-actions">
+                <span class="live-btn live-btn-web" id="prev-btn-web" title="Visita a tu sitio web o página comercial">
+                  <i class="fa-solid fa-globe"></i> <span>Web</span>
+                </span>
+                <span class="live-btn live-btn-donate" id="prev-btn-donate" title="Enlace a donaciones o causa social">
+                  <i class="fa-solid fa-heart"></i>
+                </span>
+                <span class="live-btn live-btn-shop" id="prev-btn-shop" title="Enlace a tienda online, oferta o checkout">
+                  <i class="fa-solid fa-cart-shopping"></i>
+                </span>
+                <span class="live-btn-close" title="Cierre de cortesía de 60s">&times;</span>
+              </div>
             </div>
-            <div class="live-banner-text">
-              <div class="live-banner-title" id="prev-title">Mi Empresa o Causa</div>
-              <div class="live-banner-desc" id="prev-desc">Descubre nuestros servicios y aprovecha las ofertas exclusivas hoy.</div>
-            </div>
-            <div class="live-banner-actions">
-              <span class="live-btn live-btn-web"><i class="fa-solid fa-globe"></i> Web</span>
-              <span class="live-btn live-btn-donate" id="prev-btn-donate"><i class="fa-solid fa-heart"></i></span>
-              <span class="live-btn live-btn-shop" id="prev-btn-shop"><i class="fa-solid fa-cart-shopping"></i></span>
+            
+            <div class="preview-context-help">
+              <i class="fa-solid fa-circle-info"></i> Ubicación fija sin popups intrusivos. Los 3 botones se activan según los enlaces que configures.
             </div>
           </div>
         </div>
@@ -692,15 +936,49 @@
       const brand = document.getElementById('ad-brand').value || 'Mi Empresa o Causa';
       const desc = document.getElementById('ad-desc').value || 'Descripción de tu anuncio';
       const logoUrl = document.getElementById('ad-logo').value;
+      const donationUrl = document.getElementById('ad-donation-url').value;
+      const shopUrl = document.getElementById('ad-shop-url').value;
+      const placement = document.getElementById('select-placement').value;
 
       document.getElementById('prev-title').textContent = brand;
       document.getElementById('prev-desc').textContent = desc;
+
+      const badgeElem = document.getElementById('prev-badge');
+      if (badgeElem) {
+        badgeElem.textContent = placement === 'bottom' ? 'PATROCINADO' : 'ANUNCIO';
+      }
 
       const logoContainer = document.getElementById('prev-logo');
       if (logoUrl) {
         logoContainer.innerHTML = `<img src="${logoUrl}" alt="Logo" onerror="this.parentElement.innerHTML='<i class=\\'fa-solid fa-bullhorn\\'></i>'">`;
       } else {
         logoContainer.innerHTML = '<i class="fa-solid fa-bullhorn"></i>';
+      }
+
+      const btnDonate = document.getElementById('prev-btn-donate');
+      if (btnDonate) {
+        if (donationUrl && donationUrl.trim()) {
+          btnDonate.style.opacity = '1';
+          btnDonate.style.pointerEvents = 'auto';
+          btnDonate.title = 'Enlace de donación configurado';
+        } else {
+          btnDonate.style.opacity = '0.35';
+          btnDonate.style.pointerEvents = 'none';
+          btnDonate.title = 'Donaciones no configuradas (opcional)';
+        }
+      }
+
+      const btnShop = document.getElementById('prev-btn-shop');
+      if (btnShop) {
+        if (shopUrl && shopUrl.trim()) {
+          btnShop.style.opacity = '1';
+          btnShop.style.pointerEvents = 'auto';
+          btnShop.title = 'Enlace de tienda configurado';
+        } else {
+          btnShop.style.opacity = '0.35';
+          btnShop.style.pointerEvents = 'none';
+          btnShop.title = 'Tienda no configurada (opcional)';
+        }
       }
     }
 
@@ -709,7 +987,14 @@
       const placementSelect = document.getElementById('select-placement');
       document.getElementById('sum-game').textContent = gameSelect.options[gameSelect.selectedIndex].text;
       document.getElementById('sum-placement').textContent = placementSelect.options[placementSelect.selectedIndex].text;
+      updateLivePreview();
     }
+
+    // Inicializar estados
+    document.addEventListener('DOMContentLoaded', () => {
+      updateAvailability();
+      updateLivePreview();
+    });
 
     async function submitCampaign(paymentMethod) {
       const email = document.getElementById('advertiser-email').value;

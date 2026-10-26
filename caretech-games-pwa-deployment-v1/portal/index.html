@@ -84,7 +84,7 @@
 
     /* Top Bar */
     .top-bar {
-      background: rgba(8, 19, 37, 0.9);
+      background: rgba(8, 19, 37, 0.95);
       border-bottom: 1px solid var(--border-color);
       font-size: 0.85rem;
       padding: 8px 0;
@@ -99,28 +99,74 @@
       flex-wrap: wrap;
       gap: 12px;
     }
-    .top-bar-badge {
+    .top-bar-sos-badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      color: var(--accent-cyan);
-      font-weight: 600;
+      gap: 10px;
+      font-size: 0.85rem;
     }
-    .top-bar-links {
+    .sos-pill-pulse {
+      background: #dc2626;
+      color: #fff;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      animation: sosPulse 2s infinite ease-in-out;
+      box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+    }
+    @keyframes sosPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.92; }
+    }
+    .top-bar-text {
+      color: #cbd5e1;
+      font-size: 0.82rem;
+    }
+    .top-bar-actions {
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 10px;
     }
-    .top-bar-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: var(--transition);
+    .top-action-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      padding: 5px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
     }
-    .top-bar-links a:hover {
-      color: var(--text-main);
+    .btn-donate {
+      background: rgba(236, 72, 153, 0.15);
+      border-color: rgba(236, 72, 153, 0.4);
+      color: #f472b6;
+    }
+    .btn-donate:hover {
+      background: #ec4899;
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.35);
+    }
+    .btn-ads {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: rgba(59, 130, 246, 0.4);
+      color: #93c5fd;
+    }
+    .btn-ads:hover {
+      background: var(--primary);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
     }
 
     /* Header */
@@ -653,6 +699,149 @@
       color: var(--text-main);
     }
 
+    /* Trust Banner Grid */
+    .trust-banner-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      max-width: 960px;
+      margin: 32px auto 0;
+      text-align: left;
+    }
+    .trust-item {
+      background: rgba(13, 31, 61, 0.65);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      backdrop-filter: blur(10px);
+      transition: var(--transition);
+    }
+    .trust-item:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+    .trust-icon-wrap {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .trust-item h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .trust-item p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    /* Tag SOS & Sponsor Card */
+    .tag-sos {
+      background: rgba(239, 68, 68, 0.18) !important;
+      border-color: rgba(239, 68, 68, 0.4) !important;
+      color: #fca5a5 !important;
+    }
+    .status-sponsor {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+    .sponsor-card {
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      background: linear-gradient(145deg, #0d2242, #08162b);
+    }
+    .sponsor-card-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    /* Donation Modal */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(4, 9, 20, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .modal-backdrop.active {
+      display: flex;
+    }
+    .modal-dialog {
+      background: #0d1f3d;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      border-radius: var(--radius-lg);
+      max-width: 480px;
+      width: 100%;
+      padding: 28px;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      animation: modalFadeIn 0.25s ease-out;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .modal-close-btn:hover { color: #fff; }
+    .donate-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin: 18px 0;
+    }
+    .donate-pill {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .donate-pill:hover, .donate-pill.selected {
+      border-color: #ec4899;
+      background: rgba(236, 72, 153, 0.15);
+    }
+    .donate-amount {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .donate-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
     /* Mobile Responsiveness */
     @media (max-width: 860px) {
       .featured-card {
@@ -668,6 +857,14 @@
       .header-nav {
         display: none;
       }
+      .top-bar-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .top-bar-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
     }
   </style>
 </head>
@@ -678,22 +875,21 @@
   <div class="ambient-glow glow-2"></div>
   <div class="ambient-glow glow-3"></div>
 
-  <!-- Top Announcement & Quick Links -->
+  <!-- Top Announcement & Quick Actions (SOS + Conversión) -->
   <div class="top-bar">
     <div class="container top-bar-inner">
-      <div class="top-bar-badge">
-        <i class="fa-solid fa-brain"></i>
-        <span>CareTech Games &bull; Entretenimiento y Bienestar Mental</span>
+      <div class="top-bar-sos-badge">
+        <span class="sos-pill-pulse"><i class="fa-solid fa-triangle-exclamation"></i> Teleasistencia SOS</span>
+        <span class="top-bar-text">Juegos protegidos con botón de auxilio y alerta familiar para adultos mayores.</span>
       </div>
-      <div class="top-bar-links">
-        <a href="https://caretechservices.com" target="_blank" rel="noopener">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> CareTech Principal
-        </a>
-        <a href="https://caretechservices.com/loyalty/" target="_blank" rel="noopener">
-          <i class="fa-solid fa-wallet"></i> Care Loyalty
-        </a>
-        <a href="mailto:care@caretechservices.com">
-          <i class="fa-regular fa-envelope"></i> Soporte
+      <div class="top-bar-actions">
+        <!-- Botón de Donación B2C -->
+        <button type="button" class="top-action-btn btn-donate" onclick="openDonationModal()">
+          <i class="fa-solid fa-heart"></i> <span>Apoyar</span>
+        </button>
+        <!-- Botón de Publicidad B2B -->
+        <a href="/publicidad/" class="top-action-btn btn-ads">
+          <i class="fa-solid fa-bullhorn"></i> <span>Anunciar mi Marca</span>
         </a>
       </div>
     </div>
@@ -715,8 +911,9 @@
       <nav class="header-nav">
         <a href="/games/" class="nav-item active">Inicio</a>
         <a href="/games/solitario/" class="nav-item">Solitario Care</a>
-        <a href="#beneficios" class="nav-item">Beneficios</a>
-        <a href="#instalacion" class="nav-item">Instalar PWA</a>
+        <a href="#beneficios" class="nav-item">Salud Mental</a>
+        <a href="#sos-info" class="nav-item">Seguridad SOS</a>
+        <a href="#en-tu-movil" class="nav-item">En tu Celular</a>
       </nav>
 
       <div class="header-actions">
@@ -731,41 +928,74 @@
   <main class="container">
     <section class="hero">
       <div class="hero-pill">
-        <i class="fa-solid fa-sparkles"></i> Estimulación Cognitiva Accesible &bull; 100% Gratis
+        <i class="fa-solid fa-shield-heart"></i> Estimulación Cognitiva &bull; Cero Ruido &bull; 100% Gratis
       </div>
       <h1 class="hero-title">
-        Juegos diseñados para entrenar tu mente, <span>relajarte y disfrutar</span>.
+        Juegos diseñados para entrenar tu mente, <span>con tranquilidad y sin interrupciones</span>.
       </h1>
       <p class="hero-desc">
-        Sin descargas pesadas, sin anuncios molestos y totalmente optimizados para jugar en móvil, tableta o computadora. Funciona incluso sin internet.
+        Sin descargas pesadas, sin anuncios que congelen la pantalla y sin sonidos molestos. Pensados para disfrutar a cualquier edad, con botón de auxilio SOS para tu tranquilidad.
       </p>
+
+      <!-- Sello de Confianza CareTech -->
+      <div class="trust-banner-grid">
+        <div class="trust-item">
+          <div class="trust-icon-wrap" style="color: #38bdf8; background: rgba(56, 189, 248, 0.15);">
+            <i class="fa-solid fa-volume-xmark"></i>
+          </div>
+          <div>
+            <h4>Cero Sonidos Molestos</h4>
+            <p>Sin videos con audio a todo volumen. Juega en calma o con tu música favorita.</p>
+          </div>
+        </div>
+
+        <div class="trust-item">
+          <div class="trust-icon-wrap" style="color: #10b981; background: rgba(16, 185, 129, 0.15);">
+            <i class="fa-solid fa-ban"></i>
+          </div>
+          <div>
+            <h4>Sin Publicidad Irruptiva</h4>
+            <p>Sin pantallas que te obliguen a esperar 30 segundos. Banners visuales que respetan tu partida.</p>
+          </div>
+        </div>
+
+        <div class="trust-item" id="sos-info">
+          <div class="trust-icon-wrap" style="color: #ef4444; background: rgba(239, 68, 68, 0.15);">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div>
+            <h4>Teleasistencia SOS</h4>
+            <p>Llamada de emergencia, SMS y alerta por WhatsApp con ubicación GPS en un solo toque.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Featured Game: Solitario Care PWA -->
+    <!-- Featured Game: Solitario Care -->
     <section class="featured-section">
       <div class="featured-card">
         <div class="featured-content">
           <div class="badge-live">
-            <span class="pulse-dot"></span> Disponible Ahora &bull; PWA
+            <span class="pulse-dot"></span> Disponible Gratis &bull; Juega al Instante
           </div>
           <h2 class="featured-title">Solitario Care</h2>
           <p class="featured-desc">
-            El clásico solitario Klondike reinventado con diseño accesible: cartas grandes de alta legibilidad, pistas inteligentes, deshacer ilimitado, modos de 1 y 3 cartas, y funcionamiento offline total.
+            El clásico solitario Klondike reinventado para tu comodidad: cartas grandes de alta visibilidad, asistencia SOS para emergencias, pistas inteligentes, deshacer ilimitado y funcionamiento sin internet.
           </p>
 
           <div class="featured-tags">
+            <span class="tag tag-sos"><i class="fa-solid fa-triangle-exclamation"></i> Botón SOS Integrado</span>
             <span class="tag"><i class="fa-solid fa-eye"></i> Cartas Grandes Senior</span>
-            <span class="tag"><i class="fa-solid fa-wifi"></i> 100% Offline (PWA)</span>
-            <span class="tag"><i class="fa-solid fa-bolt"></i> Carga Ultrarrápida</span>
-            <span class="tag"><i class="fa-solid fa-shield-halved"></i> Sin Rastreo Invasivo</span>
+            <span class="tag"><i class="fa-solid fa-volume-xmark"></i> Cero Audios Molestos</span>
+            <span class="tag"><i class="fa-solid fa-wifi"></i> Juega sin Gastar Datos</span>
           </div>
 
           <div class="featured-actions">
             <a href="/games/solitario/" class="btn btn-accent" style="font-size: 1.05rem; padding: 14px 32px;">
-              <i class="fa-solid fa-play"></i> Jugar Solitario Care
+              <i class="fa-solid fa-play"></i> Jugar Solitario Ahora
             </a>
-            <a href="#instalacion" class="btn btn-outline">
-              <i class="fa-solid fa-mobile-screen"></i> Cómo Instalar en Móvil
+            <a href="#en-tu-movil" class="btn btn-outline">
+              <i class="fa-solid fa-mobile-screen"></i> Añadir a mi Celular
             </a>
           </div>
         </div>
@@ -882,6 +1112,28 @@
             </div>
           </div>
         </div>
+
+        <!-- Tarjeta de Patrocinio & Causa Comunitaria -->
+        <div class="game-card sponsor-card">
+          <div class="game-card-thumb" style="background: radial-gradient(circle, #0f2b48, #071526);">
+            <i class="fa-solid fa-bullhorn game-thumb-icon" style="color: #38bdf8;"></i>
+            <span class="card-status-badge status-sponsor">Espacio Patrocinado</span>
+          </div>
+          <div class="game-card-body">
+            <h4 class="game-card-title">Apoya los Juegos Accesibles</h4>
+            <p class="game-card-text">
+              Mantener esta plataforma libre de videos ruidosos y con alertas SOS es posible gracias a nuestros patrocinadores y donantes.
+            </p>
+            <div class="sponsor-card-buttons">
+              <a href="/publicidad/" class="btn btn-primary" style="flex: 1; padding: 10px; font-size: 0.82rem;">
+                <i class="fa-solid fa-store"></i> Anunciar Negocio
+              </a>
+              <button onclick="openDonationModal()" class="btn btn-outline" style="padding: 10px 14px; font-size: 0.82rem;">
+                <i class="fa-solid fa-heart" style="color: #ec4899;"></i> Donar
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -930,34 +1182,34 @@
       </div>
     </section>
 
-    <!-- PWA Install Guide -->
-    <section class="pwa-guide" id="instalacion">
+    <!-- Guía para Añadir a la Pantalla de Inicio -->
+    <section class="pwa-guide" id="en-tu-movil">
       <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
-        <div style="font-size: 2rem; color: var(--accent-cyan);"><i class="fa-solid fa-download"></i></div>
+        <div style="font-size: 2rem; color: var(--accent-cyan);"><i class="fa-solid fa-mobile-screen-button"></i></div>
         <div>
-          <h3 style="font-size: 1.5rem; font-weight: 800;">¿Cómo instalar CareTech Games en tu móvil?</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem;">Instálalo como una app nativa en segundos, sin ocupar espacio de la tienda de apps.</p>
+          <h3 style="font-size: 1.5rem; font-weight: 800;">¿Cómo tener CareTech Games en la pantalla de tu celular?</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Accede a tus juegos en 1 toque, sin ocupar memoria de tu teléfono y sin tiendas de apps.</p>
         </div>
       </div>
 
       <div class="pwa-steps">
         <div class="pwa-step-card">
-          <h5><i class="fa-brands fa-apple"></i> En iPhone / iPad (Safari)</h5>
+          <h5><i class="fa-brands fa-apple"></i> En iPhone o iPad (Safari)</h5>
           <ol>
-            <li>Abre <strong>Solitario Care</strong> en el navegador Safari.</li>
-            <li>Toca el botón <strong>Compartir</strong> (el icono de un cuadro con flecha arriba <i class="fa-solid fa-arrow-up-from-bracket"></i>).</li>
-            <li>Baja en el menú y selecciona <strong>"Añadir a pantalla de inicio"</strong>.</li>
-            <li>Toca <strong>Añadir</strong>. ¡El icono aparecerá en tu pantalla principal!</li>
+            <li>Abre <strong>Solitario Care</strong> en tu navegador Safari.</li>
+            <li>Pulsa el botón <strong>Compartir</strong> (icono de un recuadro con flecha arriba <i class="fa-solid fa-arrow-up-from-bracket"></i>).</li>
+            <li>Desliza hacia abajo y toca <strong>"Añadir a pantalla de inicio"</strong>.</li>
+            <li>Toca <strong>Añadir</strong> en la esquina superior. ¡Listo, tendrás el icono en tu pantalla!</li>
           </ol>
         </div>
 
         <div class="pwa-step-card">
-          <h5><i class="fa-brands fa-android"></i> En Android (Google Chrome)</h5>
+          <h5><i class="fa-brands fa-android"></i> En celulares Android (Google Chrome)</h5>
           <ol>
             <li>Abre <strong>Solitario Care</strong> en Chrome.</li>
-            <li>Toca el banner <strong>"Instalar Aplicación"</strong> que aparece en la parte inferior o el menú de 3 puntos (<i class="fa-solid fa-ellipsis-vertical"></i>).</li>
-            <li>Selecciona <strong>"Instalar aplicación"</strong> o <strong>"Añadir a la pantalla principal"</strong>.</li>
-            <li>Confirma la instalación y juega cuando quieras, ¡incluso sin internet!</li>
+            <li>Toca el menú de los <strong>tres puntos</strong> en la esquina superior derecha (<i class="fa-solid fa-ellipsis-vertical"></i>).</li>
+            <li>Selecciona <strong>"Añadir a la pantalla principal"</strong> o <strong>"Instalar aplicación"</strong>.</li>
+            <li>Confirma tocando <strong>Añadir</strong> y podrás jugar cuando quieras, ¡incluso sin datos!</li>
           </ol>
         </div>
       </div>
@@ -981,6 +1233,7 @@
         <div class="footer-links">
           <a href="/games/">Portal</a>
           <a href="/games/solitario/">Solitario Care</a>
+          <a href="/publicidad/">Anunciarse</a>
           <a href="https://caretechservices.com" target="_blank" rel="noopener">CareTech Services</a>
           <a href="https://caretechservices.com/loyalty/" target="_blank" rel="noopener">Care Loyalty</a>
           <a href="mailto:care@caretechservices.com">Contacto</a>
@@ -989,10 +1242,79 @@
 
       <div class="footer-bottom">
         <div>&copy; 2026 CareTech Services. Todos los derechos reservados.</div>
-        <div style="color: #64748b;">Diseñado para el bienestar y la estimulación cognitiva de todos.</div>
+        <div style="color: #64748b;">Diseñado para el bienestar, la seguridad y la estimulación cognitiva de todos.</div>
       </div>
     </div>
   </footer>
+
+  <!-- Modal de Donación / Apoyo Comunitario -->
+  <div id="donation-modal" class="modal-backdrop" onclick="handleBackdropClick(event)">
+    <div class="modal-dialog">
+      <button type="button" class="modal-close-btn" onclick="closeDonationModal()">&times;</button>
+      <div style="text-align: center; margin-bottom: 16px;">
+        <div style="width: 50px; height: 50px; border-radius: 50%; background: rgba(236, 72, 153, 0.15); color: #f472b6; display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 10px;">
+          <i class="fa-solid fa-heart"></i>
+        </div>
+        <h3 style="font-size: 1.35rem; font-weight: 800; color: #fff;">Apoya los Juegos Accesibles</h3>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 6px;">
+          Tu aporte voluntario mantiene esta plataforma 100% gratuita, sin sonidos molestos y con alertas de emergencia SOS para adultos mayores.
+        </p>
+      </div>
+
+      <div class="donate-options-grid">
+        <div class="donate-pill selected" onclick="selectDonation(1, this)">
+          <div class="donate-amount">$1 USD</div>
+          <div class="donate-desc">Un Café ☕</div>
+        </div>
+        <div class="donate-pill" onclick="selectDonation(3, this)">
+          <div class="donate-amount">$3 USD</div>
+          <div class="donate-desc">Apoyo Mensual ⭐</div>
+        </div>
+        <div class="donate-pill" onclick="selectDonation(5, this)">
+          <div class="donate-amount">$5 USD</div>
+          <div class="donate-desc">Padrino Care 🏆</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+        <a id="paypal-donate-link" href="https://paypal.me/caretechservices/1" target="_blank" rel="noopener" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 0.95rem; background: #0070ba;">
+          <i class="fa-brands fa-paypal"></i> Donar con PayPal / Tarjeta
+        </a>
+        <a href="/publicidad/" class="btn btn-outline" style="width: 100%; padding: 10px; font-size: 0.85rem; text-align: center;">
+          <i class="fa-solid fa-bullhorn"></i> ¿Tienes un negocio? Patrocina un juego aquí
+        </a>
+      </div>
+      <p style="text-align: center; font-size: 0.72rem; color: #64748b; margin-top: 14px;">
+        Pago seguro y voluntario. ¡Muchas gracias por tu generosidad!
+      </p>
+    </div>
+  </div>
+
+  <script>
+    let selectedAmount = 1;
+    function openDonationModal() {
+      const modal = document.getElementById('donation-modal');
+      if (modal) modal.classList.add('active');
+    }
+    function closeDonationModal() {
+      const modal = document.getElementById('donation-modal');
+      if (modal) modal.classList.remove('active');
+    }
+    function handleBackdropClick(e) {
+      if (e.target.id === 'donation-modal') {
+        closeDonationModal();
+      }
+    }
+    function selectDonation(amount, elem) {
+      selectedAmount = amount;
+      document.querySelectorAll('.donate-pill').forEach(p => p.classList.remove('selected'));
+      if (elem) elem.classList.add('selected');
+      const paypalLink = document.getElementById('paypal-donate-link');
+      if (paypalLink) {
+        paypalLink.href = `https://paypal.me/caretechservices/${amount}`;
+      }
+    }
+  </script>
 
 </body>
 </html>

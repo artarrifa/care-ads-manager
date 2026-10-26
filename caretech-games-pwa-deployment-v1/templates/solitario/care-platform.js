@@ -144,6 +144,12 @@
           });
           if (res.ok) {
             localStorage.setItem('care_device_registered_server', 'true');
+            try {
+              const resData = await res.json();
+              if (resData && resData.countryDetected) {
+                localStorage.setItem('care_user_country', resData.countryDetected.toUpperCase());
+              }
+            } catch (e) {}
             break;
           }
         } catch (e) {}

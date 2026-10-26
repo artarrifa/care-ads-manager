@@ -399,29 +399,39 @@
 
   <!-- Modal 2: Configuración SOS Asistida (Paso 2 Opcional) -->
   <div id="care-sos-quick-setup-modal" class="ftux-modal-overlay">
-    <div class="ftux-card" style="text-align: left;">
+    <div class="ftux-card" style="text-align: left;" onclick="event.stopPropagation()">
       <button class="ftux-close-x" onclick="CareFTUX.closeSOSModal()">&times;</button>
       <div style="text-align: center; margin-bottom: 14px;">
         <div style="font-size: 2.2rem; color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i></div>
         <h3 style="font-size: 1.35rem; font-weight: 800; color: #fff;">Tu Botón de Auxilio SOS</h3>
-        <p style="color: #94a3b8; font-size: 0.85rem;">Si te sientes mal, podrás enviar tu ubicación con 1 solo toque.</p>
+        <p style="color: #94a3b8; font-size: 0.85rem;">Si te sientes mal, podrás pedir ayuda con 1 solo toque.</p>
+      </div>
+
+      <!-- Número de Emergencia Nacional Automático -->
+      <div class="sos-default-box">
+        <div class="sos-default-icon"><i class="fa-solid fa-phone-volume"></i></div>
+        <div class="sos-default-text">
+          <div style="font-size: 0.75rem; color: #fca5a5;">Llamada de Emergencia Nacional:</div>
+          <strong id="ftux-national-emergency-label">123 (Colombia) &bull; Activo por defecto</strong>
+        </div>
       </div>
 
       <div style="margin-bottom: 12px;">
         <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px; font-weight: 700;">
-          Nombre de tu Familiar o Cuidador:
+          📱 WhatsApp de tu Familiar o Cuidador (Opcional):
+        </label>
+        <input type="tel" id="ftux-contact-phone" placeholder="Ej: 573001234567" style="width: 100%; box-sizing: border-box; padding: 12px; font-size: 1rem; border-radius: 10px; background: #07152c; border: 1px solid rgba(255,255,255,0.2); color: #fff;">
+        <span style="font-size: 0.72rem; color: #94a3b8; display: block; margin-top: 3px;">Se le enviará un mensaje con tu mapa GPS al pulsar auxilio.</span>
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px; font-weight: 700;">
+          Nombre del Familiar (Opcional):
         </label>
         <input type="text" id="ftux-contact-name" placeholder="Ej: Mi hija Andrea" style="width: 100%; box-sizing: border-box; padding: 12px; font-size: 1rem; border-radius: 10px; background: #07152c; border: 1px solid rgba(255,255,255,0.2); color: #fff;">
       </div>
 
-      <div style="margin-bottom: 12px;">
-        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px; font-weight: 700;">
-          Teléfono o WhatsApp de Emergencia:
-        </label>
-        <input type="tel" id="ftux-contact-phone" placeholder="Ej: 573001234567" style="width: 100%; box-sizing: border-box; padding: 12px; font-size: 1rem; border-radius: 10px; background: #07152c; border: 1px solid rgba(255,255,255,0.2); color: #fff;">
-      </div>
-
-      <div style="margin-bottom: 20px;">
+      <div style="margin-bottom: 18px;">
         <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px; font-weight: 700;">
           ¿Cómo te llamas? (Para tus récords):
         </label>
@@ -434,7 +444,7 @@
 
       <div style="text-align: center; margin-top: 12px;">
         <button onclick="CareFTUX.dismissAndPlay()" style="background: none; border: none; color: #94a3b8; font-size: 0.85rem; text-decoration: underline; cursor: pointer;">
-          Configurar después, quiero jugar ya
+          Jugar con el número nacional configurado
         </button>
       </div>
     </div>
@@ -446,7 +456,10 @@
   <script src="solitaire.js?v=1.2.0"></script>
   <script>
     const CareFTUX = {
+      emergencyInfo: null,
+
       init() {
+        this.detectCountryEmergency();
         const isCompleted = localStorage.getItem('care_ftux_completed');
         if (!isCompleted) {
           setTimeout(() => {
@@ -455,6 +468,55 @@
           }, 350);
         }
         this.updateSOSBadge();
+      },
+
+      detectCountryEmergency() {
+        let country = localStorage.getItem('care_user_country');
+        if (!country) {
+          try {
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+            if (tz.includes('Bogota')) country = 'CO';
+            else if (tz.includes('Madrid') || tz.includes('Canary')) country = 'ES';
+            else if (tz.includes('Mexico') || tz.includes('Cancun') || tz.includes('Monterrey') || tz.includes('Tijuana')) country = 'MX';
+            else if (tz.includes('New_York') || tz.includes('Chicago') || tz.includes('Los_Angeles') || tz.includes('Denver') || tz.includes('Phoenix')) country = 'US';
+            else if (tz.includes('Toronto') || tz.includes('Vancouver')) country = 'CA';
+            else if (tz.includes('Santiago')) country = 'CL';
+            else if (tz.includes('Buenos_Aires') || tz.includes('Argentina')) country = 'AR';
+            else if (tz.includes('Lima')) country = 'PE';
+          } catch (e) {}
+        }
+        if (!country) {
+          const lang = (navigator.language || '').toLowerCase();
+          if (lang.includes('es-es')) country = 'ES';
+          else if (lang.includes('es-mx')) country = 'MX';
+          else if (lang.includes('es-cl')) country = 'CL';
+          else if (lang.includes('es-ar')) country = 'AR';
+          else if (lang.includes('es-pe')) country = 'PE';
+          else if (lang.includes('en-us')) country = 'US';
+          else if (lang.includes('en-ca')) country = 'CA';
+          else country = 'CO';
+        }
+
+        const directory = {
+          CO: { phone: '123', label: '🇨🇴 123 (Colombia) - Oficial Activo', prefix: '57' },
+          ES: { phone: '112', label: '🇪🇸 112 (España / Europa) - Oficial Activo', prefix: '34' },
+          US: { phone: '911', label: '🇺🇸 911 (USA) - Official Active', prefix: '1' },
+          CA: { phone: '911', label: '🇨🇦 911 (Canadá) - Official Active', prefix: '1' },
+          MX: { phone: '911', label: '🇲🇽 911 (México) - Oficial Activo', prefix: '52' },
+          CL: { phone: '133', label: '🇨🇱 133 (Chile) - Carabineros Activo', prefix: '56' },
+          AR: { phone: '911', label: '🇦🇷 911 (Argentina) - Oficial Activo', prefix: '54' },
+          PE: { phone: '105', label: '🇵🇪 105 (Perú) - Policía Activo', prefix: '51' },
+          OTHER: { phone: '112', label: '🌐 112 (Internacional) - Activo', prefix: '' }
+        };
+
+        this.emergencyInfo = directory[country] || directory['CO'];
+        localStorage.setItem('care_user_country', country);
+
+        // Si no hay teléfono fijado, establecer por defecto el nacional de ese país
+        if (!localStorage.getItem('care_sos_phone')) {
+          localStorage.setItem('care_sos_phone', this.emergencyInfo.phone);
+        }
+        return this.emergencyInfo;
       },
 
       updateSOSBadge() {
@@ -481,14 +543,29 @@
       },
 
       openQuickSOS() {
+        const info = this.emergencyInfo || this.detectCountryEmergency();
         const m1 = document.getElementById('care-ftux-modal');
         if (m1) m1.classList.remove('active');
         const m2 = document.getElementById('care-sos-quick-setup-modal');
         if (m2) {
+          const labelEl = document.getElementById('ftux-national-emergency-label');
+          if (labelEl && info) {
+            labelEl.textContent = info.label;
+          }
+          const savedWa = localStorage.getItem('care_sos_wa_number') || '';
+          const phoneInput = document.getElementById('ftux-contact-phone');
+          phoneInput.value = savedWa;
+          if (!savedWa && info && info.prefix) {
+            phoneInput.placeholder = `Ej: ${info.prefix}3001234567`;
+          }
+
           document.getElementById('ftux-contact-name').value = localStorage.getItem('care_sos_contact_name') || '';
-          document.getElementById('ftux-contact-phone').value = localStorage.getItem('care_sos_wa_number') || localStorage.getItem('care_sos_phone') || '';
           document.getElementById('ftux-user-name').value = localStorage.getItem('care_user_name') || '';
           m2.classList.add('active');
+
+          setTimeout(() => {
+            if (phoneInput) phoneInput.focus();
+          }, 200);
         }
       },
 
@@ -508,7 +585,12 @@
           localStorage.setItem('care_sos_phone', phone);
           const sosWaInput = document.getElementById('sos-wa-input');
           if (sosWaInput) sosWaInput.value = phone;
+        } else {
+          // Si lo dejó en blanco, asegura que el teléfono sea el nacional por defecto
+          const info = this.emergencyInfo || this.detectCountryEmergency();
+          localStorage.setItem('care_sos_phone', info.phone);
         }
+
         if (contactName) {
           localStorage.setItem('care_sos_contact_name', contactName);
         }
@@ -518,6 +600,14 @@
 
         this.updateSOSBadge();
         this.dismissAndPlay();
+      }
+    };
+
+    if (window.CarePlatform) {
+      window.CarePlatform.init({ gameId: 'solitario' });
+    }
+    CareFTUX.init();
+  </script>
       }
     };
 

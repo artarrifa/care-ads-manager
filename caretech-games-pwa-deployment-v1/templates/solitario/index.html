@@ -22,8 +22,178 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="care-ui.css?v=1.2.0">
-  <link rel="stylesheet" href="solitaire.css?v=1.2.0">
+  <link rel="stylesheet" href="care-ui.css?v=1.4.1">
+  <link rel="stylesheet" href="solitaire.css?v=1.4.1">
+
+  <!-- Aislamiento Visual Crítico para Modales FTUX -->
+  <style>
+    .ftux-modal-overlay {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: rgba(4, 9, 20, 0.92) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      z-index: 999999 !important;
+      display: none;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 16px !important;
+      box-sizing: border-box !important;
+    }
+    .ftux-modal-overlay.active {
+      display: flex !important;
+    }
+    .ftux-card {
+      background: linear-gradient(145deg, #0d2242, #08162b) !important;
+      border: 2px solid rgba(59, 130, 246, 0.6) !important;
+      border-radius: 24px !important;
+      max-width: 480px !important;
+      width: 100% !important;
+      padding: 28px 22px !important;
+      text-align: center !important;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9) !important;
+      position: relative !important;
+      color: #ffffff !important;
+      box-sizing: border-box !important;
+      animation: ftuxFade 0.25s ease-out !important;
+    }
+    @keyframes ftuxFade {
+      from { opacity: 0; transform: scale(0.93); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .ftux-card input {
+      user-select: text !important;
+      -webkit-user-select: text !important;
+      -webkit-touch-callout: default !important;
+      pointer-events: auto !important;
+      cursor: text !important;
+      background: #07152c !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
+      border-radius: 10px !important;
+      padding: 12px 14px !important;
+      font-size: 1rem !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      margin-top: 4px !important;
+    }
+    .ftux-card input:focus {
+      outline: none !important;
+      border-color: #38bdf8 !important;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.5) !important;
+    }
+    .ftux-close-x {
+      position: absolute !important;
+      top: 14px !important;
+      right: 16px !important;
+      background: rgba(255, 255, 255, 0.12) !important;
+      border: none !important;
+      color: #ffffff !important;
+      width: 38px !important;
+      height: 38px !important;
+      border-radius: 50% !important;
+      font-size: 1.4rem !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: background 0.2s !important;
+    }
+    .ftux-close-x:hover {
+      background: rgba(255, 255, 255, 0.25) !important;
+    }
+    .ftux-pill-points {
+      background: rgba(13, 31, 61, 0.75) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      border-radius: 16px !important;
+      padding: 14px 16px !important;
+      text-align: left !important;
+      margin: 18px 0 22px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+    }
+    .ftux-point-row {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      font-size: 0.95rem !important;
+      color: #f1f5f9 !important;
+    }
+    .ftux-btn-play {
+      background: linear-gradient(135deg, #10b981, #059669) !important;
+      color: #ffffff !important;
+      font-size: 1.15rem !important;
+      font-weight: 800 !important;
+      padding: 15px 24px !important;
+      border-radius: 999px !important;
+      border: none !important;
+      width: 100% !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 10px !important;
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.45) !important;
+      min-height: 52px !important;
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+    .ftux-btn-play:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.65) !important;
+    }
+    .ftux-btn-sos-setup {
+      background: transparent !important;
+      color: #93c5fd !important;
+      border: 1px solid rgba(147, 197, 253, 0.4) !important;
+      font-size: 0.95rem !important;
+      font-weight: 700 !important;
+      padding: 12px 20px !important;
+      border-radius: 999px !important;
+      width: 100% !important;
+      cursor: pointer !important;
+      margin-top: 10px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      min-height: 48px !important;
+      transition: background 0.2s, border-color 0.2s !important;
+    }
+    .ftux-btn-sos-setup:hover {
+      background: rgba(147, 197, 253, 0.12) !important;
+      border-color: #93c5fd !important;
+    }
+    .sos-default-box {
+      background: rgba(220, 38, 38, 0.15) !important;
+      border: 1px solid rgba(220, 38, 38, 0.4) !important;
+      border-radius: 12px !important;
+      padding: 10px 14px !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      margin-bottom: 14px !important;
+      text-align: left !important;
+    }
+    .sos-default-icon {
+      font-size: 1.4rem !important;
+      color: #f87171 !important;
+      flex-shrink: 0 !important;
+    }
+    .sos-default-text {
+      font-size: 0.85rem !important;
+      color: #fca5a5 !important;
+      line-height: 1.3 !important;
+    }
+    .sos-default-text strong {
+      color: #ffffff !important;
+      display: block !important;
+      margin-top: 2px !important;
+    }
+  </style>
 </head>
 <body class="theme-care-green deck-blue">
 
@@ -362,8 +532,8 @@
   <canvas id="confetti-canvas"></canvas>
 
   <!-- Modal 1: Bienvenida Cálida FTUX (Primera Visita) -->
-  <div id="care-ftux-modal" class="ftux-modal-overlay">
-    <div class="ftux-card">
+  <div id="care-ftux-modal" class="ftux-modal-overlay" style="display: none;" onclick="CareFTUX.dismissAndPlay()">
+    <div class="ftux-card" onclick="event.stopPropagation()">
       <button class="ftux-close-x" onclick="CareFTUX.dismissAndPlay()" title="Cerrar y Jugar">&times;</button>
       <div style="font-size: 2.8rem; margin-bottom: 6px;">💚</div>
       <h2 style="font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 4px;">¡Bienvenido a Solitario Care!</h2>
@@ -398,7 +568,7 @@
   </div>
 
   <!-- Modal 2: Configuración SOS Asistida (Paso 2 Opcional) -->
-  <div id="care-sos-quick-setup-modal" class="ftux-modal-overlay">
+  <div id="care-sos-quick-setup-modal" class="ftux-modal-overlay" style="display: none;" onclick="CareFTUX.closeSOSModal()">
     <div class="ftux-card" style="text-align: left;" onclick="event.stopPropagation()">
       <button class="ftux-close-x" onclick="CareFTUX.closeSOSModal()">&times;</button>
       <div style="text-align: center; margin-bottom: 14px;">
@@ -464,7 +634,10 @@
         if (!isCompleted) {
           setTimeout(() => {
             const modal = document.getElementById('care-ftux-modal');
-            if (modal) modal.classList.add('active');
+            if (modal) {
+              modal.style.display = 'flex';
+              modal.classList.add('active');
+            }
           }, 350);
         }
         this.updateSOSBadge();
@@ -512,7 +685,6 @@
         this.emergencyInfo = directory[country] || directory['CO'];
         localStorage.setItem('care_user_country', country);
 
-        // Si no hay teléfono fijado, establecer por defecto el nacional de ese país
         if (!localStorage.getItem('care_sos_phone')) {
           localStorage.setItem('care_sos_phone', this.emergencyInfo.phone);
         }
@@ -527,6 +699,13 @@
           badge.id = 'sos-hint-badge';
           badge.className = 'sos-setup-hint-badge';
           badge.textContent = 'Configurar';
+          badge.style.cursor = 'pointer';
+          badge.onclick = (e) => {
+            e.stopPropagation();
+            CareFTUX.openQuickSOS();
+          };
+          sosLabel.style.cursor = 'pointer';
+          sosLabel.onclick = () => CareFTUX.openQuickSOS();
           sosLabel.appendChild(badge);
         } else if (isConfigured) {
           const badge = document.getElementById('sos-hint-badge');
@@ -538,14 +717,23 @@
         localStorage.setItem('care_ftux_completed', 'true');
         const m1 = document.getElementById('care-ftux-modal');
         const m2 = document.getElementById('care-sos-quick-setup-modal');
-        if (m1) m1.classList.remove('active');
-        if (m2) m2.classList.remove('active');
+        if (m1) {
+          m1.classList.remove('active');
+          m1.style.display = 'none';
+        }
+        if (m2) {
+          m2.classList.remove('active');
+          m2.style.display = 'none';
+        }
       },
 
       openQuickSOS() {
         const info = this.emergencyInfo || this.detectCountryEmergency();
         const m1 = document.getElementById('care-ftux-modal');
-        if (m1) m1.classList.remove('active');
+        if (m1) {
+          m1.classList.remove('active');
+          m1.style.display = 'none';
+        }
         const m2 = document.getElementById('care-sos-quick-setup-modal');
         if (m2) {
           const labelEl = document.getElementById('ftux-national-emergency-label');
@@ -554,13 +742,23 @@
           }
           const savedWa = localStorage.getItem('care_sos_wa_number') || '';
           const phoneInput = document.getElementById('ftux-contact-phone');
-          phoneInput.value = savedWa;
-          if (!savedWa && info && info.prefix) {
-            phoneInput.placeholder = `Ej: ${info.prefix}3001234567`;
+          if (phoneInput) {
+            phoneInput.value = savedWa;
+            if (!savedWa && info && info.prefix) {
+              phoneInput.placeholder = `Ej: ${info.prefix}3001234567`;
+            }
           }
 
-          document.getElementById('ftux-contact-name').value = localStorage.getItem('care_sos_contact_name') || '';
-          document.getElementById('ftux-user-name').value = localStorage.getItem('care_user_name') || '';
+          const contactInput = document.getElementById('ftux-contact-name');
+          if (contactInput) {
+            contactInput.value = localStorage.getItem('care_sos_contact_name') || '';
+          }
+          const userInput = document.getElementById('ftux-user-name');
+          if (userInput) {
+            userInput.value = localStorage.getItem('care_user_name') || '';
+          }
+
+          m2.style.display = 'flex';
           m2.classList.add('active');
 
           setTimeout(() => {
@@ -571,14 +769,21 @@
 
       closeSOSModal() {
         const m2 = document.getElementById('care-sos-quick-setup-modal');
-        if (m2) m2.classList.remove('active');
+        if (m2) {
+          m2.classList.remove('active');
+          m2.style.display = 'none';
+        }
         this.dismissAndPlay();
       },
 
       saveSOSAndPlay() {
-        const phone = document.getElementById('ftux-contact-phone').value.trim();
-        const contactName = document.getElementById('ftux-contact-name').value.trim();
-        const userName = document.getElementById('ftux-user-name').value.trim();
+        const phoneEl = document.getElementById('ftux-contact-phone');
+        const contactEl = document.getElementById('ftux-contact-name');
+        const userEl = document.getElementById('ftux-user-name');
+
+        const phone = phoneEl ? phoneEl.value.trim() : '';
+        const contactName = contactEl ? contactEl.value.trim() : '';
+        const userName = userEl ? userEl.value.trim() : '';
 
         if (phone) {
           localStorage.setItem('care_sos_wa_number', phone);
@@ -586,7 +791,6 @@
           const sosWaInput = document.getElementById('sos-wa-input');
           if (sosWaInput) sosWaInput.value = phone;
         } else {
-          // Si lo dejó en blanco, asegura que el teléfono sea el nacional por defecto
           const info = this.emergencyInfo || this.detectCountryEmergency();
           localStorage.setItem('care_sos_phone', info.phone);
         }
@@ -600,14 +804,6 @@
 
         this.updateSOSBadge();
         this.dismissAndPlay();
-      }
-    };
-
-    if (window.CarePlatform) {
-      window.CarePlatform.init({ gameId: 'solitario' });
-    }
-    CareFTUX.init();
-  </script>
       }
     };
 

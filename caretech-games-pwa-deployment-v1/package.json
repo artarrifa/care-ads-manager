@@ -1,0 +1,27 @@
+{
+  "name": "caretech-games-pwa-deployment",
+  "version": "1.0.0",
+  "description": "Paquete de despliegue y producción para el portal CareTech Games y juegos PWA (Solitario Care)",
+  "main": "scripts/serve.js",
+  "scripts": {
+    "prepare": "node scripts/prepare-deploy.js",
+    "prepare:cocos": "node scripts/prepare-deploy.js ../solitario-care-vp1/cocos-project/build/web-mobile",
+    "serve": "node scripts/serve.js",
+    "deploy": "node scripts/prepare-deploy.js && node -e \"const { execSync } = require('child_process'); execSync('cd dist && zip -r ../caretech-games.zip games'); console.log('✅ caretech-games.zip generado');\" && node scripts/deploy-hostinger.js",
+    "build:zip": "node scripts/prepare-deploy.js && node -e \"const { execSync } = require('child_process'); execSync('cd dist && zip -r ../caretech-games.zip games'); console.log('✅ caretech-games.zip generado con éxito');\""
+  },
+  "keywords": [
+    "caretech",
+    "pwa",
+    "games",
+    "solitaire",
+    "service-worker",
+    "offline"
+  ],
+  "author": "CareTech Services",
+  "license": "MIT",
+  "dependencies": {
+    "playwright": "^1.64.0",
+    "ssh2": "^1.17.0"
+  }
+}

@@ -1,0 +1,14 @@
+
+set timeout 120
+spawn ssh -p 65002 -o StrictHostKeyChecking=no u845296761@5.183.10.22 "cat > ~/domains/caretechservices.com/public_html/caretech-games.b64 && cd ~/domains/caretechservices.com/public_html && base64 -d caretech-games.b64 > caretech-games.zip && rm -f caretech-games.b64 && unzip -o caretech-games.zip && rm -f caretech-games.zip && echo 'DEPLOY_SUCCESS'"
+expect {
+    "password:" {
+        send "Esteban\$3451\$"
+        exp_continue
+    }
+    "DEPLOY_SUCCESS" {
+        puts "DEPLOY_COMPLETED_OK"
+        exp_continue
+    }
+    eof
+}

@@ -1,0 +1,184 @@
+/**
+ * CareTech UI Design System - care-ui.css
+ * Official Visual Line & Components for CareTech Games Platform
+ */
+
+:root {
+  --care-green-gradient: radial-gradient(circle at 50% 18%, #178347 0%, #0e5e30 55%, #083c1d 100%);
+  --care-blue-gradient: radial-gradient(circle at 50% 18%, #1d4d8a 0%, #0f3261 55%, #061933 100%);
+  --care-dock-bg: rgba(6, 26, 15, 0.94);
+  --care-border: rgba(255, 255, 255, 0.16);
+  --care-accent-green: #10b981;
+  --care-accent-cyan: #06b6d4;
+  --care-accent-blue: #38bdf8;
+  --care-sos-bg: #dc2626;
+  --care-sos-glow: rgba(220, 38, 38, 0.6);
+  --care-sms-bg: #2563eb;
+  --care-wa-bg: #16a34a;
+}
+
+/* ==============================================================================
+   1. CARE THEMES (Care Green default, Care Blue alternative)
+   ============================================================================== */
+body.theme-care-green {
+  --bg-table-gradient: var(--care-green-gradient);
+  --care-dock-bg: rgba(6, 26, 15, 0.94);
+}
+
+body.theme-care-blue {
+  --bg-table-gradient: var(--care-blue-gradient);
+  --care-dock-bg: rgba(7, 25, 51, 0.95);
+}
+
+/* ==============================================================================
+   2. CARE SOS TOP BAR (ARRIBA DEL BANNER PUBLICITARIO SUPERIOR)
+   ============================================================================== */
+.care-sos-bar {
+  background: rgba(15, 23, 42, 0.96);
+  border-bottom: 1px solid rgba(239, 68, 68, 0.35);
+  padding: calc(env(safe-area-inset-top, 0px) + 3px) 10px 3px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  z-index: 100;
+  flex-shrink: 0;
+  backdrop-filter: blur(10px);
+}
+
+.care-sos-label-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.care-sos-badge {
+  background: #dc2626;
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 900;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  animation: sosPulse 2s infinite ease-in-out;
+  box-shadow: 0 0 8px var(--care-sos-glow);
+}
+
+@keyframes sosPulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.88; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.care-sos-title {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.care-sos-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.care-sos-btn {
+  border: none;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 4px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: transform 0.15s ease, opacity 0.15s;
+  text-decoration: none;
+  font-family: inherit;
+}
+.care-sos-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+.care-sos-btn:active {
+  transform: translateY(0);
+}
+
+.care-sos-btn-main {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+}
+.care-sos-btn-sms {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+.care-sos-btn-wa {
+  background: linear-gradient(135deg, #22c55e, #15803d);
+}
+
+/* ==============================================================================
+   3. SOS MODAL (AJUSTES DE CONTACTOS Y LLAMADA RÁPIDA)
+   ============================================================================== */
+.care-sos-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10001;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.care-sos-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.care-sos-modal-content {
+  background: #0f172a;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 18px;
+  padding: 22px;
+  max-width: 420px;
+  width: 90%;
+  color: #fff;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+}
+
+.care-sos-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 16px 0;
+}
+.care-sos-option-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #fff;
+}
+.care-sos-option-card:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+/* ==============================================================================
+   4. DESKTOP OPTIMIZATIONS
+   ============================================================================== */
+@media (min-width: 900px) {
+  .care-sos-bar {
+    max-width: 920px;
+    margin: 0 auto;
+    border-radius: 0 0 10px 10px;
+    width: 100%;
+  }
+}

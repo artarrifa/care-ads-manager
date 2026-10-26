@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Care Loyalty | Digital Loyalty Program (Apple & Google Wallet)</title>
+  <meta name="description" content="Crea tu programa de sellos y puntos en Apple Wallet y Google Wallet. Haz que tus clientes vuelvan más sin necesidad de descargar apps.">
+  <meta name="theme-color" content="#081325">
+
+  <!-- Open Graph / Meta -->
+  <meta property="og:title" content="Care Loyalty - Digital Loyalty Program">
+  <meta property="og:description" content="Turn visits into repeat customers with Apple Wallet & Google Wallet.">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="styles.css?v=3.0">
+</head>
+<body>
+
+  <!-- Top Announcement Bar with Region & Language Selectors -->
+  <div class="top-bar">
+    <div class="container top-bar-container">
+      <div class="top-bar-text">
+        <span data-i18n="topBarAnnouncement">🚀 Empieza en minutos sin hardware especial. <strong>¡Prueba la demo hoy!</strong></span>
+      </div>
+      
+      <div class="top-bar-controls">
+        <!-- Language Switcher -->
+        <div class="lang-selector-wrapper">
+          <label class="control-label"><i class="fa-solid fa-language"></i></label>
+          <div class="lang-pills">
+            <button class="lang-btn active" data-lang="es" onclick="changeLanguage('es')">ES</button>
+            <button class="lang-btn" data-lang="en" onclick="changeLanguage('en')">EN</button>
+          </div>
+        </div>
+
+        <!-- Country / Currency Selector -->
+        <div class="region-selector-wrapper">
+          <label for="countrySelect" class="control-label"><i class="fa-solid fa-globe"></i></label>
+          <select id="countrySelect" class="region-select" onchange="changeRegion(this.value)">
+            <option value="colombia">🇨🇴 Colombia (COP)</option>
+            <option value="europa">🇪🇺 España / Europa (€ EUR)</option>
+            <option value="usa">🇺🇸 USA / Global ($ USD)</option>
+            <option value="mexico">🇲🇽 México ($ MXN)</option>
+          </select>
+        </div>
+
+        <!-- Top Direct Email Link -->
+        <a href="mailto:care@caretechservices.com" class="top-email-link">
+          <i class="fa-regular fa-envelope"></i> care@caretechservices.com
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="#" class="brand-logo">
+        <div class="logo-badge"><i class="fa-solid fa-wallet"></i></div>
+        <div class="logo-text">
+          <span class="logo-title">CARE LOYALTY</span>
+          <span class="logo-sub" data-i18n="logoSubtitle">Fidelidad Digital</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="#beneficios" class="nav-link" data-i18n="navBenefits">Beneficios</a>
+        <a href="#como-funciona" class="nav-link" data-i18n="navHowItWorks">Cómo Funciona</a>
+        <a href="#panel" class="nav-link" data-i18n="navDashboard">Panel</a>
+        <a href="#planes" class="nav-link" data-i18n="navPricing">Planes y Precios</a>
+        <a href="https://www.caretechapps.com/dashboard" target="_blank" rel="noopener noreferrer" class="nav-link nav-demo-link" data-i18n="navDemo">Demo</a>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Quick Country Toggle Pills in Header -->
+        <div class="header-pills">
+          <button class="pill-btn active" data-region="colombia" onclick="changeRegion('colombia')">🇨🇴 COP</button>
+          <button class="pill-btn" data-region="europa" onclick="changeRegion('europa')">🇪🇺 EUR</button>
+          <button class="pill-btn" data-region="usa" onclick="changeRegion('usa')">🇺🇸 USD</button>
+        </div>
+
+        <!-- Language Pill Switcher in Header -->
+        <div class="header-lang-pills">
+          <button class="lang-pill active" data-lang="es" onclick="changeLanguage('es')">ES</button>
+          <button class="lang-pill" data-lang="en" onclick="changeLanguage('en')">EN</button>
+        </div>
+
+        <a href="mailto:care@caretechservices.com" class="btn btn-email header-email-btn" title="Enviar correo">
+          <i class="fa-regular fa-envelope"></i>
+        </a>
+
+        <button class="btn btn-whatsapp header-wap-btn" onclick="openWhatsAppModal('General')">
+          <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btnChatWhatsApp">WhatsApp</span>
+        </button>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir Menú">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="hero">
+    <div class="hero-bg-glow glow-1"></div>
+    <div class="hero-bg-glow glow-2"></div>
+    
+    <div class="container hero-container">
+      <div class="hero-content">
+        <div class="pill-tag">
+          <i class="fa-solid fa-sparkles"></i> <span data-i18n="heroBadge">Programa de fidelidad digital para negocios</span>
+        </div>
+        <h1 class="hero-title" id="heroTitle">
+          Haz que tus clientes <span class="gradient-text">vuelvan más.</span>
+        </h1>
+        <p class="hero-description" id="heroDesc">
+          Crea tu programa de sellos o puntos, entrégalo directamente en <strong>Apple Wallet</strong> o <strong>Google Wallet</strong> y convierte cada visita en una nueva oportunidad de venta recurrente.
+        </p>
+
+        <!-- 4 Key Points -->
+        <div class="hero-highlights" id="beneficios">
+          <div class="highlight-item">
+            <span class="h-num">01</span>
+            <span class="h-text" data-i18n="highlight1">Sin app para el cliente</span>
+          </div>
+          <div class="highlight-item">
+            <span class="h-num">02</span>
+            <span class="h-text" data-i18n="highlight2">QR para registrar visitas</span>
+          </div>
+          <div class="highlight-item">
+            <span class="h-num">03</span>
+            <span class="h-text" data-i18n="highlight3">Premios y recompensas</span>
+          </div>
+          <div class="highlight-item">
+            <span class="h-num">04</span>
+            <span class="h-text" data-i18n="highlight4">Campañas por Wallet, WhatsApp & SMS</span>
+          </div>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="hero-ctas">
+          <a href="https://www.caretechapps.com/dashboard" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-large">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> <span data-i18n="btnTryDemo">Probar Demo Gratis</span>
+          </a>
+          <button class="btn btn-whatsapp btn-large" onclick="openWhatsAppModal('Demo y Cotización')">
+            <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btnChatAdvisor">Chatear con un Asesor</span>
+          </button>
+          <a href="mailto:care@caretechservices.com" class="btn btn-secondary btn-large">
+            <i class="fa-regular fa-envelope"></i> <span data-i18n="btnEmailUs">Escribir por Email</span>
+          </a>
+        </div>
+
+        <div class="hero-footnote">
+          <i class="fa-solid fa-bolt text-cyan"></i>
+          <span data-i18n="heroFootnote">Empieza en minutos. <strong>Sin hardware especial</strong>, funciona desde cualquier celular o tablet.</span>
+        </div>
+      </div>
+
+      <!-- Hero Visual: Phone / Digital Card Simulation -->
+      <div class="hero-visual">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            
+            <!-- Wallet Pass Card -->
+            <div class="wallet-card">
+              <div class="card-header">
+                <div class="card-brand">
+                  <i class="fa-solid fa-mug-hot"></i>
+                  <span>ORAU</span>
+                </div>
+                <div class="card-type">
+                  <i class="fa-brands fa-apple"></i> Wallet
+                </div>
+              </div>
+
+              <div class="card-body">
+                <div class="stamp-count-container">
+                  <div class="stamp-count" id="stampCounter">7<span>/10</span></div>
+                  <div class="stamp-label" data-i18n="walletStampsLabel">Sellos acumulados</div>
+                </div>
+
+                <!-- Interactive Stamp Grid -->
+                <div class="stamps-grid" id="stampsGrid">
+                  <div class="stamp-circle active"><i class="fa-solid fa-check"></i></div>
+                  <div class="stamp-circle active"><i class="fa-solid fa-check"></i></div>
+                  <div class="stamp-circle active"><i class="fa-solid fa-check"></i></div>
+                  <div class="stamp-circle active"><i class="fa-solid fa-check"></i></div>
+                  <div class="stamp-circle active"><i class="fa-solid fa-check"></i></div>
+                  <div class="stamp-circle active"><i class="fa-solid fa-check"></i></div>
+                  <div class="stamp-circle active"><i class="fa-solid fa-check"></i></div>
+                  <div class="stamp-circle"><i class="fa-solid fa-coffee"></i></div>
+                  <div class="stamp-circle"><i class="fa-solid fa-coffee"></i></div>
+                  <div class="stamp-circle reward-circle"><i class="fa-solid fa-gift"></i></div>
+                </div>
+
+                <div class="card-meta">
+                  <div class="meta-col">
+                    <span class="meta-label" data-i18n="walletMemberLabel">MIEMBRO</span>
+                    <span class="meta-val">Al Caffe</span>
+                  </div>
+                  <div class="meta-col">
+                    <span class="meta-label" data-i18n="walletRewardLabel">RECOMPENSA</span>
+                    <span class="meta-val text-lime" data-i18n="walletRewardVal">Café Gratis</span>
+                  </div>
+                  <div class="meta-col">
+                    <span class="meta-label" data-i18n="walletBusinessLabel">NEGOCIO</span>
+                    <span class="meta-val">ORAU</span>
+                  </div>
+                </div>
+
+                <div class="card-qr-section">
+                  <div class="qr-box">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https://www.caretechapps.com/dashboard" alt="Código QR de fidelidad" class="qr-img">
+                  </div>
+                  <p class="qr-text" data-i18n="walletScanText"><i class="fa-solid fa-qrcode"></i> Escanear tarjeta en caja</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating interactive prompt -->
+            <div class="wallet-action-bar">
+              <span data-i18n="walletSimulatePrompt">¡Simula sellar tarjeta!</span>
+              <button class="btn-stamp-add" id="btnSimulateStamp" data-i18n="btnAddStamp">+ Añadir Sello</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it Works Section -->
+  <section class="section-how" id="como-funciona">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="badge-sub" data-i18n="howSubBadge">Paso a paso</span>
+        <h2 class="section-title" data-i18n="howTitle">¿Cómo funciona Care Loyalty?</h2>
+        <p class="section-subtitle" data-i18n="howSubtitle">Tres sencillos pasos para fidelizar y disparar tus ventas sin fricción.</p>
+      </div>
+
+      <div class="steps-grid">
+        <!-- Step 1 -->
+        <div class="step-card">
+          <div class="step-number-badge">1</div>
+          <div class="step-icon">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+          <h3 class="step-title" data-i18n="step1Title">Crea</h3>
+          <p class="step-description" data-i18n="step1Desc">
+            Define tu esquema de sellos o puntos, las recompensas para tus clientes y personaliza los colores y logotipo con la identidad de tu marca.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-card highlight-step">
+          <div class="step-number-badge">2</div>
+          <div class="step-icon">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+          </div>
+          <h3 class="step-title" data-i18n="step2Title">Entrega</h3>
+          <p class="step-description" data-i18n="step2Desc">
+            Tus clientes solo escanean un código QR físico en tu mostrador o mesa y guardan al instante la tarjeta en Apple Wallet o Google Wallet. ¡Cero descargas!
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-card">
+          <div class="step-number-badge">3</div>
+          <div class="step-icon">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <h3 class="step-title" data-i18n="step3Title">Recupera</h3>
+          <p class="step-description" data-i18n="step3Desc">
+            Premia la recurrencia en caja con un escaneo rápido y vuelve a contactar a tus clientes con campañas push en Wallet, WhatsApp y SMS con su permiso.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard Overview Section -->
+  <section class="section-dashboard" id="panel">
+    <div class="container">
+      <div class="dashboard-box">
+        <div class="dashboard-text">
+          <span class="badge-sub" data-i18n="dashSubBadge">Control Total</span>
+          <h2 class="section-title" data-i18n="dashTitle">Todo el programa desde un solo panel</h2>
+          <p class="section-subtitle" data-i18n="dashSubtitle">
+            Configura tu negocio, recompensas, clientes, campañas y personal con reportes en tiempo real.
+          </p>
+          <ul class="dashboard-features">
+            <li><i class="fa-solid fa-circle-check text-cyan"></i> <span data-i18n="dashFeat1">Métricas de visitas y retorno de clientes en tiempo real.</span></li>
+            <li><i class="fa-solid fa-circle-check text-cyan"></i> <span data-i18n="dashFeat2">Gestión de empleados y permisos de cajero.</span></li>
+            <li><i class="fa-solid fa-circle-check text-cyan"></i> <span data-i18n="dashFeat3">Enlace directo a WhatsApp y Email para soporte y campañas.</span></li>
+            <li><i class="fa-solid fa-circle-check text-cyan"></i> <span data-i18n="dashFeat4">Notificaciones automáticas cuando estén cerca de su recompensa.</span></li>
+          </ul>
+          
+          <div class="dashboard-action">
+            <a href="https://www.caretechapps.com/dashboard" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> <span data-i18n="btnDashDemo">Ver Demo del Panel</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="dashboard-preview-card">
+          <div class="panel-header-mockup">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <span class="panel-mockup-title">Configuración del Negocio · Care Loyalty</span>
+          </div>
+          <div class="panel-body-mockup">
+            <div class="mockup-row">
+              <div class="mockup-field">
+                <label data-i18n="mockupBizNameLabel">Nombre del Negocio</label>
+                <div class="mockup-input">Café 1983</div>
+              </div>
+              <div class="mockup-field">
+                <label data-i18n="mockupSlugLabel">Slug Público</label>
+                <div class="mockup-input">cafe-1983</div>
+              </div>
+            </div>
+            <div class="mockup-row">
+              <div class="mockup-field">
+                <label data-i18n="mockupCategoryLabel">Categoría</label>
+                <div class="mockup-input" data-i18n="mockupCategoryVal">Cafetería & Restaurante</div>
+              </div>
+              <div class="mockup-field">
+                <label data-i18n="mockupColorLabel">Color de Marca</label>
+                <div class="mockup-input color-input"><span class="color-dot"></span> #20F209</div>
+              </div>
+            </div>
+            <div class="mockup-full-field">
+              <label data-i18n="mockupRewardLabel">Descripción de la Recompensa</label>
+              <div class="mockup-input" data-i18n="mockupRewardVal">¡Acumula 10 sellos y reclama un café de especialidad gratis!</div>
+            </div>
+            <div class="mockup-status-badge">
+              <i class="fa-solid fa-circle-check text-lime"></i> <span data-i18n="mockupStatusVal">Programa Activo & Conectado a Wallet</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Global Multi-Currency Pricing Section -->
+  <section class="section-pricing" id="planes">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="badge-sub" data-i18n="pricingSubBadge">Transparente y sin sorpresas</span>
+        <h2 class="section-title" id="pricingTitle">Planes para Colombia</h2>
+        <p class="section-subtitle" id="pricingSubtitle">Elige el plan ideal según la etapa de tu negocio. Cancela en cualquier momento.</p>
+
+        <!-- Country Switcher Tabs within Pricing Section -->
+        <div class="pricing-country-tabs">
+          <button class="country-tab active" data-tab="colombia" onclick="changeRegion('colombia')">
+            <span class="tab-flag">🇨🇴</span> Colombia (COP)
+          </button>
+          <button class="country-tab" data-tab="europa" onclick="changeRegion('europa')">
+            <span class="tab-flag">🇪🇺</span> España / Europa (€ EUR)
+          </button>
+          <button class="country-tab" data-tab="usa" onclick="changeRegion('usa')">
+            <span class="tab-flag">🇺🇸</span> USA / Global ($ USD)
+          </button>
+          <button class="country-tab" data-tab="mexico" onclick="changeRegion('mexico')">
+            <span class="tab-flag">🇲🇽</span> México ($ MXN)
+          </button>
+        </div>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Plan 1: Starter -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3 class="plan-name">STARTER</h3>
+            <p class="plan-subtitle" data-i18n="planStarterSub">Para comenzar</p>
+            <div class="plan-price">
+              <span class="currency" id="starterCurrency">COP</span>
+              <span class="amount" id="starterPrice">39.900</span>
+              <span class="period" id="starterPeriod">/ mes</span>
+            </div>
+            <div class="plan-crypto-equivalent">
+              <span class="crypto-badge"><i class="fa-brands fa-bitcoin text-warning"></i> o <strong id="starterCrypto">9.90 USDT</strong> / mes</span>
+            </div>
+          </div>
+          <ul class="plan-features">
+            <li><i class="fa-solid fa-check"></i> <span data-i18n="featStarter1">1 Programa de sellos o puntos</span></li>
+            <li><i class="fa-solid fa-check"></i> <span data-i18n="featStarter2">Tarjetas Apple & Google Wallet</span></li>
+            <li><i class="fa-solid fa-check"></i> <span data-i18n="featStarter3">Código QR para mostrador</span></li>
+            <li><i class="fa-solid fa-check"></i> <span data-i18n="featStarter4">Panel de control para 1 usuario</span></li>
+            <li><i class="fa-solid fa-check"></i> <span data-i18n="featStarter5">Soporte por WhatsApp & Email</span></li>
+          </ul>
+          <div class="pricing-footer">
+            <button class="btn btn-primary w-100 btn-main-plan" onclick="openPlanCheckoutModal('Starter')">
+              <i class="fa-solid fa-bolt"></i> <span data-i18n="btnSelectPlanStarter">Elegir Plan Starter</span>
+            </button>
+            <div class="card-quick-actions">
+              <button class="btn-quick-method btn-quick-paypal" onclick="openPlanCheckoutModal('Starter', 'paypal')">
+                <i class="fa-brands fa-paypal text-paypal"></i> PayPal
+              </button>
+              <button class="btn-quick-method" onclick="openPlanCheckoutModal('Starter', 'binance')">
+                <i class="fa-solid fa-coins text-warning"></i> Binance Pay <span class="badge-construction-mini">En Construcción</span>
+              </button>
+              <button class="btn-quick-method" onclick="openPlanCheckoutModal('Starter', 'wompi')">
+                <i class="fa-solid fa-credit-card text-cyan"></i> Wompi / PSE <span class="badge-construction-mini">En Construcción</span>
+              </button>
+            </div>
+            <button class="btn-quick-wap" onclick="handlePlanClick('Starter')">
+              <i class="fa-brands fa-whatsapp text-lime"></i> <span data-i18n="btnQuestionsChat">¿Tienes dudas? Chatea con un asesor</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Plan 2: Pro (Featured) -->
+        <div class="pricing-card featured">
+          <div class="featured-ribbon" data-i18n="badgePopular">MÁS POPULAR</div>
+          <div class="pricing-header">
+            <h3 class="plan-name text-cyan">PRO</h3>
+            <p class="plan-subtitle" data-i18n="planProSub">Para crecer y acelerar ventas</p>
+            <div class="plan-price">
+              <span class="currency" id="proCurrency">COP</span>
+              <span class="amount text-cyan" id="proPrice">69.900</span>
+              <span class="period" id="proPeriod">/ mes</span>
+            </div>
+            <div class="plan-crypto-equivalent">
+              <span class="crypto-badge"><i class="fa-brands fa-bitcoin text-warning"></i> o <strong id="proCrypto">19.90 USDT</strong> / mes</span>
+            </div>
+          </div>
+          <ul class="plan-features">
+            <li><i class="fa-solid fa-check text-cyan"></i> <strong data-i18n="featPro1">Todo lo de Starter</strong></li>
+            <li><i class="fa-solid fa-check text-cyan"></i> <span data-i18n="featPro2">Clientes y visitas ilimitadas</span></li>
+            <li><i class="fa-solid fa-check text-cyan"></i> <span data-i18n="featPro3">Campañas automatizadas por Wallet</span></li>
+            <li><i class="fa-solid fa-check text-cyan"></i> <span data-i18n="featPro4">Integración y recordatorios por WhatsApp</span></li>
+            <li><i class="fa-solid fa-check text-cyan"></i> <span data-i18n="featPro5">Hasta 3 usuarios / cajeros</span></li>
+            <li><i class="fa-solid fa-check text-cyan"></i> <span data-i18n="featPro6">Reportes avanzados de recurrencia</span></li>
+          </ul>
+          <div class="pricing-footer">
+            <button class="btn btn-primary w-100 btn-main-plan" onclick="openPlanCheckoutModal('Pro')">
+              <i class="fa-solid fa-bolt"></i> <span data-i18n="btnSelectPlanPro">Elegir Plan Pro</span>
+            </button>
+            <div class="card-quick-actions">
+              <button class="btn-quick-method btn-quick-paypal" onclick="openPlanCheckoutModal('Pro', 'paypal')">
+                <i class="fa-brands fa-paypal text-paypal"></i> PayPal
+              </button>
+              <button class="btn-quick-method" onclick="openPlanCheckoutModal('Pro', 'binance')">
+                <i class="fa-solid fa-coins text-warning"></i> Binance Pay <span class="badge-construction-mini">En Construcción</span>
+              </button>
+              <button class="btn-quick-method" onclick="openPlanCheckoutModal('Pro', 'wompi')">
+                <i class="fa-solid fa-credit-card text-cyan"></i> Wompi / PSE <span class="badge-construction-mini">En Construcción</span>
+              </button>
+            </div>
+            <button class="btn-quick-wap" onclick="handlePlanClick('Pro')">
+              <i class="fa-brands fa-whatsapp text-lime"></i> <span data-i18n="btnQuestionsChat">¿Tienes dudas? Chatea con un asesor</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Plan 3: Business -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3 class="plan-name">BUSINESS</h3>
+            <p class="plan-subtitle" data-i18n="planBusinessSub">Para varios equipos y sucursales</p>
+            <div class="plan-price">
+              <span class="currency" id="businessCurrency">COP</span>
+              <span class="amount" id="businessPrice">149.900</span>
+              <span class="period" id="businessPeriod">/ mes</span>
+            </div>
+            <div class="plan-crypto-equivalent">
+              <span class="crypto-badge"><i class="fa-brands fa-bitcoin text-warning"></i> o <strong id="businessCrypto">39.90 USDT</strong> / mes</span>
+            </div>
+          </div>
+          <ul class="plan-features">
+            <li><i class="fa-solid fa-check"></i> <strong data-i18n="featBusiness1">Todo lo de Pro</strong></li>
+            <li><i class="fa-solid fa-check"></i> <span data-i18n="featBusiness2">Multi-sucursal y multi-cajas</span></li>
+            <li><i class="fa-solid fa-check"></i> <span data-i18n="featBusiness3">Campañas masivas por SMS, Email y WhatsApp</span></li>
+            <li><i class="fa-solid fa-check"></i> <span data-i18n="featBusiness4">Usuarios y cajeros ilimitados</span></li>
+            <li><i class="fa-solid fa-check"></i> <span data-i18n="featBusiness5">API & Webhooks personalizados</span></li>
+            <li><i class="fa-solid fa-check"></i> <span data-i18n="featBusiness6">Asesor dedicado y soporte prioritario</span></li>
+          </ul>
+          <div class="pricing-footer">
+            <button class="btn btn-primary w-100 btn-main-plan" onclick="openPlanCheckoutModal('Business')">
+              <i class="fa-solid fa-bolt"></i> <span data-i18n="btnSelectPlanBusiness">Elegir Plan Business</span>
+            </button>
+            <div class="card-quick-actions">
+              <button class="btn-quick-method btn-quick-paypal" onclick="openPlanCheckoutModal('Business', 'paypal')">
+                <i class="fa-brands fa-paypal text-paypal"></i> PayPal
+              </button>
+              <button class="btn-quick-method" onclick="openPlanCheckoutModal('Business', 'binance')">
+                <i class="fa-solid fa-coins text-warning"></i> Binance Pay <span class="badge-construction-mini">En Construcción</span>
+              </button>
+              <button class="btn-quick-method" onclick="openPlanCheckoutModal('Business', 'wompi')">
+                <i class="fa-solid fa-credit-card text-cyan"></i> Wompi / PSE <span class="badge-construction-mini">En Construcción</span>
+              </button>
+            </div>
+            <button class="btn-quick-wap" onclick="handlePlanClick('Business')">
+              <i class="fa-brands fa-whatsapp text-lime"></i> <span data-i18n="btnQuestionsChat">¿Tienes dudas? Chatea con un asesor</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trust & Accepted Payment Methods Bar -->
+      <div class="payment-trust-bar">
+        <div class="trust-title" data-i18n="trustPaymentsTitle"><i class="fa-solid fa-shield-halved text-cyan"></i> Medios de Pago Globales & Locales Aceptados:</div>
+        <div class="trust-badges">
+          <div class="trust-badge-pill paypal-pill">
+            <i class="fa-brands fa-paypal text-paypal"></i> <strong>PayPal</strong> (Tarjetas & Saldo Global)
+          </div>
+          <div class="trust-badge-pill binance-pill">
+            <i class="fa-solid fa-coins text-warning"></i> <strong>Binance Pay</strong> (USDT, BTC, ETH · 0% comisión) <span class="badge-construction-mini">En Construcción</span>
+          </div>
+          <div class="trust-badge-pill wompi-pill">
+            <i class="fa-solid fa-credit-card text-cyan"></i> <strong>Wompi</strong> (PSE, Nequi, Bancolombia, Tarjetas) <span class="badge-construction-mini">En Construcción</span>
+          </div>
+          <div class="trust-badge-pill">
+            <i class="fa-brands fa-apple"></i> Apple Pay
+          </div>
+          <div class="trust-badge-pill">
+            <i class="fa-brands fa-google-pay"></i> Google Pay
+          </div>
+          <div class="trust-badge-pill">
+            <i class="fa-brands fa-cc-visa"></i> Visa
+          </div>
+          <div class="trust-badge-pill">
+            <i class="fa-brands fa-cc-mastercard"></i> Mastercard
+          </div>
+          <div class="trust-badge-pill">
+            🇪🇺 SEPA & Stripe
+          </div>
+        </div>
+      </div>
+
+      <!-- Direct Contact Channels Banner -->
+      <div class="support-channels-banner">
+        <div class="support-channel-item">
+          <i class="fa-brands fa-whatsapp text-lime"></i>
+          <div>
+            <h4 data-i18n="supportWapTitle">Soporte por WhatsApp</h4>
+            <a href="https://wa.me/573164734660" target="_blank" rel="noopener noreferrer">+57 316 473 4660</a>
+          </div>
+        </div>
+        <div class="support-channel-divider"></div>
+        <div class="support-channel-item">
+          <i class="fa-regular fa-envelope text-cyan"></i>
+          <div>
+            <h4 data-i18n="supportEmailTitle">Contacto por Email</h4>
+            <a href="mailto:care@caretechservices.com">care@caretechservices.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="section-cta">
+    <div class="container">
+      <div class="cta-card">
+        <div class="cta-content">
+          <h2 class="cta-title" data-i18n="ctaTitle">Convierte una visita en la próxima.</h2>
+          <p class="cta-subtitle" data-i18n="ctaSubtitle">Solicita una demo o prueba el panel de Care Loyalty ahora mismo.</p>
+          <div class="cta-buttons">
+            <a href="https://www.caretechapps.com/dashboard" target="_blank" rel="noopener noreferrer" class="btn btn-light btn-large">
+              <i class="fa-solid fa-laptop-code"></i> <span data-i18n="btnCtaLiveDemo">Abrir Demo en Vivo</span>
+            </a>
+            <button class="btn btn-whatsapp btn-large" onclick="openWhatsAppModal('Demo Personalizada')">
+              <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btnCtaWapDemo">Solicitar Demo por WhatsApp</span>
+            </button>
+            <a href="mailto:care@caretechservices.com?subject=Solicitud%20Demo%20Care%20Loyalty" class="btn btn-secondary btn-large">
+              <i class="fa-regular fa-envelope"></i> <span data-i18n="btnCtaEmailDemo">Solicitar por Email</span>
+            </a>
+          </div>
+        </div>
+        <div class="cta-qr-box">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.caretechapps.com/dashboard" alt="Escanear Demo QR">
+          <span data-i18n="qrScanHint">Escanear con tu móvil</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <div class="footer-left">
+        <div class="brand-logo">
+          <div class="logo-badge"><i class="fa-solid fa-wallet"></i></div>
+          <span class="logo-title">CARE LOYALTY</span>
+        </div>
+        <p class="footer-desc" data-i18n="footerDesc">
+          La plataforma digital de fidelización para negocios que quieren crecer su frecuencia de compra con Apple Wallet y Google Wallet.
+        </p>
+      </div>
+
+      <div class="footer-links-group">
+        <h4 data-i18n="footerRegionsTitle">Enlaces por Región</h4>
+        <ul>
+          <li><a href="javascript:void(0)" onclick="changeRegion('colombia')">🇨🇴 Planes Colombia (COP)</a></li>
+          <li><a href="javascript:void(0)" onclick="changeRegion('europa')">🇪🇺 Planes España & Europa (€ EUR)</a></li>
+          <li><a href="javascript:void(0)" onclick="changeRegion('usa')">🇺🇸 Planes USA & Global ($ USD)</a></li>
+          <li><a href="https://www.caretechapps.com/dashboard" target="_blank">Demo Care Tech Apps</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-group">
+        <h4 data-i18n="footerContactTitle">Contacto & Soporte</h4>
+        <p data-i18n="footerContactText">¿Tienes dudas o necesitas ayuda configurando tu cuenta en cualquier país?</p>
+        <div class="footer-contact-items">
+          <a href="mailto:care@caretechservices.com" class="footer-contact-link">
+            <i class="fa-regular fa-envelope text-cyan"></i> care@caretechservices.com
+          </a>
+          <a href="https://wa.me/573164734660" target="_blank" rel="noopener noreferrer" class="footer-contact-link">
+            <i class="fa-brands fa-whatsapp text-lime"></i> +57 316 473 4660
+          </a>
+        </div>
+        <button class="btn btn-whatsapp btn-small" style="margin-top: 12px;" onclick="openWhatsAppModal('Soporte / Preguntas')">
+          <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btnFooterContact">Escríbenos directamente</span>
+        </button>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="container">
+        <p data-i18n="footerCopyright">© 2026 Care Loyalty · Care Tech Services. Todos los derechos reservados. Compatible con Apple Wallet & Google Wallet en todo el mundo.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp Floating Action Button (WAP) -->
+  <div class="floating-whatsapp" id="floatingWap" onclick="openWhatsAppModal('Botón Flotante')">
+    <div class="wap-pulse"></div>
+    <div class="wap-icon-box">
+      <i class="fa-brands fa-whatsapp"></i>
+    </div>
+    <div class="wap-tooltip">
+      <span>¿Hablamos? <strong>Chatea aquí</strong></span>
+    </div>
+  </div>
+
+  <!-- Master Plan Checkout & Payment Method Selector Modal -->
+  <div class="modal-overlay" id="planCheckoutModal">
+    <div class="modal-container checkout-master-modal">
+      <button class="modal-close" onclick="closePlanCheckoutModal()">&times;</button>
+      
+      <div class="modal-header">
+        <div class="modal-badge-icon"><i class="fa-solid fa-cart-check text-cyan"></i></div>
+        <h3 data-i18n="checkoutModalTitle">Elige tu Forma de Pago</h3>
+        <p data-i18n="checkoutModalSubtitle">Selecciona el método de tu preferencia para activar tu plan de Care Loyalty:</p>
+      </div>
+
+      <!-- Plan Summary Header Card -->
+      <div class="checkout-plan-summary">
+        <div class="summary-plan-tag">
+          <span class="lbl" data-i18n="summaryPlan">Plan Seleccionado:</span>
+          <strong id="chkPlanName" class="val text-cyan">Plan Pro</strong>
+        </div>
+        <div class="summary-price-tag">
+          <span class="lbl" data-i18n="summaryTotal">Inversión:</span>
+          <strong id="chkPlanPrice" class="val">COP $69.900/mes</strong>
+          <span id="chkCryptoPrice" class="crypto-subval">(19.90 USDT)</span>
+        </div>
+      </div>
+
+      <!-- Payment Methods Grid / List -->
+      <div class="payment-methods-list">
+
+        <!-- Option: PayPal Checkout (Credit/Debit Cards & PayPal) -->
+        <div class="payment-option-card paypal-card" onclick="proceedToPayPalFromCheckout()">
+          <div class="option-header">
+            <div class="option-brand">
+              <i class="fa-brands fa-paypal text-paypal"></i>
+              <span>PayPal & Tarjetas (Visa, Master, Amex)</span>
+            </div>
+            <span class="badge-active">🟢 Disponible</span>
+          </div>
+          <p class="option-desc" data-i18n="paypalOptionDesc">
+            Paga seguro a nivel global con cualquier tarjeta de crédito o débito internacional (Visa, Mastercard, Amex) o tu saldo PayPal.
+          </p>
+          <div class="option-cta">
+            <button type="button" class="btn btn-paypal w-100">
+              <i class="fa-brands fa-paypal"></i> <span data-i18n="btnPayWithPayPal">Pagar con PayPal & Tarjetas</span>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Option 1: Binance Pay -->
+        <div class="payment-option-card binance-card" onclick="proceedToBinanceFromCheckout()">
+          <div class="option-header">
+            <div class="option-brand">
+              <i class="fa-solid fa-coins text-warning"></i>
+              <span>Binance Pay (Criptomonedas)</span>
+            </div>
+            <span class="badge-construction">🚧 En Construcción</span>
+          </div>
+          <p class="option-desc" data-i18n="bpOptionDesc">
+            Paga en USDT, BTC o BNB al instante desde tu app de Binance o escaneando QR. (0% de comisión).
+          </p>
+          <div class="option-cta">
+            <button type="button" class="btn btn-binance w-100">
+              <i class="fa-solid fa-bolt"></i> <span data-i18n="btnPayWithBinance">Pagar con Binance Pay (Preview)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Option 2: Wompi (Bancolombia, Nequi, PSE, Tarjetas) -->
+        <div class="payment-option-card wompi-card" onclick="showWompiNotice()">
+          <div class="option-header">
+            <div class="option-brand">
+              <i class="fa-solid fa-credit-card text-cyan"></i>
+              <span>Wompi (PSE, Nequi, Tarjetas)</span>
+            </div>
+            <span class="badge-construction">🚧 En Construcción</span>
+          </div>
+          <p class="option-desc" data-i18n="wompiOptionDesc">
+            Paga seguro en Colombia con PSE, Nequi, Bancolombia o Tarjeta de Crédito/Débito.
+          </p>
+          <div class="option-cta">
+            <button type="button" class="btn btn-wompi w-100">
+              <i class="fa-solid fa-lock"></i> <span data-i18n="btnPayWithWompi">Pagar con Wompi / PSE</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Option 3: WhatsApp Advisor (Active & Ready) -->
+        <div class="payment-option-card wap-card featured-option" onclick="proceedToWhatsAppFromCheckout()">
+          <div class="option-header">
+            <div class="option-brand">
+              <i class="fa-brands fa-whatsapp text-lime"></i>
+              <span>Hablar con un Asesor (WhatsApp)</span>
+            </div>
+            <span class="badge-active">🟢 Disponible Ahora</span>
+          </div>
+          <p class="option-desc" data-i18n="wapOptionDesc">
+            ¿Tienes dudas sobre el plan o prefieres coordinar tu activación y factura directamente con nuestro equipo?
+          </p>
+          <div class="option-cta">
+            <button type="button" class="btn btn-whatsapp w-100">
+              <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btnChatWithAdvisorNow">Chatear y Activar por WhatsApp</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Email Alternative Footnote -->
+      <div class="checkout-footer-notes">
+        <span data-i18n="checkoutOrEmail">¿Prefieres escribirnos por correo?</span>
+        <a href="mailto:care@caretechservices.com?subject=Solicitud%20Activacion%20Plan">care@caretechservices.com</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wompi Notice Modal -->
+  <div class="modal-overlay" id="wompiNoticeModal">
+    <div class="modal-container">
+      <button class="modal-close" onclick="closeWompiNotice()">&times;</button>
+      
+      <div class="modal-header text-center">
+        <div class="wompi-badge-icon">
+          <i class="fa-solid fa-credit-card text-cyan"></i>
+        </div>
+        <h3 data-i18n="wompiModalTitle">Pasarela Wompi en Construcción</h3>
+        <p data-i18n="wompiModalSubtitle">Estamos terminando de enlazar las credenciales de comercio para procesar pagos automáticos con PSE, Bancolombia, Nequi y Tarjetas.</p>
+      </div>
+
+      <div class="wompi-notice-box">
+        <p><i class="fa-solid fa-circle-info text-cyan"></i> <strong>¡Podemos activarte de inmediato!</strong> Nuestro equipo comercial puede recibir tu pago por transferencia bancaria directa, Nequi, PSE o enlace manual mientras se activa la pasarela automática.</p>
+      </div>
+
+      <div class="wompi-actions">
+        <button class="btn btn-whatsapp w-100" onclick="proceedToWhatsAppFromCheckout('Wompi / PSE')">
+          <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btnWompiContinueWap">Coordinar Pago por WhatsApp</span>
+        </button>
+        <a href="mailto:care@caretechservices.com?subject=Pago%20por%20Wompi%20PSE" class="btn btn-outline-light w-100 mt-2">
+          <i class="fa-regular fa-envelope"></i> <span data-i18n="btnWompiEmail">Escribir por Email</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- WhatsApp Lead Modal -->
+  <div class="modal-overlay" id="whatsappModal">
+    <div class="modal-container">
+      <button class="modal-close" onclick="closeWhatsAppModal()">&times;</button>
+      
+      <div class="modal-header">
+        <div class="modal-wap-icon"><i class="fa-brands fa-whatsapp"></i></div>
+        <h3 data-i18n="modalTitle">Impulsa tu negocio con Care Loyalty</h3>
+        <p data-i18n="modalSubtitle">Déjanos tus datos y te redirigiremos de inmediato a WhatsApp con un asesor:</p>
+      </div>
+
+      <form id="leadForm" class="modal-form" onsubmit="submitLeadForm(event)">
+        <input type="hidden" id="selectedPlan" value="General">
+        <input type="hidden" id="selectedCountry" value="Colombia">
+
+        <div class="form-group">
+          <label for="leadCountry"><i class="fa-solid fa-earth-americas"></i> <span data-i18n="modalLabelCountry">País de tu Negocio</span></label>
+          <select id="leadCountry" onchange="onModalCountryChange(this.value)">
+            <option value="Colombia">Colombia 🇨🇴</option>
+            <option value="España / Europa">España / Europa 🇪🇺</option>
+            <option value="Estados Unidos">Estados Unidos 🇺🇸</option>
+            <option value="México">México 🇲🇽</option>
+            <option value="Otro">Otro País 🌎</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="leadName"><i class="fa-regular fa-user"></i> <span data-i18n="modalLabelName">Tu Nombre Completo</span></label>
+          <input type="text" id="leadName" required placeholder="Ej: Juan Pérez">
+        </div>
+
+        <div class="form-group">
+          <label for="leadPhone"><i class="fa-brands fa-whatsapp"></i> <span data-i18n="modalLabelPhone">Número de WhatsApp (con código de país)</span></label>
+          <input type="tel" id="leadPhone" required placeholder="Ej: +34 612 345 678 o +57 316 473 4660">
+        </div>
+
+        <div class="form-group">
+          <label for="leadEmail"><i class="fa-regular fa-envelope"></i> <span data-i18n="modalLabelEmail">Correo Electrónico (opcional)</span></label>
+          <input type="email" id="leadEmail" placeholder="Ej: contacto@minegocio.com">
+        </div>
+
+        <div class="form-group">
+          <label for="leadBusiness"><i class="fa-solid fa-store"></i> <span data-i18n="modalLabelBizName">Nombre de tu Negocio / Local</span></label>
+          <input type="text" id="leadBusiness" placeholder="Ej: Café Gourmet / Barbería Elite">
+        </div>
+
+        <div class="form-group">
+          <label for="leadBusinessType"><i class="fa-solid fa-tag"></i> <span data-i18n="modalLabelBizType">Tipo de Negocio</span></label>
+          <select id="leadBusinessType">
+            <option value="Cafetería / Restaurante">Cafetería / Restaurante</option>
+            <option value="Barbería / Salón de Belleza">Barbería / Salón de Belleza</option>
+            <option value="Tienda / Retail / Boutique">Tienda / Retail / Boutique</option>
+            <option value="Gimnasio / Fitness">Gimnasio / Fitness</option>
+            <option value="Servicios Profesionales">Servicios Profesionales</option>
+            <option value="Otro">Otro Negocio</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-whatsapp w-100 modal-submit-btn">
+          <i class="fa-brands fa-whatsapp"></i> <span data-i18n="modalBtnSubmit">Continuar a WhatsApp</span>
+        </button>
+
+        <div class="modal-email-alt">
+          <span data-i18n="modalOrEmail">O si prefieres, escríbenos directamente a:</span>
+          <a href="mailto:care@caretechservices.com">care@caretechservices.com</a>
+        </div>
+
+        <p class="modal-privacy" data-i18n="modalPrivacy">
+          🔒 Tus datos son confidenciales y solo se usan para la atención comercial.
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Binance Pay Checkout Modal -->
+  <div class="modal-overlay" id="binancePayModal">
+    <div class="modal-container binance-modal-container">
+      <button class="modal-close" onclick="closeBinancePayModal()">&times;</button>
+      
+      <!-- Step 1: Data Entry -->
+      <div id="binanceStepForm">
+        <div class="modal-header binance-modal-header">
+          <div class="binance-badge-icon">
+            <i class="fa-solid fa-coins"></i>
+          </div>
+          <h3 data-i18n="binanceModalTitle">Pago con Binance Pay</h3>
+          <p data-i18n="binanceModalSubtitle">Paga tu suscripción en USDT / Cripto con 0% de comisión y activación instantánea.</p>
+          <div class="construction-notice-banner">
+            <i class="fa-solid fa-screwdriver-wrench text-warning"></i>
+            <span><strong>Nota:</strong> Modo de prueba activo. Listo para recibir credenciales de producción.</span>
+          </div>
+        </div>
+
+        <div class="binance-order-summary">
+          <div class="summary-col">
+            <span class="summary-lbl" data-i18n="summaryPlan">Plan Seleccionado:</span>
+            <span class="summary-val" id="bpSelectedPlan">Plan Pro</span>
+          </div>
+          <div class="summary-col">
+            <span class="summary-lbl" data-i18n="summaryTotal">Total a Pagar:</span>
+            <span class="summary-val text-warning" id="bpOrderAmount">19.90 USDT</span>
+          </div>
+        </div>
+
+        <form id="binanceCheckoutForm" class="modal-form" onsubmit="processBinancePayOrder(event)">
+          <input type="hidden" id="bpPlanInput" value="Pro">
+          
+          <div class="form-group">
+            <label for="bpCustomerName"><i class="fa-regular fa-user"></i> <span data-i18n="modalLabelName">Nombre Completo</span></label>
+            <input type="text" id="bpCustomerName" required placeholder="Ej: Carlos Gómez">
+          </div>
+
+          <div class="form-group">
+            <label for="bpCustomerEmail"><i class="fa-regular fa-envelope"></i> <span data-i18n="bpLabelEmail">Correo Electrónico para Factura & Licencia</span></label>
+            <input type="email" id="bpCustomerEmail" required placeholder="Ej: carlos@minegocio.com">
+          </div>
+
+          <div class="form-group">
+            <label for="bpCustomerPhone"><i class="fa-brands fa-whatsapp"></i> <span data-i18n="bpLabelPhone">Teléfono / WhatsApp</span></label>
+            <input type="tel" id="bpCustomerPhone" placeholder="Ej: +57 300 123 4567">
+          </div>
+
+          <div class="form-group">
+            <label for="bpBusinessName"><i class="fa-solid fa-store"></i> <span data-i18n="modalLabelBizName">Nombre de tu Negocio</span></label>
+            <input type="text" id="bpBusinessName" placeholder="Ej: Café 1983">
+          </div>
+
+          <button type="submit" class="btn btn-binance w-100 modal-submit-btn" id="btnSubmitBinance">
+            <i class="fa-solid fa-qrcode"></i> <span data-i18n="btnGenerateBinanceQR">Generar Código de Pago Binance Pay</span>
+          </button>
+
+          <p class="modal-privacy">
+            ⚡ Procesamiento oficial mediante la red de Binance Pay.
+          </p>
+        </form>
+      </div>
+
+      <!-- Step 2: QR & Checkout Screen -->
+      <div id="binanceStepPayment" style="display: none;">
+        <div class="modal-header binance-modal-header">
+          <div class="binance-badge-icon">
+            <i class="fa-solid fa-qrcode"></i>
+          </div>
+          <h3 data-i18n="binanceScanTitle">Escanea con tu App de Binance</h3>
+          <p data-i18n="binanceScanSubtitle">Abre la app de Binance, pulsa en el icono de escanear y confirma el pago:</p>
+        </div>
+
+        <div class="binance-qr-card">
+          <div class="qr-container">
+            <img id="bpQrImage" src="" alt="Binance Pay QR Code" class="bp-qr-code">
+            <div class="qr-loader" id="bpQrLoader">
+              <i class="fa-solid fa-spinner fa-spin"></i>
+            </div>
+          </div>
+
+          <div class="bp-amount-box">
+            <span class="bp-amount-label" data-i18n="bpAmountToPay">Monto exacto:</span>
+            <span class="bp-amount-value" id="bpDisplayAmount">19.90 USDT</span>
+          </div>
+
+          <div class="bp-meta-info">
+            <div><span data-i18n="bpTradeNo">Orden ID:</span> <strong id="bpDisplayTradeNo">-</strong></div>
+            <div><span data-i18n="bpTimer">Tiempo restante:</span> <strong id="bpCountdown" class="text-warning">15:00</strong></div>
+          </div>
+
+          <div class="bp-status-box" id="bpStatusBox">
+            <span class="status-dot pulsing"></span>
+            <span id="bpStatusText" data-i18n="bpStatusWaiting">Esperando confirmación del pago en Binance...</span>
+          </div>
+
+          <div class="bp-action-buttons">
+            <a id="bpDirectPayBtn" href="#" target="_blank" class="btn btn-binance w-100">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> <span data-i18n="btnOpenBinanceApp">Abrir Binance Pay en Web / App</span>
+            </a>
+            <button class="btn btn-outline-light w-100 mt-2" onclick="checkBinanceOrderStatusManual()">
+              <i class="fa-solid fa-arrows-rotate"></i> <span data-i18n="btnCheckStatus">Ya realicé el pago, verificar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Success Screen -->
+      <div id="binanceStepSuccess" style="display: none;">
+        <div class="modal-header text-center">
+          <div class="success-icon-badge">
+            <i class="fa-solid fa-circle-check text-lime"></i>
+          </div>
+          <h3 class="text-lime" data-i18n="bpSuccessTitle">¡Pago Confirmado con Éxito!</h3>
+          <p data-i18n="bpSuccessDesc">Hemos recibido tu pago en Binance Pay. Tu cuenta y programa de fidelidad de Care Loyalty están listos para activarse.</p>
+        </div>
+
+        <div class="success-details-card">
+          <p><strong>Orden:</strong> <span id="bpSuccessTradeNo">-</span></p>
+          <p><strong>Plan:</strong> <span id="bpSuccessPlan">-</span></p>
+          <p>Te hemos enviado la confirmación y acceso a tu correo electrónico.</p>
+        </div>
+
+        <div class="success-ctas">
+          <a href="https://www.caretechapps.com/dashboard" target="_blank" class="btn btn-primary w-100">
+            <i class="fa-solid fa-arrow-right"></i> <span data-i18n="btnGoDashboard">Ir al Panel de Care Loyalty</span>
+          </a>
+          <button class="btn btn-whatsapp w-100 mt-2" onclick="openWhatsAppSuccessContact()">
+            <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btnNotifyWhatsApp">Notificar activación por WhatsApp</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PayPal Checkout Modal -->
+  <div class="modal-overlay" id="paypalModal">
+    <div class="modal-container paypal-modal-container">
+      <button class="modal-close" onclick="closePayPalModal()">&times;</button>
+      
+      <!-- Step 1: User Data & PayPal Button -->
+      <div id="paypalStepForm">
+        <div class="modal-header paypal-modal-header">
+          <div class="paypal-badge-icon">
+            <i class="fa-brands fa-paypal"></i>
+          </div>
+          <h3 data-i18n="paypalModalTitle">Pago Seguro con PayPal</h3>
+          <p data-i18n="paypalModalSubtitle">Activa tu plan de Care Loyalty con cualquier tarjeta o saldo PayPal.</p>
+          
+          <div class="paypal-credentials-banner" id="paypalCredentialsBanner" style="display: none;">
+            <i class="fa-solid fa-circle-info text-info"></i>
+            <div>
+              <strong>Modo Preparación / Sandbox Ready:</strong>
+              <span>Para recibir pagos en vivo o en sandbox oficial, configura tus credenciales obtenidas en <a href="https://www.paypal.com/mep/merchantapps/setup/checkout/apicredentials" target="_blank" rel="noopener">PayPal API Credentials</a> en el archivo <code>.env</code>.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="paypal-order-summary">
+          <div class="summary-col">
+            <span class="summary-lbl" data-i18n="summaryPlan">Plan Seleccionado:</span>
+            <span class="summary-val text-paypal" id="ppSelectedPlan">Plan Pro</span>
+          </div>
+          <div class="summary-col">
+            <span class="summary-lbl" data-i18n="summaryTotal">Total a Pagar:</span>
+            <span class="summary-val text-white" id="ppOrderAmount">$19.90 USD</span>
+          </div>
+        </div>
+
+        <form id="paypalCheckoutForm" class="modal-form" onsubmit="handlePayPalFormSubmit(event)">
+          <input type="hidden" id="ppPlanInput" value="Pro">
+          
+          <div class="form-group">
+            <label for="ppCustomerName"><i class="fa-regular fa-user"></i> <span data-i18n="modalLabelName">Nombre Completo</span></label>
+            <input type="text" id="ppCustomerName" required placeholder="Ej: Carlos Gómez">
+          </div>
+
+          <div class="form-group">
+            <label for="ppCustomerEmail"><i class="fa-regular fa-envelope"></i> <span data-i18n="bpLabelEmail">Correo Electrónico para Factura & Licencia</span></label>
+            <input type="email" id="ppCustomerEmail" required placeholder="Ej: carlos@minegocio.com">
+          </div>
+
+          <div class="form-group">
+            <label for="ppCustomerPhone"><i class="fa-brands fa-whatsapp"></i> <span data-i18n="bpLabelPhone">Teléfono / WhatsApp</span></label>
+            <input type="tel" id="ppCustomerPhone" placeholder="Ej: +57 300 123 4567">
+          </div>
+
+          <div class="form-group">
+            <label for="ppBusinessName"><i class="fa-solid fa-store"></i> <span data-i18n="modalLabelBizName">Nombre de tu Negocio</span></label>
+            <input type="text" id="ppBusinessName" placeholder="Ej: Café 1983">
+          </div>
+
+          <!-- PayPal Smart Buttons Container (Rendered dynamically when Client ID exists) -->
+          <div id="paypal-button-container" class="paypal-buttons-wrap"></div>
+
+          <!-- Fallback Button for Demo / Direct Mode when no Client ID is yet configured -->
+          <div id="paypalFallbackCta" style="display: none;">
+            <button type="submit" class="btn btn-paypal w-100 modal-submit-btn" id="btnSubmitPayPal">
+              <i class="fa-brands fa-paypal"></i> <span data-i18n="btnProceedToPayPal">Continuar a Pago con PayPal</span>
+            </button>
+          </div>
+
+          <div class="paypal-cards-accepted">
+            <span><i class="fa-brands fa-cc-visa"></i> Visa</span>
+            <span><i class="fa-brands fa-cc-mastercard"></i> Mastercard</span>
+            <span><i class="fa-brands fa-cc-amex"></i> Amex</span>
+            <span><i class="fa-solid fa-shield-halved"></i> 256-bit SSL</span>
+          </div>
+
+          <p class="modal-privacy">
+            🔒 Procesamiento oficial, cifrado y protegido por PayPal Inc.
+          </p>
+        </form>
+      </div>
+
+      <!-- Step 2: Success Screen -->
+      <div id="paypalStepSuccess" style="display: none;">
+        <div class="modal-header text-center">
+          <div class="success-icon-badge">
+            <i class="fa-solid fa-circle-check text-lime"></i>
+          </div>
+          <h3 class="text-lime" data-i18n="paypalSuccessTitle">¡Pago con PayPal Exitoso!</h3>
+          <p data-i18n="paypalSuccessDesc">Hemos confirmado tu pago mediante PayPal. Tu plan de Care Loyalty ha sido activado.</p>
+        </div>
+
+        <div class="success-details-card">
+          <p><strong>Orden ID:</strong> <span id="ppSuccessTradeNo">-</span></p>
+          <p><strong>Plan Activado:</strong> <span id="ppSuccessPlan">-</span></p>
+          <p><strong>ID Transacción PayPal:</strong> <span id="ppSuccessCaptureId">-</span></p>
+          <p>Te hemos enviado la confirmación y acceso a tu correo electrónico.</p>
+        </div>
+
+        <div class="success-ctas">
+          <a href="https://www.caretechapps.com/dashboard" target="_blank" class="btn btn-primary w-100">
+            <i class="fa-solid fa-arrow-right"></i> <span data-i18n="btnGoDashboard">Ir al Panel de Care Loyalty</span>
+          </a>
+          <button class="btn btn-whatsapp w-100 mt-2" onclick="openWhatsAppPayPalSuccessContact()">
+            <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btnNotifyWhatsApp">Notificar activación por WhatsApp</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=3.0"></script>
+</body>
+</html>

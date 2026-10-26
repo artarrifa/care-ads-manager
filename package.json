@@ -1,0 +1,25 @@
+{
+  "name": "care-loyalty-webapp",
+  "version": "1.0.0",
+  "description": "Landing Page y Web App para promocionar Care Loyalty con integración de WhatsApp y despliegue en Hostinger",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "loyalty",
+    "fidelidad",
+    "apple-wallet",
+    "google-wallet",
+    "hostinger",
+    "nodejs",
+    "whatsapp"
+  ],
+  "author": "Care Loyalty Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "dotenv": "^16.4.5"
+  }
+}

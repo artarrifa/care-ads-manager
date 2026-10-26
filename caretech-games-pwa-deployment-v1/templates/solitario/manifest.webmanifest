@@ -1,0 +1,40 @@
+{
+  "name": "Solitario Care - CareTech Games",
+  "short_name": "Solitario Care",
+  "description": "Juego de Solitario Klondike accesible para la estimulación cognitiva y relajación. Diseñado por CareTech Services.",
+  "start_url": "/games/solitario/",
+  "scope": "/games/solitario/",
+  "display": "standalone",
+  "background_color": "#081325",
+  "theme_color": "#081325",
+  "orientation": "any",
+  "lang": "es",
+  "dir": "ltr",
+  "categories": ["games", "entertainment", "health"],
+  "icons": [
+    {
+      "src": "/games/solitario/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/games/solitario/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/games/solitario/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/games/solitario/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

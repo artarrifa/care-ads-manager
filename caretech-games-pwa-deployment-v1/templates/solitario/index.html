@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Solitario Care | CareTech Games</title>
+  <meta name="description" content="Solitario Klondike accesible, estimulación cognitiva con línea visual Care, SOS de emergencia y soporte offline 100% PWA.">
+  <meta name="theme-color" content="#0d5c2e">
+
+  <!-- PWA Manifest & Mobile Tags -->
+  <link rel="manifest" href="/games/solitario/manifest.webmanifest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Solitario Care">
+  <link rel="apple-touch-icon" href="/games/solitario/icons/icon-192.svg">
+  <link rel="icon" type="image/svg+xml" href="/games/solitario/icons/icon-192.svg">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="care-ui.css?v=1.2.0">
+  <link rel="stylesheet" href="solitaire.css?v=1.2.0">
+</head>
+<body class="theme-care-green deck-blue">
+
+  <div id="game-app">
+    <!-- 1. SAFE AREA & BARRA SOS (ARRIBA DEL BANNER PUBLICITARIO TOP) -->
+    <header class="care-sos-bar" id="care-sos-bar">
+      <div class="care-sos-label-group">
+        <span class="care-sos-badge"><i class="fa-solid fa-triangle-exclamation"></i> SOS</span>
+        <span class="care-sos-title">Asistencia y Alertas</span>
+      </div>
+      <div class="care-sos-actions">
+        <button type="button" class="care-sos-btn care-sos-btn-main" id="care-sos-main-btn" title="Llamada de Emergencia / Opciones">
+          <i class="fa-solid fa-phone"></i> SOS
+        </button>
+        <button type="button" class="care-sos-btn care-sos-btn-sms" id="care-sos-sms-btn" title="Enviar Alerta por SMS con Ubicación">
+          <i class="fa-solid fa-comment-sms"></i> SMS
+        </button>
+        <button type="button" class="care-sos-btn care-sos-btn-wa" id="care-sos-wa-btn" title="Enviar Alerta por WhatsApp con Ubicación">
+          <i class="fa-brands fa-whatsapp"></i> WhatsApp
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. BANNER PUBLICIDAD TOP (ARRIBA DE LAS ESTADÍSTICAS) -->
+    <div id="top-ad-banner" class="ad-banner top-ad-banner">
+      <span class="ad-badge">Anuncio</span>
+      <div class="ad-content-link" id="top-ad-container">
+        <div class="ad-icon" id="top-ad-icon"><i class="fa-solid fa-wallet"></i></div>
+        <div style="flex-grow: 1; overflow: hidden;">
+          <span class="ad-headline" id="top-ad-headline">Care Loyalty</span>
+          <span class="ad-subtext" id="top-ad-subtext">Fidelidad digital en Apple & Google Wallet sin apps.</span>
+        </div>
+        <div class="live-banner-actions" id="top-ad-actions">
+          <a href="https://caretechservices.com/loyalty/" target="_blank" rel="noopener" class="live-btn live-btn-web" id="top-ad-web-btn"><i class="fa-solid fa-globe"></i> Web</a>
+          <a href="https://caretechservices.com/donar/" target="_blank" rel="noopener" class="live-btn live-btn-donate" id="top-ad-donate-btn"><i class="fa-solid fa-heart"></i></a>
+          <a href="https://caretechservices.com/tienda/" target="_blank" rel="noopener" class="live-btn live-btn-shop" id="top-ad-shop-btn"><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+      </div>
+      <button class="ad-close-btn" onclick="document.getElementById('top-ad-banner').style.display='none'" title="Ocultar anuncio">&times;</button>
+    </div>
+
+    <!-- 3. MARCA Y BARRA DE ESTADÍSTICAS (PUNTOS, TIEMPO, MOVIMIENTOS) -->
+    <div class="top-stats-bar">
+      <div class="stat-box">
+        <span class="stat-label">Puntos:</span>
+        <span class="stat-value" id="score-val">0</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">Tiempo:</span>
+        <span class="stat-value" id="timer-val">0:00</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">Movim.:</span>
+        <span class="stat-value" id="moves-val">0</span>
+      </div>
+    </div>
+
+    <!-- 4. TABLERO DE SOLITARIO (Fundaciones a la izquierda + Mazo/Descarte a la derecha) -->
+    <main class="solitaire-table">
+      <!-- Fila Superior: 4 Fundaciones [A][A][A][A] a la izquierda + Descarte y Mazo a la derecha -->
+      <div class="top-row">
+        <!-- 4 Fundaciones a la Izquierda -->
+        <div class="foundations-group">
+          <div id="foundation-0" class="card-slot foundation-slot" data-suit-icon="♥" title="Fundación Corazones"></div>
+          <div id="foundation-1" class="card-slot foundation-slot" data-suit-icon="♦" title="Fundación Diamantes"></div>
+          <div id="foundation-2" class="card-slot foundation-slot" data-suit-icon="♣" title="Fundación Tréboles"></div>
+          <div id="foundation-3" class="card-slot foundation-slot" data-suit-icon="♠" title="Fundación Picas"></div>
+        </div>
+
+        <!-- Mazo y Descarte a la Derecha -->
+        <div class="stock-waste-group">
+          <div id="waste-slot" class="card-slot waste-slot" title="Carta jugable"></div>
+          <div id="stock-slot" class="card-slot stock-slot" title="Robar carta del mazo"></div>
+        </div>
+      </div>
+
+      <!-- 7 Columnas del Tablero (Tableau) -->
+      <div class="tableau-row">
+        <div id="tableau-0" class="tableau-col"></div>
+        <div id="tableau-1" class="tableau-col"></div>
+        <div id="tableau-2" class="tableau-col"></div>
+        <div id="tableau-3" class="tableau-col"></div>
+        <div id="tableau-4" class="tableau-col"></div>
+        <div id="tableau-5" class="tableau-col"></div>
+        <div id="tableau-6" class="tableau-col"></div>
+      </div>
+    </main>
+
+    <!-- 5. BANNER PUBLICIDAD BOTTOM (DEBAJO DEL TABLERO, ARRIBA DEL DOCK) -->
+    <div id="bottom-ad-banner" class="ad-banner bottom-ad-banner">
+      <span class="ad-badge">Patrocinado</span>
+      <div class="ad-content-link" id="bottom-ad-container">
+        <div class="ad-icon" id="bottom-ad-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-heart-pulse"></i></div>
+        <div style="flex-grow: 1; overflow: hidden;">
+          <span class="ad-headline" id="bottom-ad-headline">CareTech Services</span>
+          <span class="ad-subtext" id="bottom-ad-subtext">Soluciones de software médico, teleasistencia y salud digital.</span>
+        </div>
+        <div class="live-banner-actions" id="bottom-ad-actions">
+          <a href="https://caretechservices.com" target="_blank" rel="noopener" class="live-btn live-btn-web" id="bottom-ad-web-btn"><i class="fa-solid fa-globe"></i> Web</a>
+          <a href="https://caretechservices.com/donar/" target="_blank" rel="noopener" class="live-btn live-btn-donate" id="bottom-ad-donate-btn"><i class="fa-solid fa-heart"></i></a>
+          <a href="https://caretechservices.com/tienda/" target="_blank" rel="noopener" class="live-btn live-btn-shop" id="bottom-ad-shop-btn"><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+      </div>
+      <button class="ad-close-btn" onclick="document.getElementById('bottom-ad-banner').style.display='none'" title="Ocultar anuncio">&times;</button>
+    </div>
+
+    <!-- 6. DOCK INFERIOR DE ACCIONES (Ajustes, Partidas, Jugar, Pista, Deshacer) -->
+    <nav class="bottom-nav-menu">
+      <button class="nav-btn" id="nav-settings-btn" title="Ajustes y Personalización" onclick="window.Solitaire && window.Solitaire.showSettingsModal ? window.Solitaire.showSettingsModal() : document.getElementById('settings-modal').classList.add('active')">
+        <i class="fa-solid fa-gear nav-icon"></i>
+        <span class="nav-label">Ajustes</span>
+      </button>
+
+      <button class="nav-btn" id="nav-stats-btn" title="Estadísticas de Partidas" onclick="window.Solitaire && window.Solitaire.showStatsModal ? window.Solitaire.showStatsModal() : document.getElementById('stats-modal').classList.add('active')">
+        <i class="fa-solid fa-trophy nav-icon" style="color: #facc15;"></i>
+        <span class="nav-badge-pill">1</span>
+        <span class="nav-label">Partidas</span>
+      </button>
+
+      <button class="nav-btn primary" id="nav-newgame-btn" title="Nueva Partida" onclick="window.Solitaire && window.Solitaire.startNewGame && window.Solitaire.startNewGame()">
+        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="#38bdf8"><path d="M4 3h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm13 4h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-1h9a2 2 0 0 0 2-2V7z"/></svg>
+        <span class="nav-label" style="color: #38bdf8; font-weight: 800;">Jugar</span>
+      </button>
+
+      <button class="nav-btn" id="nav-hint-btn" title="Pedir Pista" onclick="window.Solitaire && window.Solitaire.findHint && window.Solitaire.findHint()">
+        <i class="fa-solid fa-lightbulb nav-icon" style="color: #fde047;"></i>
+        <span class="nav-label">Pista</span>
+      </button>
+
+      <button class="nav-btn" id="nav-undo-btn" disabled title="Deshacer Movimiento" onclick="window.Solitaire && window.Solitaire.undo && window.Solitaire.undo()">
+        <i class="fa-solid fa-arrow-rotate-left nav-icon"></i>
+        <span class="nav-label">Deshacer</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Modal de SOS y Opciones de Emergencia -->
+  <div id="care-sos-modal" class="care-sos-modal">
+    <div class="care-sos-modal-content">
+      <div class="modal-header">
+        <h3 style="font-size: 1.25rem; font-weight: 800; color: #ef4444; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-triangle-exclamation"></i> Asistencia SOS
+        </h3>
+        <button onclick="document.getElementById('care-sos-modal').classList.remove('active')" class="modal-close">&times;</button>
+      </div>
+      <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 12px;">
+        Selecciona cómo deseas comunicarte. Al pulsar, se solicitará tu ubicación para enviarla en el mensaje:
+      </p>
+
+      <div class="care-sos-options-grid">
+        <div class="care-sos-option-card" onclick="CarePlatform.handleSosAction('call')">
+          <div style="font-size: 1.8rem; color: #ef4444; margin-bottom: 4px;"><i class="fa-solid fa-phone-volume"></i></div>
+          <strong style="display: block; font-size: 0.9rem;">Llamada Directa</strong>
+          <span style="font-size: 0.72rem; color: #94a3b8;">Línea de Emergencia</span>
+        </div>
+        <div class="care-sos-option-card" onclick="CarePlatform.handleSosAction('wa')">
+          <div style="font-size: 1.8rem; color: #22c55e; margin-bottom: 4px;"><i class="fa-brands fa-whatsapp"></i></div>
+          <strong style="display: block; font-size: 0.9rem;">WhatsApp</strong>
+          <span style="font-size: 0.72rem; color: #94a3b8;">Con mapa GPS</span>
+        </div>
+      </div>
+
+      <button onclick="CarePlatform.handleSosAction('sms')" style="width: 100%; background: #2563eb; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px;">
+        <i class="fa-solid fa-comment-sms"></i> Enviar Mensaje SMS con Ubicación
+      </button>
+
+      <button onclick="document.getElementById('care-sos-modal').classList.remove('active')" style="width: 100%; background: rgba(255,255,255,0.1); color: #cbd5e1; border: none; padding: 8px; border-radius: 8px; font-weight: 600; cursor: pointer;">
+        Cancelar
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal de Ajustes y Personalización -->
+  <div id="settings-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="font-size: 1.25rem; font-weight: 700;"><i class="fa-solid fa-gear"></i> Ajustes y Personalización</h3>
+        <button id="close-settings" class="modal-close">&times;</button>
+      </div>
+
+      <div class="setting-section-title"><i class="fa-solid fa-palette"></i> Tema Care (Línea Visual)</div>
+      <div class="swatch-grid" id="bg-swatches">
+        <div class="swatch-item active" data-theme="theme-care-green">
+          <div class="swatch-preview bg-swatch-green"></div>
+          <span class="swatch-label">Care Green (Default)</span>
+        </div>
+        <div class="swatch-item" data-theme="theme-care-blue">
+          <div class="swatch-preview bg-swatch-dark"></div>
+          <span class="swatch-label">Care Blue</span>
+        </div>
+        <div class="swatch-item" data-theme="theme-wood">
+          <div class="swatch-preview bg-swatch-wood"></div>
+          <span class="swatch-label">Caoba</span>
+        </div>
+        <div class="swatch-item" data-theme="theme-royal-purple">
+          <div class="swatch-preview bg-swatch-purple"></div>
+          <span class="swatch-label">Púrpura</span>
+        </div>
+        <div class="swatch-item" data-theme="theme-high-contrast">
+          <div class="swatch-preview bg-swatch-contrast"></div>
+          <span class="swatch-label">Alto Contraste</span>
+        </div>
+      </div>
+
+      <div class="setting-section-title"><i class="fa-solid fa-layer-group"></i> Reverso de Cartas (Mazo)</div>
+      <div class="swatch-grid" id="deck-swatches">
+        <div class="swatch-item active" data-deck="deck-blue">
+          <div class="swatch-preview deck-swatch-blue"></div>
+          <span class="swatch-label">Azul Clásico</span>
+        </div>
+        <div class="swatch-item" data-deck="deck-red">
+          <div class="swatch-preview deck-swatch-red"></div>
+          <span class="swatch-label">Rojo Imperial</span>
+        </div>
+        <div class="swatch-item" data-deck="deck-emerald">
+          <div class="swatch-preview deck-swatch-emerald"></div>
+          <span class="swatch-label">Esmeralda</span>
+        </div>
+        <div class="swatch-item" data-deck="deck-dark">
+          <div class="swatch-preview deck-swatch-dark"></div>
+          <span class="swatch-label">Cyber Black</span>
+        </div>
+        <div class="swatch-item" data-deck="deck-gold">
+          <div class="swatch-preview deck-swatch-gold"></div>
+          <span class="swatch-label">Dorado Vintage</span>
+        </div>
+      </div>
+
+      <div class="setting-section-title"><i class="fa-solid fa-sliders"></i> Reglas de Partida</div>
+      <div class="setting-row">
+        <div>
+          <strong style="display: block; font-size: 0.95rem;">Modo de Robo</strong>
+          <span style="font-size: 0.8rem; color: #94a3b8;">Cartas extraídas del montón</span>
+        </div>
+        <select id="draw-mode-select" class="setting-select">
+          <option value="1">1 Carta (Fácil / Senior)</option>
+          <option value="3">3 Cartas (Clásico)</option>
+        </select>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <strong style="display: block; font-size: 0.95rem;">Efectos de Sonido</strong>
+          <span style="font-size: 0.8rem; color: #94a3b8;">Sintetizador Web Audio</span>
+        </div>
+        <select id="sound-select" class="setting-select">
+          <option value="on">Activado</option>
+          <option value="off">Silencio</option>
+        </select>
+      </div>
+
+      <div class="setting-section-title"><i class="fa-solid fa-triangle-exclamation"></i> Configuración SOS</div>
+      <div class="setting-row">
+        <div>
+          <strong style="display: block; font-size: 0.9rem;">WhatsApp Contacto</strong>
+          <span style="font-size: 0.75rem; color: #94a3b8;">Ej: 573001234567</span>
+        </div>
+        <input type="tel" id="sos-wa-input" class="setting-select" placeholder="573001234567" style="width: 130px;" onchange="localStorage.setItem('care_sos_wa_number', this.value)">
+      </div>
+
+      <div style="margin-top: 14px; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px;">
+        <a href="/games/publicidad/" target="_blank" style="color: var(--accent-cyan); font-size: 0.88rem; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+          <i class="fa-solid fa-bullhorn"></i> Anuncia tu marca en este juego
+        </a>
+      </div>
+
+      <div style="margin-top: 14px; text-align: center;">
+        <button id="pwa-install-btn" class="nav-btn" style="background:#2563eb; color:#fff; width:100%; padding:10px; border-radius:8px; display:none;">
+          <i class="fa-solid fa-download"></i> Instalar como App en este dispositivo
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Estadísticas (Partidas) -->
+  <div id="stats-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="font-size: 1.25rem; font-weight: 700;"><i class="fa-solid fa-trophy" style="color: #facc15;"></i> Estadísticas de Partidas</h3>
+        <button id="close-stats" class="modal-close">&times;</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0;">
+        <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 10px; text-align: center;">
+          <span style="font-size: 0.78rem; color: #94a3b8;">Partidas Jugadas</span>
+          <strong id="stat-total-games" style="font-size: 1.4rem; display: block; color: #fff;">0</strong>
+        </div>
+        <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 10px; text-align: center;">
+          <span style="font-size: 0.78rem; color: #94a3b8;">Partidas Ganadas</span>
+          <strong id="stat-won-games" style="font-size: 1.4rem; display: block; color: #34d399;">0</strong>
+        </div>
+        <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 10px; text-align: center;">
+          <span style="font-size: 0.78rem; color: #94a3b8;">% de Victorias</span>
+          <strong id="stat-win-rate" style="font-size: 1.4rem; display: block; color: #60a5fa;">0%</strong>
+        </div>
+        <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 10px; text-align: center;">
+          <span style="font-size: 0.78rem; color: #94a3b8;">Mejor Puntuación</span>
+          <strong id="stat-best-score" style="font-size: 1.4rem; display: block; color: #fbbf24;">0</strong>
+        </div>
+      </div>
+
+      <button onclick="document.getElementById('stats-modal').classList.remove('active')" style="width: 100%; background: #2563eb; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer;">
+        Cerrar
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal de Victoria -->
+  <div id="victory-modal" class="victory-modal">
+    <div class="victory-card">
+      <div style="font-size: 3.5rem; color: #facc15; margin-bottom: 8px;">🏆</div>
+      <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 6px;">¡Felicitaciones!</h2>
+      <p style="color: #94a3b8; font-size: 0.95rem;">Has completado el Solitario con éxito.</p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 18px 0;">
+        <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+          <span style="font-size: 0.75rem; color: #94a3b8; display: block;">Tiempo</span>
+          <strong id="vic-time" style="font-size: 1.2rem; color: #60a5fa;">0:00</strong>
+        </div>
+        <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+          <span style="font-size: 0.75rem; color: #94a3b8; display: block;">Movimientos</span>
+          <strong id="vic-moves" style="font-size: 1.2rem; color: #34d399;">0</strong>
+        </div>
+      </div>
+
+      <button id="victory-restart" style="width: 100%; background: #2563eb; color: #fff; border: none; padding: 12px; border-radius: 9999px; font-weight: 800; font-size: 1rem; cursor: pointer;">
+        <i class="fa-solid fa-play"></i> Jugar Otra Partida
+      </button>
+    </div>
+  </div>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Scripts: CarePlatform -> ServiceWorker Registration -> Solitario Game Engine -->
+  <script src="care-platform.js?v=1.2.0"></script>
+  <script src="register-pwa.js?v=1.2.0"></script>
+  <script src="solitaire.js?v=1.2.0"></script>
+  <script>
+    if (window.CarePlatform) {
+      window.CarePlatform.init({ gameId: 'solitario' });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>CareTech Games | Juegos Accesibles y Estimulación Cognitiva</title>
+  <meta name="description" content="Portal oficial de juegos de CareTech Services. Juegos accesibles, sin distracciones, diseñados para la agilidad mental, relajación y bienestar cognitivo.">
+  <meta name="theme-color" content="#081325">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="CareTech Games - Estimulación Cognitiva y Entretenimiento Accesible">
+  <meta property="og:description" content="Juega gratis a Solitario Care y más juegos diseñados para todas las edades. Funciona offline y sin descargas pesadas.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://caretechservices.com/games/">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-dark: #081325;
+      --bg-card: #0d1f3d;
+      --bg-card-hover: #132b52;
+      --bg-glass: rgba(13, 31, 61, 0.75);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --border-hover: rgba(59, 130, 246, 0.4);
+      --primary: #2563eb;
+      --primary-light: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --shadow-glow: 0 10px 30px -10px rgba(37, 99, 235, 0.35);
+      --shadow-card: 0 12px 32px rgba(0, 0, 0, 0.3);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Ambient Background Glows */
+    .ambient-glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.25;
+    }
+    .glow-1 { top: -10%; left: 10%; width: 500px; height: 500px; background: #2563eb; }
+    .glow-2 { top: 40%; right: -5%; width: 600px; height: 600px; background: #06b6d4; }
+    .glow-3 { bottom: 10%; left: -5%; width: 450px; height: 450px; background: #10b981; }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      background: rgba(8, 19, 37, 0.9);
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.85rem;
+      padding: 8px 0;
+      position: relative;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .top-bar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .top-bar-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+    .top-bar-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .top-bar-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .top-bar-links a:hover {
+      color: var(--text-main);
+    }
+
+    /* Header */
+    .site-header {
+      padding: 18px 0;
+      background: var(--bg-glass);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+    .logo-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+    }
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .logo-title {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+    .logo-title span {
+      color: var(--accent-cyan);
+    }
+    .logo-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-item {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      transition: var(--transition);
+    }
+    .nav-item:hover, .nav-item.active {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 26px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #1d4ed8);
+      color: #fff;
+      box-shadow: var(--shadow-glow);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(37, 99, 235, 0.5);
+    }
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent-emerald), #059669);
+      color: #fff;
+      box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.4);
+    }
+    .btn-accent:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(16, 185, 129, 0.5);
+    }
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 60px 0 40px;
+      text-align: center;
+    }
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      background: rgba(37, 99, 235, 0.15);
+      border: 1px solid rgba(37, 99, 235, 0.3);
+      color: var(--accent-cyan);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .hero-title {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      max-width: 860px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, #60a5fa, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 30px;
+    }
+
+    /* Featured Game Banner */
+    .featured-section {
+      margin: 20px 0 60px;
+    }
+    .featured-card {
+      background: linear-gradient(145deg, #0d1f3d, #10264b);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-card), 0 0 50px -15px rgba(37, 99, 235, 0.25);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .featured-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent-cyan), var(--accent-emerald));
+    }
+    .featured-content {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .badge-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      width: fit-content;
+    }
+    .badge-live .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .featured-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .featured-desc {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+    .featured-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 0;
+    }
+    .tag {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-color);
+      color: #cbd5e1;
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tag i {
+      color: var(--accent-cyan);
+    }
+    .featured-actions {
+      display: flex;
+      gap: 14px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Solitaire Interactive Preview / Hero Graphic */
+    .game-preview-box {
+      background: radial-gradient(circle at center, #1b3a6b 0%, #0c1a33 100%);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 320px;
+      box-shadow: inset 0 2px 20px rgba(0, 0, 0, 0.4);
+    }
+    .cards-stack-visual {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 20px;
+      perspective: 800px;
+    }
+    .card-mock {
+      width: 70px;
+      height: 100px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 6px 8px;
+      font-weight: 800;
+      font-size: 1rem;
+      transform: rotate(-6deg);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .card-mock.red { color: #dc2626; }
+    .card-mock.black { color: #1e293b; }
+    .card-mock:nth-child(2) { transform: rotate(2deg) translateY(-10px); z-index: 2; }
+    .card-mock:nth-child(3) { transform: rotate(10deg); z-index: 3; }
+    .card-mock:hover {
+      transform: translateY(-15px) scale(1.08) rotate(0deg);
+      box-shadow: 0 15px 30px rgba(37, 99, 235, 0.5);
+    }
+    .card-center-icon {
+      font-size: 1.6rem;
+      text-align: center;
+    }
+    .preview-info-strip {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      color: #93c5fd;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Categories & Games Grid */
+    .section-title-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 24px;
+    }
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .game-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .game-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-hover);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+    }
+    .game-card-thumb {
+      height: 170px;
+      background: linear-gradient(135deg, #132b52, #0d1f3d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .game-thumb-icon {
+      font-size: 3.5rem;
+      color: #60a5fa;
+      transition: var(--transition);
+    }
+    .game-card:hover .game-thumb-icon {
+      transform: scale(1.15) rotate(5deg);
+    }
+    .card-status-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .status-ready {
+      background: var(--accent-emerald);
+      color: #ffffff;
+    }
+    .status-soon {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--accent-amber);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+    .game-card-body {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 12px;
+    }
+    .game-card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .game-card-text {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      flex-grow: 1;
+    }
+    .game-card-footer {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Benefits Feature Strip */
+    .benefits-section {
+      background: linear-gradient(180deg, rgba(13, 31, 61, 0.6) 0%, rgba(8, 19, 37, 0.9) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 48px 36px;
+      margin-bottom: 60px;
+    }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 30px;
+      margin-top: 36px;
+    }
+    .benefit-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .benefit-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(37, 99, 235, 0.15);
+      border: 1px solid rgba(37, 99, 235, 0.3);
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .benefit-text h4 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .benefit-text p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    /* PWA Install Guide Section */
+    .pwa-guide {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      margin-bottom: 60px;
+    }
+    .pwa-steps {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .pwa-step-card {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+    .pwa-step-card h5 {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      color: #93c5fd;
+    }
+    .pwa-step-card ol {
+      margin-left: 20px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+    .pwa-step-card ol li {
+      margin-bottom: 6px;
+    }
+
+    /* Footer */
+    .site-footer {
+      background: #040914;
+      border-top: 1px solid var(--border-color);
+      padding: 40px 0 24px;
+      margin-top: auto;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .footer-bottom {
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.8rem;
+    }
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .footer-links a:hover {
+      color: var(--text-main);
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 860px) {
+      .featured-card {
+        grid-template-columns: 1fr;
+        padding: 28px 20px;
+      }
+      .hero-title {
+        font-size: 2.1rem;
+      }
+      .pwa-steps {
+        grid-template-columns: 1fr;
+      }
+      .header-nav {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient background lighting -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- Top Announcement & Quick Links -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-bar-badge">
+        <i class="fa-solid fa-brain"></i>
+        <span>CareTech Games &bull; Entretenimiento y Bienestar Mental</span>
+      </div>
+      <div class="top-bar-links">
+        <a href="https://caretechservices.com" target="_blank" rel="noopener">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> CareTech Principal
+        </a>
+        <a href="https://caretechservices.com/loyalty/" target="_blank" rel="noopener">
+          <i class="fa-solid fa-wallet"></i> Care Loyalty
+        </a>
+        <a href="mailto:care@caretechservices.com">
+          <i class="fa-regular fa-envelope"></i> Soporte
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/games/" class="brand-logo">
+        <div class="logo-badge">
+          <i class="fa-solid fa-gamepad"></i>
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">CARE<span>GAMES</span></span>
+          <span class="logo-sub">CareTech Services</span>
+        </div>
+      </a>
+
+      <nav class="header-nav">
+        <a href="/games/" class="nav-item active">Inicio</a>
+        <a href="/games/solitario/" class="nav-item">Solitario Care</a>
+        <a href="#beneficios" class="nav-item">Beneficios</a>
+        <a href="#instalacion" class="nav-item">Instalar PWA</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="/games/solitario/" class="btn btn-primary">
+          <i class="fa-solid fa-play"></i> Jugar Ahora
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="container">
+    <section class="hero">
+      <div class="hero-pill">
+        <i class="fa-solid fa-sparkles"></i> Estimulación Cognitiva Accesible &bull; 100% Gratis
+      </div>
+      <h1 class="hero-title">
+        Juegos diseñados para entrenar tu mente, <span>relajarte y disfrutar</span>.
+      </h1>
+      <p class="hero-desc">
+        Sin descargas pesadas, sin anuncios molestos y totalmente optimizados para jugar en móvil, tableta o computadora. Funciona incluso sin internet.
+      </p>
+    </section>
+
+    <!-- Featured Game: Solitario Care PWA -->
+    <section class="featured-section">
+      <div class="featured-card">
+        <div class="featured-content">
+          <div class="badge-live">
+            <span class="pulse-dot"></span> Disponible Ahora &bull; PWA
+          </div>
+          <h2 class="featured-title">Solitario Care</h2>
+          <p class="featured-desc">
+            El clásico solitario Klondike reinventado con diseño accesible: cartas grandes de alta legibilidad, pistas inteligentes, deshacer ilimitado, modos de 1 y 3 cartas, y funcionamiento offline total.
+          </p>
+
+          <div class="featured-tags">
+            <span class="tag"><i class="fa-solid fa-eye"></i> Cartas Grandes Senior</span>
+            <span class="tag"><i class="fa-solid fa-wifi"></i> 100% Offline (PWA)</span>
+            <span class="tag"><i class="fa-solid fa-bolt"></i> Carga Ultrarrápida</span>
+            <span class="tag"><i class="fa-solid fa-shield-halved"></i> Sin Rastreo Invasivo</span>
+          </div>
+
+          <div class="featured-actions">
+            <a href="/games/solitario/" class="btn btn-accent" style="font-size: 1.05rem; padding: 14px 32px;">
+              <i class="fa-solid fa-play"></i> Jugar Solitario Care
+            </a>
+            <a href="#instalacion" class="btn btn-outline">
+              <i class="fa-solid fa-mobile-screen"></i> Cómo Instalar en Móvil
+            </a>
+          </div>
+        </div>
+
+        <div class="game-preview-box">
+          <div class="cards-stack-visual">
+            <div class="card-mock red">
+              <div>A ♥</div>
+              <div class="card-center-icon">♥</div>
+              <div style="transform: rotate(180deg)">A ♥</div>
+            </div>
+            <div class="card-mock black">
+              <div>K ♠</div>
+              <div class="card-center-icon">♠</div>
+              <div style="transform: rotate(180deg)">K ♠</div>
+            </div>
+            <div class="card-mock red">
+              <div>Q ♦</div>
+              <div class="card-center-icon">♦</div>
+              <div style="transform: rotate(180deg)">Q ♦</div>
+            </div>
+          </div>
+          <div class="preview-info-strip">
+            <span><i class="fa-solid fa-award"></i> Modo Clásico Klondike</span>
+            <span>&bull;</span>
+            <span><i class="fa-solid fa-trophy"></i> Guardado Automático</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Games Catalog Grid -->
+    <section>
+      <div class="section-title-wrap">
+        <div>
+          <h3 class="section-title">Catálogo de Juegos CareTech</h3>
+          <p class="section-subtitle">Explora nuestra colección de títulos de bienestar mental y entretenimiento.</p>
+        </div>
+      </div>
+
+      <div class="games-grid">
+        <!-- Game 1: Solitario Care (Active) -->
+        <div class="game-card">
+          <div class="game-card-thumb" style="background: radial-gradient(circle, #1e3a8a, #0d1f3d);">
+            <i class="fa-solid fa-clover game-thumb-icon" style="color: #60a5fa;"></i>
+            <span class="card-status-badge status-ready">Jugable</span>
+          </div>
+          <div class="game-card-body">
+            <h4 class="game-card-title">Solitario Care</h4>
+            <p class="game-card-text">
+              Organiza los cuatro palos en orden ascendente del As al Rey. Modo relajado o por tiempo, optimizado con accesibilidad visual.
+            </p>
+            <div class="game-card-footer">
+              <a href="/games/solitario/" class="btn btn-primary" style="width: 100%; padding: 10px;">
+                <i class="fa-solid fa-play"></i> Jugar Ahora
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Game 2: Sudoku Care (Coming Soon) -->
+        <div class="game-card">
+          <div class="game-card-thumb" style="background: radial-gradient(circle, #065f46, #064e3b);">
+            <i class="fa-solid fa-table-cells game-thumb-icon" style="color: #34d399;"></i>
+            <span class="card-status-badge status-soon">Próximamente</span>
+          </div>
+          <div class="game-card-body">
+            <h4 class="game-card-title">Sudoku Care</h4>
+            <p class="game-card-text">
+              Desafíos numéricos de lógica y concentración con niveles guiados para principiantes y expertos.
+            </p>
+            <div class="game-card-footer">
+              <button class="btn btn-outline" style="width: 100%; padding: 10px; opacity: 0.7;" disabled>
+                <i class="fa-solid fa-clock"></i> En Desarrollo
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Game 3: Memoria Visual Care (Coming Soon) -->
+        <div class="game-card">
+          <div class="game-card-thumb" style="background: radial-gradient(circle, #701a75, #4a044e);">
+            <i class="fa-solid fa-puzzle-piece game-thumb-icon" style="color: #f472b6;"></i>
+            <span class="card-status-badge status-soon">Próximamente</span>
+          </div>
+          <div class="game-card-body">
+            <h4 class="game-card-title">Memoria Visual</h4>
+            <p class="game-card-text">
+              Encuentra parejas y secuencias para estimular la memoria a corto plazo y la agilidad de reconocimiento.
+            </p>
+            <div class="game-card-footer">
+              <button class="btn btn-outline" style="width: 100%; padding: 10px; opacity: 0.7;" disabled>
+                <i class="fa-solid fa-clock"></i> En Desarrollo
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Game 4: Crucigrama Care (Coming Soon) -->
+        <div class="game-card">
+          <div class="game-card-thumb" style="background: radial-gradient(circle, #78350f, #451a03);">
+            <i class="fa-solid fa-font game-thumb-icon" style="color: #fbbf24;"></i>
+            <span class="card-status-badge status-soon">Próximamente</span>
+          </div>
+          <div class="game-card-body">
+            <h4 class="game-card-title">Palabras Cruzadas</h4>
+            <p class="game-card-text">
+              Enriquece tu vocabulario y agilidad verbal con definiciones claras y tamaño de fuente adaptable.
+            </p>
+            <div class="game-card-footer">
+              <button class="btn btn-outline" style="width: 100%; padding: 10px; opacity: 0.7;" disabled>
+                <i class="fa-solid fa-clock"></i> En Desarrollo
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cognitive Health Benefits Section -->
+    <section class="benefits-section" id="beneficios">
+      <div style="text-align: center; max-width: 650px; margin: 0 auto;">
+        <span class="hero-pill"><i class="fa-solid fa-heart-pulse"></i> Salud & Bienestar Mental</span>
+        <h3 class="section-title">¿Por qué jugar a diario con CareTech?</h3>
+        <p class="section-subtitle">
+          Los juegos de estrategia y cartas tradicionales estimulan áreas clave del cerebro de manera natural y divertida.
+        </p>
+      </div>
+
+      <div class="benefits-grid">
+        <div class="benefit-item">
+          <div class="benefit-icon"><i class="fa-solid fa-lightbulb"></i></div>
+          <div class="benefit-text">
+            <h4>Neuroplasticidad</h4>
+            <p>Fomenta la creación de nuevas conexiones neuronales mediante la toma de decisiones y planeación táctica.</p>
+          </div>
+        </div>
+
+        <div class="benefit-item">
+          <div class="benefit-icon"><i class="fa-solid fa-bullseye"></i></div>
+          <div class="benefit-text">
+            <h4>Atención y Enfoque</h4>
+            <p>Mejora los periodos de concentración sostenida y reduce la fatiga mental por exceso de estímulos.</p>
+          </div>
+        </div>
+
+        <div class="benefit-item">
+          <div class="benefit-icon"><i class="fa-solid fa-face-smile"></i></div>
+          <div class="benefit-text">
+            <h4>Reducción del Estrés</h4>
+            <p>Proporciona un espacio de relajación activa sin presiones, con ritmo pausado y sin cronómetros agresivos.</p>
+          </div>
+        </div>
+
+        <div class="benefit-item">
+          <div class="benefit-icon"><i class="fa-solid fa-universal-access"></i></div>
+          <div class="benefit-text">
+            <h4>Accesibilidad Universal</h4>
+            <p>Diseñado con altos contrastes y tipografía clara para que cualquier persona pueda disfrutar sin esfuerzo visual.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PWA Install Guide -->
+    <section class="pwa-guide" id="instalacion">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+        <div style="font-size: 2rem; color: var(--accent-cyan);"><i class="fa-solid fa-download"></i></div>
+        <div>
+          <h3 style="font-size: 1.5rem; font-weight: 800;">¿Cómo instalar CareTech Games en tu móvil?</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Instálalo como una app nativa en segundos, sin ocupar espacio de la tienda de apps.</p>
+        </div>
+      </div>
+
+      <div class="pwa-steps">
+        <div class="pwa-step-card">
+          <h5><i class="fa-brands fa-apple"></i> En iPhone / iPad (Safari)</h5>
+          <ol>
+            <li>Abre <strong>Solitario Care</strong> en el navegador Safari.</li>
+            <li>Toca el botón <strong>Compartir</strong> (el icono de un cuadro con flecha arriba <i class="fa-solid fa-arrow-up-from-bracket"></i>).</li>
+            <li>Baja en el menú y selecciona <strong>"Añadir a pantalla de inicio"</strong>.</li>
+            <li>Toca <strong>Añadir</strong>. ¡El icono aparecerá en tu pantalla principal!</li>
+          </ol>
+        </div>
+
+        <div class="pwa-step-card">
+          <h5><i class="fa-brands fa-android"></i> En Android (Google Chrome)</h5>
+          <ol>
+            <li>Abre <strong>Solitario Care</strong> en Chrome.</li>
+            <li>Toca el banner <strong>"Instalar Aplicación"</strong> que aparece en la parte inferior o el menú de 3 puntos (<i class="fa-solid fa-ellipsis-vertical"></i>).</li>
+            <li>Selecciona <strong>"Instalar aplicación"</strong> o <strong>"Añadir a la pantalla principal"</strong>.</li>
+            <li>Confirma la instalación y juega cuando quieras, ¡incluso sin internet!</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="brand-logo">
+          <div class="logo-badge" style="width: 36px; height: 36px; font-size: 1.1rem;">
+            <i class="fa-solid fa-gamepad"></i>
+          </div>
+          <div class="logo-text">
+            <span class="logo-title" style="font-size: 1.1rem;">CARE<span>GAMES</span></span>
+            <span class="logo-sub">CareTech Services</span>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <a href="/games/">Portal</a>
+          <a href="/games/solitario/">Solitario Care</a>
+          <a href="https://caretechservices.com" target="_blank" rel="noopener">CareTech Services</a>
+          <a href="https://caretechservices.com/loyalty/" target="_blank" rel="noopener">Care Loyalty</a>
+          <a href="mailto:care@caretechservices.com">Contacto</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 CareTech Services. Todos los derechos reservados.</div>
+        <div style="color: #64748b;">Diseñado para el bienestar y la estimulación cognitiva de todos.</div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

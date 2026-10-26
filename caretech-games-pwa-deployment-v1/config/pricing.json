@@ -1,0 +1,91 @@
+{
+  "version": "2.0.0",
+  "currency": "USD",
+  "paypalCurrency": "USD",
+  "paypalMerchantEmail": "alexis.tarrifa@gmail.com",
+  "paypalMerchantId": "6L4ZTMT48MEEL",
+  "paypalMeUsername": "alexistarrifa",
+  "paypalClientId": "BAAqqtlAVEAYcI4HczDkLgzyejjP8NInCX8DojUaNHOLrpkdMB9nXNTClEUTSrNqzpDR76fc7T7HWPUEjU",
+  "paypalClientSecret": "ENaCuy_s3dvlkgLhdSE8SfW_lWAxKp8eO_o7xqfS2yAiumYxeZ4ob6EYavEjYSvjmVp8i5Ws_1nPYiyk",
+  "paypalWebsitePreferencesUrl": "https://www.paypal.com/businessmanage/account/website",
+  "copExchangeRate": 4000,
+  "slotDurationSeconds": 60,
+  "slotsPerHour": 60,
+  "priorityFeeUsd": 120,
+  "plans": {
+    "entrada": {
+      "id": "entrada",
+      "name": "Entrada",
+      "description": "1 aparición por semana",
+      "frequencyType": "weekly",
+      "impressionsPerWeek": 1,
+      "priceUsd": 1.00,
+      "billingCycle": "semana",
+      "slotsWeight": 1
+    },
+    "presencia": {
+      "id": "presencia",
+      "name": "Presencia",
+      "description": "3 apariciones por semana",
+      "frequencyType": "weekly",
+      "impressionsPerWeek": 3,
+      "priceUsd": 3.00,
+      "billingCycle": "semana",
+      "slotsWeight": 3
+    },
+    "diario": {
+      "id": "diario",
+      "name": "Diario",
+      "description": "1 aparición al día",
+      "frequencyType": "daily",
+      "impressionsPerDay": 1,
+      "priceUsd": 15.00,
+      "billingCycle": "mes",
+      "slotsWeight": 1
+    },
+    "frecuente": {
+      "id": "frecuente",
+      "name": "Frecuente",
+      "description": "Cada 6 horas (4 veces al día)",
+      "frequencyType": "hourly_interval",
+      "intervalHours": 6,
+      "impressionsPerDay": 4,
+      "priceUsd": 35.00,
+      "billingCycle": "mes",
+      "slotsWeight": 4
+    },
+    "intensivo": {
+      "id": "intensivo",
+      "name": "Intensivo",
+      "description": "Cada 3 horas (8 veces al día)",
+      "frequencyType": "hourly_interval",
+      "intervalHours": 3,
+      "impressionsPerDay": 8,
+      "priceUsd": 60.00,
+      "billingCycle": "mes",
+      "slotsWeight": 8
+    },
+    "maximo": {
+      "id": "maximo",
+      "name": "Máximo",
+      "description": "Cada hora todos los días (24 veces al día)",
+      "frequencyType": "hourly",
+      "intervalHours": 1,
+      "impressionsPerDay": 24,
+      "priceUsd": 120.00,
+      "billingCycle": "mes",
+      "slotsWeight": 24
+    }
+  },
+  "games": [
+    { "id": "solitario", "name": "Solitario Care", "active": true },
+    { "id": "sudoku", "name": "Sudoku Care", "active": true },
+    { "id": "mahjong", "name": "Mahjong Care", "active": true },
+    { "id": "memoria", "name": "Memoria Visual", "active": true },
+    { "id": "palabras", "name": "Palabras Cruzadas", "active": true }
+  ],
+  "placements": [
+    { "id": "top", "name": "Banner Superior", "height": 50, "description": "Ubicación visible en la parte superior del tablero" },
+    { "id": "bottom", "name": "Banner Inferior", "height": 50, "description": "Ubicación fija en la parte inferior del tablero" }
+  ]
+}

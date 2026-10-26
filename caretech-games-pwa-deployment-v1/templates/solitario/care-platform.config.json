@@ -1,0 +1,52 @@
+{
+  "version": "1.0.0",
+  "platform": "CareTech Games Platform",
+  "gameId": "solitario",
+  "endpoints": {
+    "banners": "/games/api.php?action=banners",
+    "activate": "/games/api.php?action=activate",
+    "events": "/games/api.php?action=events",
+    "wpBanners": "/wp-json/careads/v1/banners",
+    "fallbackApi": "/games/api.php"
+  },
+  "ads": {
+    "maxOfflineAgeSeconds": 86400,
+    "syncIntervalSeconds": 60,
+    "fallbackBanners": {
+      "top": {
+        "campaignId": "CAMP_CARE_LOYALTY",
+        "brandName": "Care Loyalty",
+        "headline": "Care Loyalty",
+        "description": "Fidelidad digital en Apple & Google Wallet sin apps.",
+        "logo": "https://caretechservices.com/assets/logo.png",
+        "webUrl": "https://caretechservices.com/loyalty/",
+        "donationUrl": "https://caretechservices.com/donar/",
+        "shopUrl": "https://caretechservices.com/tienda/"
+      },
+      "bottom": {
+        "campaignId": "CAMP_CARE_INSTITUTIONAL",
+        "brandName": "CareTech Services",
+        "headline": "CareTech Services",
+        "description": "Software médico, teleasistencia y salud digital.",
+        "logo": "https://caretechservices.com/assets/logo.png",
+        "webUrl": "https://caretechservices.com",
+        "donationUrl": "https://caretechservices.com/donar/",
+        "shopUrl": "https://caretechservices.com/tienda/"
+      }
+    }
+  },
+  "sos": {
+    "defaultPhone": "123",
+    "defaultSmsNumber": "",
+    "defaultWhatsAppNumber": "573001234567",
+    "emergencyMessage": "¡EMERGENCIA! Necesito asistencia urgente.",
+    "locationMessageTemplate": "¡EMERGENCIA! Necesito asistencia. Mi ubicación aproximada es: https://maps.google.com/?q={lat},{lng}"
+  },
+  "themes": {
+    "default": "theme-care-green",
+    "options": [
+      { "id": "theme-care-green", "name": "Care Green", "primary": "#0d5c2e" },
+      { "id": "theme-care-blue", "name": "Care Blue", "primary": "#0f2f5c" }
+    ]
+  }
+}

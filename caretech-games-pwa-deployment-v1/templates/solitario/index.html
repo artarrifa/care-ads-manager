@@ -190,6 +190,10 @@
         <i class="fa-solid fa-comment-sms"></i> Enviar Mensaje SMS con Ubicación
       </button>
 
+      <button type="button" onclick="document.getElementById('care-sos-modal').classList.remove('active'); CareFTUX.openQuickSOS();" style="width: 100%; background: rgba(59, 130, 246, 0.15); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.4); padding: 9px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px;">
+        <i class="fa-solid fa-gear"></i> Configurar Contacto de Emergencia
+      </button>
+
       <button onclick="document.getElementById('care-sos-modal').classList.remove('active')" style="width: 100%; background: rgba(255,255,255,0.1); color: #cbd5e1; border: none; padding: 8px; border-radius: 8px; font-weight: 600; cursor: pointer;">
         Cancelar
       </button>
@@ -357,14 +361,170 @@
 
   <canvas id="confetti-canvas"></canvas>
 
+  <!-- Modal 1: Bienvenida Cálida FTUX (Primera Visita) -->
+  <div id="care-ftux-modal" class="ftux-modal-overlay">
+    <div class="ftux-card">
+      <button class="ftux-close-x" onclick="CareFTUX.dismissAndPlay()" title="Cerrar y Jugar">&times;</button>
+      <div style="font-size: 2.8rem; margin-bottom: 6px;">💚</div>
+      <h2 style="font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 4px;">¡Bienvenido a Solitario Care!</h2>
+      <p style="color: #94a3b8; font-size: 0.95rem;">Tu espacio de calma y concentración mental, sin ruidos molestos.</p>
+
+      <div class="ftux-pill-points">
+        <div class="ftux-point-row">
+          <span style="font-size: 1.3rem; color: #38bdf8;"><i class="fa-solid fa-volume-xmark"></i></span>
+          <span><strong>Cero Ruidos:</strong> Sin videos que te asusten o interrumpan.</span>
+        </div>
+        <div class="ftux-point-row">
+          <span style="font-size: 1.3rem; color: #34d399;"><i class="fa-solid fa-eye"></i></span>
+          <span><strong>Cartas Grandes:</strong> Máxima claridad para tu vista.</span>
+        </div>
+        <div class="ftux-point-row">
+          <span style="font-size: 1.3rem; color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i></span>
+          <span><strong>Botón SOS:</strong> Pide ayuda a tu familiar si la necesitas.</span>
+        </div>
+      </div>
+
+      <button class="ftux-btn-play" onclick="CareFTUX.dismissAndPlay()">
+        <i class="fa-solid fa-play"></i> Comenzar a Jugar Ahora
+      </button>
+
+      <button class="ftux-btn-sos-setup" onclick="CareFTUX.openQuickSOS()">
+        <i class="fa-solid fa-user-shield"></i> Configurar mi Contacto SOS (Opcional)
+      </button>
+      <div style="margin-top: 12px; font-size: 0.75rem; color: #64748b;">
+        🔒 100% Gratuito &bull; Sin registros obligatorios
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Configuración SOS Asistida (Paso 2 Opcional) -->
+  <div id="care-sos-quick-setup-modal" class="ftux-modal-overlay">
+    <div class="ftux-card" style="text-align: left;">
+      <button class="ftux-close-x" onclick="CareFTUX.closeSOSModal()">&times;</button>
+      <div style="text-align: center; margin-bottom: 14px;">
+        <div style="font-size: 2.2rem; color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <h3 style="font-size: 1.35rem; font-weight: 800; color: #fff;">Tu Botón de Auxilio SOS</h3>
+        <p style="color: #94a3b8; font-size: 0.85rem;">Si te sientes mal, podrás enviar tu ubicación con 1 solo toque.</p>
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px; font-weight: 700;">
+          Nombre de tu Familiar o Cuidador:
+        </label>
+        <input type="text" id="ftux-contact-name" placeholder="Ej: Mi hija Andrea" style="width: 100%; box-sizing: border-box; padding: 12px; font-size: 1rem; border-radius: 10px; background: #07152c; border: 1px solid rgba(255,255,255,0.2); color: #fff;">
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px; font-weight: 700;">
+          Teléfono o WhatsApp de Emergencia:
+        </label>
+        <input type="tel" id="ftux-contact-phone" placeholder="Ej: 573001234567" style="width: 100%; box-sizing: border-box; padding: 12px; font-size: 1rem; border-radius: 10px; background: #07152c; border: 1px solid rgba(255,255,255,0.2); color: #fff;">
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px; font-weight: 700;">
+          ¿Cómo te llamas? (Para tus récords):
+        </label>
+        <input type="text" id="ftux-user-name" placeholder="Ej: Abuela Rosa" style="width: 100%; box-sizing: border-box; padding: 12px; font-size: 1rem; border-radius: 10px; background: #07152c; border: 1px solid rgba(255,255,255,0.2); color: #fff;">
+      </div>
+
+      <button class="ftux-btn-play" onclick="CareFTUX.saveSOSAndPlay()">
+        <i class="fa-solid fa-check"></i> Guardar y Jugar
+      </button>
+
+      <div style="text-align: center; margin-top: 12px;">
+        <button onclick="CareFTUX.dismissAndPlay()" style="background: none; border: none; color: #94a3b8; font-size: 0.85rem; text-decoration: underline; cursor: pointer;">
+          Configurar después, quiero jugar ya
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts: CarePlatform -> ServiceWorker Registration -> Solitario Game Engine -->
   <script src="care-platform.js?v=1.2.0"></script>
   <script src="register-pwa.js?v=1.2.0"></script>
   <script src="solitaire.js?v=1.2.0"></script>
   <script>
+    const CareFTUX = {
+      init() {
+        const isCompleted = localStorage.getItem('care_ftux_completed');
+        if (!isCompleted) {
+          setTimeout(() => {
+            const modal = document.getElementById('care-ftux-modal');
+            if (modal) modal.classList.add('active');
+          }, 350);
+        }
+        this.updateSOSBadge();
+      },
+
+      updateSOSBadge() {
+        const isConfigured = localStorage.getItem('care_sos_wa_number');
+        const sosLabel = document.querySelector('.care-sos-label-group');
+        if (!isConfigured && sosLabel && !document.getElementById('sos-hint-badge')) {
+          const badge = document.createElement('span');
+          badge.id = 'sos-hint-badge';
+          badge.className = 'sos-setup-hint-badge';
+          badge.textContent = 'Configurar';
+          sosLabel.appendChild(badge);
+        } else if (isConfigured) {
+          const badge = document.getElementById('sos-hint-badge');
+          if (badge) badge.remove();
+        }
+      },
+
+      dismissAndPlay() {
+        localStorage.setItem('care_ftux_completed', 'true');
+        const m1 = document.getElementById('care-ftux-modal');
+        const m2 = document.getElementById('care-sos-quick-setup-modal');
+        if (m1) m1.classList.remove('active');
+        if (m2) m2.classList.remove('active');
+      },
+
+      openQuickSOS() {
+        const m1 = document.getElementById('care-ftux-modal');
+        if (m1) m1.classList.remove('active');
+        const m2 = document.getElementById('care-sos-quick-setup-modal');
+        if (m2) {
+          document.getElementById('ftux-contact-name').value = localStorage.getItem('care_sos_contact_name') || '';
+          document.getElementById('ftux-contact-phone').value = localStorage.getItem('care_sos_wa_number') || localStorage.getItem('care_sos_phone') || '';
+          document.getElementById('ftux-user-name').value = localStorage.getItem('care_user_name') || '';
+          m2.classList.add('active');
+        }
+      },
+
+      closeSOSModal() {
+        const m2 = document.getElementById('care-sos-quick-setup-modal');
+        if (m2) m2.classList.remove('active');
+        this.dismissAndPlay();
+      },
+
+      saveSOSAndPlay() {
+        const phone = document.getElementById('ftux-contact-phone').value.trim();
+        const contactName = document.getElementById('ftux-contact-name').value.trim();
+        const userName = document.getElementById('ftux-user-name').value.trim();
+
+        if (phone) {
+          localStorage.setItem('care_sos_wa_number', phone);
+          localStorage.setItem('care_sos_phone', phone);
+          const sosWaInput = document.getElementById('sos-wa-input');
+          if (sosWaInput) sosWaInput.value = phone;
+        }
+        if (contactName) {
+          localStorage.setItem('care_sos_contact_name', contactName);
+        }
+        if (userName) {
+          localStorage.setItem('care_user_name', userName);
+        }
+
+        this.updateSOSBadge();
+        this.dismissAndPlay();
+      }
+    };
+
     if (window.CarePlatform) {
       window.CarePlatform.init({ gameId: 'solitario' });
     }
+    CareFTUX.init();
   </script>
 </body>
 </html>

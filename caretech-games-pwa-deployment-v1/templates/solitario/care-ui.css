@@ -182,3 +182,140 @@ body.theme-care-blue {
     width: 100%;
   }
 }
+
+/* ==============================================================================
+   5. FTUX WELCOME & ONBOARDING FOR SENIORS
+   ============================================================================== */
+.ftux-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(4, 9, 20, 0.88);
+  backdrop-filter: blur(10px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 16px;
+}
+.ftux-modal-overlay.active {
+  display: flex;
+}
+.ftux-card {
+  background: linear-gradient(145deg, #0d2242, #08162b);
+  border: 2px solid rgba(59, 130, 246, 0.5);
+  border-radius: 24px;
+  max-width: 490px;
+  width: 100%;
+  padding: 30px 24px;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+  position: relative;
+  animation: ftuxFade 0.3s ease-out;
+  color: #fff;
+}
+@keyframes ftuxFade {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+.ftux-close-x {
+  position: absolute;
+  top: 14px; right: 16px;
+  background: rgba(255,255,255,0.12);
+  border: none;
+  color: #fff;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.ftux-close-x:hover {
+  background: rgba(255,255,255,0.25);
+  transform: rotate(90deg);
+}
+.ftux-pill-points {
+  background: rgba(13, 31, 61, 0.7);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 14px 16px;
+  text-align: left;
+  margin: 18px 0 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ftux-point-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.95rem;
+  color: #f1f5f9;
+}
+.ftux-btn-play {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 800;
+  padding: 16px 24px;
+  border-radius: 999px;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  min-height: 54px;
+}
+.ftux-btn-play:hover {
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.6);
+  transform: translateY(-2px);
+}
+.ftux-btn-play:active {
+  transform: scale(0.98);
+}
+.ftux-btn-sos-setup {
+  background: transparent;
+  color: #93c5fd;
+  border: 1px solid rgba(147, 197, 253, 0.4);
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 12px 20px;
+  border-radius: 999px;
+  width: 100%;
+  cursor: pointer;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  transition: all 0.2s;
+}
+.ftux-btn-sos-setup:hover {
+  background: rgba(147, 197, 253, 0.1);
+  border-color: #93c5fd;
+}
+/* Insignia pulsante del botón SOS para primera vez */
+.sos-setup-hint-badge {
+  background: #fbbf24;
+  color: #000;
+  font-size: 0.68rem;
+  font-weight: 900;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-left: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  animation: pulseBeacon 1.5s infinite ease-in-out;
+  display: inline-block;
+}
+@keyframes pulseBeacon {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.08); }
+}

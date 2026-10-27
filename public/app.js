@@ -1232,3 +1232,222 @@ document.addEventListener('DOMContentLoaded', () => {
   initStampSimulator();
   initMobileMenu();
 });
+
+
+/* ==========================================================================
+   INTEGRACIÓN INTERACTIVA: CAREGAMES, PUBLICIDAD B2B & DONACIONES
+   ========================================================================== */
+
+let currentDonationAmount = 3;
+
+// Simulación de interacción con los 3 botones del Banner B2B
+function previewBannerClick(actionType) {
+  const toast = document.getElementById('bannerFeedbackToast');
+  const msgEl = document.getElementById('bannerFeedbackMsg');
+  const iconEl = document.getElementById('bannerFeedbackIcon');
+  if (!toast || !msgEl || !iconEl) return;
+
+  toast.style.display = 'flex';
+
+  if (actionType === 'web') {
+    iconEl.className = 'fa-solid fa-globe';
+    iconEl.style.color = '#3b82f6';
+    msgEl.innerHTML = '<strong>Acción Web:</strong> Redirige al sitio web oficial o landing page del anunciante en una pestaña nueva sin interrumpir la partida.';
+  } else if (actionType === 'donar') {
+    iconEl.className = 'fa-solid fa-heart';
+    iconEl.style.color = '#ec4899';
+    msgEl.innerHTML = '<strong>Acción Donación:</strong> Conecta a causas sociales, voluntariado o recaudación de fondos corporativa de la marca.';
+  } else if (actionType === 'tienda') {
+    iconEl.className = 'fa-solid fa-cart-shopping';
+    iconEl.style.color = '#10b981';
+    msgEl.innerHTML = '<strong>Acción Tienda / Ofertas:</strong> Lleva al catálogo de productos, promociones especiales o reserva de citas médicas.';
+  } else if (actionType === 'close') {
+    iconEl.className = 'fa-solid fa-clock';
+    iconEl.style.color = '#f59e0b';
+    msgEl.innerHTML = '<strong>Cierre de Cortesía:</strong> El jugador puede ocultar el banner por 60 segundos si desea máxima concentración visual.';
+  }
+
+  // Animación de pulso leve
+  toast.style.transform = 'scale(1.02)';
+  setTimeout(() => {
+    toast.style.transform = 'scale(1)';
+  }, 200);
+}
+
+// Selector de Tiers en el Widget Principal de Donaciones
+function selectDonationTier(amount, element) {
+  currentDonationAmount = amount;
+
+  // Actualizar clases activas en los items
+  document.querySelectorAll('.donation-tier-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  if (element) {
+    element.classList.add('active');
+  }
+
+  // Limpiar input custom si se seleccionó un tier predefinido
+  const customInput = document.getElementById('customDonationInput');
+  if (customInput) customInput.value = '';
+
+  updateDonationUI();
+}
+
+// Actualizar cantidad desde el input personalizado
+function onCustomDonationInput(value) {
+  const num = parseFloat(value);
+  if (!isNaN(num) && num > 0) {
+    currentDonationAmount = num;
+    document.querySelectorAll('.donation-tier-item').forEach(item => {
+      item.classList.remove('active');
+    });
+    updateDonationUI();
+  }
+}
+
+// Actualizar valores en UI y enlaces de PayPal
+function updateDonationUI() {
+  const displayAmount = currentDonationAmount % 1 === 0 ? currentDonationAmount.toFixed(0) : currentDonationAmount.toFixed(2);
+  
+  // Botón principal de la sección
+  const btnLabel = document.getElementById('btnDonationAmountLabel');
+  if (btnLabel) {
+    btnLabel.innerText = `$${displayAmount} USD`;
+  }
+
+  // Modal
+  const modalSum = document.getElementById('modalSelectedAmount');
+  if (modalSum) {
+    modalSum.innerText = `$${displayAmount} USD`;
+  }
+
+  // Conversión aproximada según región
+  const approxEl = document.getElementById('modalApproxCurrency');
+  if (approxEl) {
+    let rate = 4000;
+    let symbol = 'COP';
+    if (currentRegion === 'europa') {
+      rate = 0.92;
+      symbol = 'EUR (€)';
+      approxEl.innerText = `≈ ${(currentDonationAmount * rate).toFixed(2)} ${symbol}`;
+    } else if (currentRegion === 'mexico') {
+      rate = 18.5;
+      symbol = 'MXN';
+      approxEl.innerText = `≈ $${Math.round(currentDonationAmount * rate).toLocaleString()} ${symbol}`;
+    } else if (currentRegion === 'colombia') {
+      rate = 4000;
+      symbol = 'COP';
+      approxEl.innerText = `≈ $${Math.round(currentDonationAmount * rate).toLocaleString()} ${symbol}`;
+    } else {
+      approxEl.innerText = 'Transacción global protegida con PayPal';
+    }
+  }
+
+  // Botón modal de PayPal
+  const modalPayBtn = document.getElementById('btnModalPayPalAction');
+  if (modalPayBtn) {
+    modalPayBtn.href = `https://paypal.me/caretechservices/${displayAmount}`;
+  }
+}
+
+// Abrir Modal Rápido de Aportes
+function openDonationModal(amount) {
+  if (amount) {
+    currentDonationAmount = amount;
+  }
+  updateDonationUI();
+  
+  // Sincronizar botones dentro del modal
+  document.querySelectorAll('.modal-tier-btn').forEach(btn => {
+    if (parseFloat(btn.dataset.amount) === currentDonationAmount) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  const modal = document.getElementById('quickDonationModal');
+  if (modal) {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+// Cerrar Modal Rápido de Aportes
+function closeDonationModal() {
+  const modal = document.getElementById('quickDonationModal');
+  if (modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+// Selección de Tier dentro del Modal
+function selectModalTier(amount, element) {
+  currentDonationAmount = amount;
+  document.querySelectorAll('.modal-tier-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  if (element) {
+    element.classList.add('active');
+  }
+
+  const customField = document.getElementById('modalCustomAmount');
+  if (customField) customField.value = '';
+
+  updateDonationUI();
+}
+
+function onModalCustomAmount(val) {
+  const num = parseFloat(val);
+  if (!isNaN(num) && num > 0) {
+    currentDonationAmount = num;
+    document.querySelectorAll('.modal-tier-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    updateDonationUI();
+  }
+}
+
+// Redirección directa a PayPal desde el widget o modal
+function proceedToDonationPayPal() {
+  const displayAmount = currentDonationAmount % 1 === 0 ? currentDonationAmount.toFixed(0) : currentDonationAmount.toFixed(2);
+  const paypalUrl = `https://paypal.me/caretechservices/${displayAmount}`;
+  window.open(paypalUrl, '_blank', 'noopener,noreferrer');
+}
+
+// Cerrar modal con ESC o clic en overlay
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeDonationModal();
+    closeWeCareBuyModal();
+  }
+});
+
+/* ==========================================================================
+   MODAL DE COMPRA Y LICENCIAMIENTO WECARE
+   ========================================================================== */
+function openWeCareBuyModal() {
+  const modal = document.getElementById('wecareBuyModal');
+  if (modal) {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeWeCareBuyModal() {
+  const modal = document.getElementById('wecareBuyModal');
+  if (modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+// Global exposure
+window.openDonationModal = openDonationModal;
+window.closeDonationModal = closeDonationModal;
+window.selectModalTier = selectModalTier;
+window.onModalCustomAmount = onModalCustomAmount;
+window.proceedToDonationPayPal = proceedToDonationPayPal;
+window.openWeCareBuyModal = openWeCareBuyModal;
+window.closeWeCareBuyModal = closeWeCareBuyModal;

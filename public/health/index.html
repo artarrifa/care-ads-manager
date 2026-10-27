@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Care Health | WeCare & Historia Clínica Salvavidas (Free Online EHR)</title>
+  <meta name="description" content="División Flagship de Salud de CareTech Services. Descubre WeCare App con cifrado médico privado y la Historia Clínica Salvavidas (Free Online EHR) de acceso rápido para emergencias.">
+  <meta name="theme-color" content="#081325">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Care Health - Salud Soberana & Historia Clínica Salvavidas">
+  <meta property="og:description" content="Protege tu salud con WeCare (cifrado grado médico) y genera tu Ficha Médica Salvavidas gratis para emergencias.">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="/styles.css?v=3.2">
+  <style>
+    .health-hero {
+      padding: 60px 0 40px;
+      text-align: center;
+      position: relative;
+    }
+    .ehr-builder-container {
+      background: #0a1b35;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 20px;
+      padding: 36px 30px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      margin-bottom: 60px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      text-align: left;
+      margin-top: 24px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #93c5fd;
+    }
+    .form-input, .form-select {
+      background: rgba(13, 31, 61, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #ffffff;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: #00f2fe;
+      box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15);
+    }
+    .ehr-card-preview {
+      background: linear-gradient(135deg, #0d2a4a 0%, #08172c 100%);
+      border: 2px solid #10b981;
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 30px;
+      display: none;
+      box-shadow: 0 15px 40px rgba(16, 185, 129, 0.25);
+    }
+    .ehr-card-preview.active {
+      display: block;
+      animation: modalFadeIn 0.3s ease-out;
+    }
+    .ehr-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 14px;
+      margin-bottom: 16px;
+    }
+    .blood-badge {
+      background: #ef4444;
+      color: #ffffff;
+      font-size: 1.25rem;
+      font-weight: 900;
+      padding: 6px 16px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-container">
+      <div class="top-bar-text">
+        <span>🩺 <strong>Care Health:</strong> Privacidad médica absoluta con WeCare y auxilio inmediato con Free Online EHR.</span>
+      </div>
+      <div class="top-bar-controls">
+        <a href="/" style="color: #67e8f9; font-weight: 700; text-decoration: none; font-size: 0.82rem; margin-right: 14px;">
+          <i class="fa-solid fa-house"></i> Hub Principal
+        </a>
+        <a href="/games/" style="color: #34d399; font-weight: 700; text-decoration: none; font-size: 0.82rem;">
+          <i class="fa-solid fa-gamepad"></i> Care Games
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="/" class="brand-logo">
+        <div class="logo-badge" style="background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);">
+          <i class="fa-solid fa-heart-pulse"></i>
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">CARE HEALTH</span>
+          <span class="logo-sub">División de Salud CareTech</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/" class="nav-link"><i class="fa-solid fa-house"></i> Hub Central</a>
+        <a href="#ehr-tool" class="nav-link active"><i class="fa-solid fa-notes-medical" style="color: #34d399;"></i> Free Online EHR</a>
+        <a href="#wecare" class="nav-link"><i class="fa-solid fa-heart-pulse" style="color: #00f2fe;"></i> WeCare App</a>
+        <a href="/games/" class="nav-link"><i class="fa-solid fa-gamepad" style="color: #34d399;"></i> Care Games</a>
+        <a href="/publicidad/" class="nav-link"><i class="fa-solid fa-bullhorn" style="color: #60a5fa;"></i> Publicidad B2B</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="#wecare" class="btn btn-primary" style="padding: 9px 16px; font-size: 0.84rem; font-weight: 800;">
+          <i class="fa-solid fa-cart-shopping"></i> Comprar WeCare
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero Care Health -->
+    <section class="health-hero">
+      <div class="hub-hero-badge" style="background: rgba(0, 210, 255, 0.15); border-color: #00f2fe; color: #67e8f9;">
+        <i class="fa-solid fa-shield-halved"></i> División Flagship de Salud Soberana & Emergencias
+      </div>
+      <h1 class="hub-main-title">
+        Tu salud bajo tu control, <span class="gradient-text">sin agendas compartidas ni barreras.</span>
+      </h1>
+      <p class="hub-main-subtitle">
+        Integramos la máxima confidencialidad médica con <strong>WeCare App</strong> y la rapidez vital de la <strong>Historia Clínica Salvavidas (Free Online EHR)</strong> para emergencias en segundos.
+      </p>
+      <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+        <a href="#ehr-tool" class="btn btn-ehr-action">
+          <i class="fa-solid fa-notes-medical"></i> Generar Ficha Salvavidas Gratis
+        </a>
+        <a href="#wecare" class="btn btn-buy-wecare">
+          <i class="fa-solid fa-cart-shopping"></i> Licencia WeCare ($19.90 USD)
+        </a>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         1. HERRAMIENTA INTERACTIVA: HISTORIA CLÍNICA SALVAVIDAS (FREE ONLINE EHR)
+         ====================================================================== -->
+    <section id="ehr-tool" class="ehr-builder-container">
+      <div class="section-header text-center" style="margin-bottom: 24px;">
+        <span class="subcard-badge subcard-badge-ehr" style="font-size: 0.82rem; padding: 6px 14px;">
+          <i class="fa-solid fa-bolt"></i> Herramienta Web Inmediata 100% Gratuita
+        </span>
+        <h2 style="font-size: 2rem; color: #ffffff; font-weight: 800; margin-top: 8px;">
+          Historia Clínica Salvavidas (Free Online EHR)
+        </h2>
+        <p style="color: #94a3b8; font-size: 0.95rem; max-width: 760px; margin: 8px auto 0;">
+          Diligencia tus datos críticos de auxilio. Esta ficha médica puede salvar tu vida o la de un familiar en caso de desmayo, accidente o urgencia en la vía pública o en casa.
+        </p>
+      </div>
+
+      <form id="ehrForm" onsubmit="generateEhrCard(event)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label><i class="fa-solid fa-user"></i> Nombre Completo</label>
+            <input type="text" id="ehrName" class="form-input" placeholder="Ej: Carlos Alberto Gómez" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-id-card"></i> Documento / Identificación</label>
+            <input type="text" id="ehrDoc" class="form-input" placeholder="Ej: CC / Pasaporte" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-droplet"></i> Grupo Sanguíneo & Factor Rh</label>
+            <select id="ehrBlood" class="form-select" required>
+              <option value="">Selecciona tu grupo</option>
+              <option value="O+">O Positivo (O+)</option>
+              <option value="O-">O Negativo (O-)</option>
+              <option value="A+">A Positivo (A+)</option>
+              <option value="A-">A Negativo (A-)</option>
+              <option value="B+">B Positivo (B+)</option>
+              <option value="B-">B Negativo (B-)</option>
+              <option value="AB+">AB Positivo (AB+)</option>
+              <option value="AB-">AB Negativo (AB-)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-triangle-exclamation"></i> Alergias Críticas (Medicamentos / Alimentos)</label>
+            <input type="text" id="ehrAllergies" class="form-input" placeholder="Ej: Penicilina, AINEs, Maní, Ninguna" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-heart-pulse"></i> Enfermedades Base / Condiciones</label>
+            <input type="text" id="ehrConditions" class="form-input" placeholder="Ej: Hipertensión, Diabetes Tipo 2, Marcapasos">
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-pills"></i> Medicamentos Vitales Diarios</label>
+            <input type="text" id="ehrMeds" class="form-input" placeholder="Ej: Losartán 50mg, Insulina, Aspirina 100mg">
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-phone-volume"></i> Contacto de Emergencia SOS (Nombre & Parentesco)</label>
+            <input type="text" id="ehrContactName" class="form-input" placeholder="Ej: María Gómez (Hija / Esposa)" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-mobile-screen"></i> Teléfono del Contacto SOS</label>
+            <input type="tel" id="ehrContactPhone" class="form-input" placeholder="Ej: +57 300 123 4567" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-hospital"></i> EPS / Aseguradora de Salud</label>
+            <input type="text" id="ehrInsurance" class="form-input" placeholder="Ej: Sura, Sanitas, Coomeva, Medicare">
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 28px;">
+          <button type="submit" class="btn btn-ehr-action" style="padding: 14px 32px; font-size: 1rem;">
+            <i class="fa-solid fa-id-card-clip"></i> Generar Ficha Salvavidas Inmediata
+          </button>
+        </div>
+      </form>
+
+      <!-- Preview de la Ficha Médica Salvavidas -->
+      <div id="ehrPreviewBox" class="ehr-card-preview">
+        <div class="ehr-card-header">
+          <div>
+            <span style="font-size: 0.76rem; color: #34d399; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">
+              🚨 FICHA MÉDICA DE AUXILIO · CARE HEALTH EHR
+            </span>
+            <h3 id="prevName" style="color: #ffffff; font-size: 1.5rem; margin-top: 4px;">-</h3>
+            <p id="prevDoc" style="color: #94a3b8; font-size: 0.86rem; margin: 0;">-</p>
+          </div>
+          <div class="blood-badge" id="prevBlood">-</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 20px;">
+          <div style="background: rgba(0,0,0,0.25); padding: 12px 14px; border-radius: 8px;">
+            <div style="font-size: 0.78rem; color: #f87171; font-weight: 700;">⚠️ ALERGIAS</div>
+            <div id="prevAllergies" style="color: #ffffff; font-size: 0.92rem; font-weight: 600; margin-top: 2px;">-</div>
+          </div>
+          <div style="background: rgba(0,0,0,0.25); padding: 12px 14px; border-radius: 8px;">
+            <div style="font-size: 0.78rem; color: #67e8f9; font-weight: 700;">🩺 CONDICIONES / ENFERMEDADES</div>
+            <div id="prevConditions" style="color: #ffffff; font-size: 0.92rem; font-weight: 600; margin-top: 2px;">-</div>
+          </div>
+          <div style="background: rgba(0,0,0,0.25); padding: 12px 14px; border-radius: 8px;">
+            <div style="font-size: 0.78rem; color: #a7f3d0; font-weight: 700;">💊 MEDICAMENTOS DIARIOS</div>
+            <div id="prevMeds" style="color: #ffffff; font-size: 0.92rem; font-weight: 600; margin-top: 2px;">-</div>
+          </div>
+          <div style="background: rgba(0,0,0,0.25); padding: 12px 14px; border-radius: 8px;">
+            <div style="font-size: 0.78rem; color: #fbbf24; font-weight: 700;">🚨 CONTACTO DE EMERGENCIA</div>
+            <div id="prevContact" style="color: #ffffff; font-size: 0.92rem; font-weight: 700; margin-top: 2px;">-</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; align-items: center;">
+          <button type="button" class="btn btn-secondary" onclick="window.print()" style="padding: 10px 18px; font-size: 0.88rem;">
+            <i class="fa-solid fa-print"></i> Imprimir Ficha
+          </button>
+          <button type="button" class="btn btn-primary" onclick="alert('¡Ficha Salvavidas lista! Puedes hacer una captura de pantalla y guardarla como fondo de bloqueo de emergencia en tu celular.')" style="padding: 10px 18px; font-size: 0.88rem;">
+            <i class="fa-solid fa-mobile-screen"></i> Guardar en mi Móvil
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         2. PRODUCTO CORE: WECARE APP & HISTORIA CLÍNICA PRIVADA
+         ====================================================================== -->
+    <section id="wecare" class="pillar-card pillar-wecare" style="margin-bottom: 70px;">
+      <div class="pillar-header-row">
+        <div class="pillar-icon-box icon-wecare">
+          <i class="fa-solid fa-heart-pulse"></i>
+        </div>
+        <span class="pillar-status-badge badge-core-live">
+          <i class="fa-solid fa-circle-check"></i> Producto Core · Licencia Vitalicia
+        </span>
+      </div>
+
+      <div class="pillar-name-wrap">
+        <span class="pillar-number">Salud Digital Confidencial &amp; Familiar</span>
+        <h3 class="pillar-title" style="font-size: 1.8rem;">WeCare App — Tu Diario Personal Médico Cifrado</h3>
+      </div>
+
+      <p class="pillar-desc" style="max-width: 900px; font-size: 0.96rem;">
+        WeCare es la plataforma pionera que elimina las agendas comerciales compartidas. Con tecnología de cifrado local tipo diario personal, tus diagnósticos, medicamentos y controles pertenecen exclusivamente a ti y a tus seres queridos.
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin: 20px 0 28px 0;">
+        <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(0, 198, 255, 0.25); border-radius: 12px; padding: 18px;">
+          <div style="font-size: 1.4rem; color: #00f2fe; margin-bottom: 8px;"><i class="fa-solid fa-shield-halved"></i></div>
+          <h4 style="color: #ffffff; font-size: 1.05rem; margin-bottom: 6px;">Cifrado Grado Médico</h4>
+          <p style="color: #94a3b8; font-size: 0.85rem; line-height: 1.45; margin: 0;">Ninguna farmacéutica ni aseguradora puede acceder a tus registros.</p>
+        </div>
+        <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 12px; padding: 18px;">
+          <div style="font-size: 1.4rem; color: #34d399; margin-bottom: 8px;"><i class="fa-solid fa-person-falling-burst"></i></div>
+          <h4 style="color: #ffffff; font-size: 1.05rem; margin-bottom: 6px;">Detección de Caídas &amp; GPS</h4>
+          <p style="color: #94a3b8; font-size: 0.85rem; line-height: 1.45; margin: 0;">Alerta automática a familiares con coordenadas precisas en accidentes.</p>
+        </div>
+        <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 12px; padding: 18px;">
+          <div style="font-size: 1.4rem; color: #fbbf24; margin-bottom: 8px;"><i class="fa-solid fa-clock-rotate-left"></i></div>
+          <h4 style="color: #ffffff; font-size: 1.05rem; margin-bottom: 6px;">Control de Tratamientos</h4>
+          <p style="color: #94a3b8; font-size: 0.85rem; line-height: 1.45; margin: 0;">Recordatorios infalibles de dosificación para adultos mayores y niños.</p>
+        </div>
+      </div>
+
+      <div class="wecare-price-tag" style="max-width: 500px; margin: 0 auto 24px auto;">
+        <div class="wecare-price-val">$19.90 <span style="font-size: 1rem; color: #cbd5e1;">USD / año</span></div>
+        <div class="wecare-price-sub">≈ $79.900 COP &bull; Licencia completa móvil &amp; web para toda la familia</div>
+      </div>
+
+      <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+        <a href="https://paypal.me/caretechservices/19.90" target="_blank" rel="noopener noreferrer" class="btn btn-buy-wecare" style="padding: 14px 30px;">
+          <i class="fa-solid fa-cart-shopping"></i> Comprar Licencia con PayPal
+        </a>
+        <a href="https://wa.me/573164734660?text=Hola%2C%20deseo%20adquirir%20la%20Licencia%20de%20WeCare%20App" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp" style="padding: 14px 26px;">
+          <i class="fa-brands fa-whatsapp"></i> Adquirir por WhatsApp
+        </a>
+        <a href="https://apps.apple.com/co/app/wecareapp/id6673915367" target="_blank" rel="noopener noreferrer" class="btn btn-outline-light" style="padding: 14px 24px;">
+          <i class="fa-brands fa-apple"></i> Ver en Apple App Store
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <div class="footer-left">
+        <div class="brand-logo">
+          <div class="logo-badge" style="background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);">
+            <i class="fa-solid fa-heart-pulse"></i>
+          </div>
+          <span class="logo-title">CARE HEALTH</span>
+        </div>
+        <p class="footer-desc">
+          División de Salud de CareTech Services. Cuidamos a las familias con tecnología segura, cifrado médico soberano y auxilio de emergencias.
+        </p>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Ecosistema CareTech</h4>
+        <ul>
+          <li><a href="/">Hub Principal (6 Áreas)</a></li>
+          <li><a href="/health/">Care Health &amp; EHR</a></li>
+          <li><a href="/games/">Care Games</a></li>
+          <li><a href="/real-estate/">Care Real Estate</a></li>
+          <li><a href="/business/">Care Business</a></li>
+          <li><a href="/pets/">Care Pets</a></li>
+          <li><a href="/development/">Care Development</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Contacto Médico &amp; Soporte</h4>
+        <div class="footer-contact-items">
+          <a href="mailto:care@caretechservices.com" class="footer-contact-link">
+            <i class="fa-regular fa-envelope text-cyan"></i> care@caretechservices.com
+          </a>
+          <a href="https://wa.me/573164734660" target="_blank" rel="noopener noreferrer" class="footer-contact-link">
+            <i class="fa-brands fa-whatsapp text-lime"></i> +57 316 473 4660
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="container">
+        <p>© 2026 CareTech Services · Care Health · WeCare. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function generateEhrCard(e) {
+      e.preventDefault();
+      const name = document.getElementById('ehrName').value;
+      const doc = document.getElementById('ehrDoc').value;
+      const blood = document.getElementById('ehrBlood').value;
+      const allergies = document.getElementById('ehrAllergies').value;
+      const conditions = document.getElementById('ehrConditions').value || 'Ninguna registrada';
+      const meds = document.getElementById('ehrMeds').value || 'Ninguno';
+      const contactName = document.getElementById('ehrContactName').value;
+      const contactPhone = document.getElementById('ehrContactPhone').value;
+
+      document.getElementById('prevName').innerText = name;
+      document.getElementById('prevDoc').innerText = 'ID: ' + doc;
+      document.getElementById('prevBlood').innerText = blood;
+      document.getElementById('prevAllergies').innerText = allergies;
+      document.getElementById('prevConditions').innerText = conditions;
+      document.getElementById('prevMeds').innerText = meds;
+      document.getElementById('prevContact').innerText = contactName + ' (' + contactPhone + ')';
+
+      const box = document.getElementById('ehrPreviewBox');
+      box.classList.add('active');
+      box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  </script>
+</body>
+</html>

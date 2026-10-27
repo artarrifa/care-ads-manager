@@ -29,8 +29,8 @@ fs.copyFileSync(path.join(PUBLIC_DIR, 'index.html'), path.join(DIST_DIR, 'index.
 fs.copyFileSync(path.join(PUBLIC_DIR, 'styles.css'), path.join(DIST_DIR, 'styles.css'));
 fs.copyFileSync(path.join(PUBLIC_DIR, 'app.js'), path.join(DIST_DIR, 'app.js'));
 
-// 3. Copy publicidad & donar into dist/
-console.log('📣 [2/3] Copiando secciones /publicidad/ y /donar/...');
+// 3. Copy subroutes (health, real-estate, business, pets, development, publicidad, donar) into dist/
+console.log('📣 [2/3] Copiando las 6 subrutas y secciones corporativas...');
 function copyDirRecursive(src, dest) {
   if (!fs.existsSync(src)) return;
   if (fs.existsSync(dest)) fs.rmSync(dest, { recursive: true, force: true });
@@ -46,6 +46,14 @@ function copyDirRecursive(src, dest) {
   }
 }
 
+// Subrutas del ecosistema desde public/
+copyDirRecursive(path.join(PUBLIC_DIR, 'health'), path.join(DIST_DIR, 'health'));
+copyDirRecursive(path.join(PUBLIC_DIR, 'real-estate'), path.join(DIST_DIR, 'real-estate'));
+copyDirRecursive(path.join(PUBLIC_DIR, 'business'), path.join(DIST_DIR, 'business'));
+copyDirRecursive(path.join(PUBLIC_DIR, 'pets'), path.join(DIST_DIR, 'pets'));
+copyDirRecursive(path.join(PUBLIC_DIR, 'development'), path.join(DIST_DIR, 'development'));
+
+// Secciones auxiliares desde portal/
 copyDirRecursive(path.join(PORTAL_DIR, 'publicidad'), path.join(DIST_DIR, 'publicidad'));
 copyDirRecursive(path.join(PORTAL_DIR, 'donar'), path.join(DIST_DIR, 'donar'));
 
@@ -57,12 +65,12 @@ const zipRootPath = path.join(ROOT_WORKSPACE, 'caretech-games.zip');
 if (fs.existsSync(zipDeployPath)) fs.unlinkSync(zipDeployPath);
 if (fs.existsSync(zipRootPath)) fs.unlinkSync(zipRootPath);
 
-execSync('zip -r ../caretech-games.zip index.html styles.css app.js games publicidad donar', {
+execSync('zip -r ../caretech-games.zip index.html styles.css app.js games health real-estate business pets development publicidad donar', {
   cwd: DIST_DIR,
   stdio: 'inherit'
 });
 
 fs.copyFileSync(zipDeployPath, zipRootPath);
-console.log('✅ Paquete caretech-games.zip generado exitosamente con el Hub y los 4 pilares:');
+console.log('✅ Paquete caretech-games.zip generado exitosamente con el Hub y los 6 pilares:');
 console.log(`   📂 ${zipDeployPath}`);
 console.log(`   📂 ${zipRootPath}`);

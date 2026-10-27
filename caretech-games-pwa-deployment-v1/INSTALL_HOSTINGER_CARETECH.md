@@ -7,53 +7,68 @@ Esta guía detalla el proceso para publicar el **Portal de Juegos de CareTech** 
 ## 🌐 URLs de Producción
 
 - **Portal de Juegos**: `https://caretechservices.com/games/`
-- **Juego Solitario PWA**: `https://caretechservices.com/games/solitario/`
+- **Juego Solitario PWA**: `https://caretechservices.com/games/solitario/` (y sincronizado en `/solitario/`)
+- **Compra de Publicidad B2B**: `https://caretechservices.com/publicidad/` (y `/games/publicidad/`)
+- **Portal de Donaciones B2C**: `https://caretechservices.com/donar/` (y `/games/donar/`)
+- **Panel Administrativo en Vivo**: `https://caretechservices.com/games/admin/` (y `/admin/`)
+- **Hub Principal**: `https://caretechservices.com`
 
 ---
 
 ## 📁 1. Estructura de Archivos en Hostinger
 
-En el **Administrador de Archivos (File Manager)** de Hostinger, la estructura dentro de `public_html/` quedará organizada de la siguiente manera:
+En el **Administrador de Archivos (File Manager)** de Hostinger, la estructura dentro de `public_html/` queda organizada de la siguiente manera:
 
 ```text
 public_html/
-├── index.html                    ← Tu sitio web principal de CareTech (¡no se modifica!)
-├── loyalty/                      ← Care Loyalty (si está instalado)
+├── index.html                    ← Hub Principal CareTech Services
+├── styles.css / app.js           ← Estilos y lógica del cotizador principal
+├── business/, health/, pets/...  ← Páginas por vertical
+├── loyalty/                      ← Care Loyalty (Node.js)
+├── publicidad/                   ← Portal B2B de anuncios y patrocinios
+├── donar/                        ← Portal B2C de donaciones comunitarias
 └── games/                        ← Carpeta del Portal de Juegos
     ├── index.html                ← Portal CareTech Games
-    ├── .htaccess                 ← Reglas de seguridad y caché del portal
-    └── solitario/                ← Solitario Care PWA
-        ├── index.html            ← Interfaz y motor del juego
+    ├── api.php                   ← API PHP (activaciones, analítica y rotación)
+    ├── admin/                    ← Panel de administración en vivo
+    ├── publicidad/               ← Espejo sincronizado de publicidad
+    ├── donar/                    ← Espejo sincronizado de donaciones
+    ├── config/pricing.json       ← Tarifario publicitario
+    └── solitario/                ← Solitario Care PWA (v1.4.5)
+        ├── index.html            ← Interfaz, FTUX y modales
+        ├── solitaire.js          ← Motor del juego y Web Audio
+        ├── solitaire.css         ← Estilos del juego y cartas
+        ├── care-ui.css           ← Sistema visual CareTech UI
+        ├── care-platform.js      ← SDK de anuncios y telemetría
         ├── manifest.webmanifest  ← Configuración PWA
-        ├── sw.js                 ← Service Worker aislado (/games/solitario/)
-        ├── register-pwa.js       ← Script de registro del SW y updates
+        ├── sw.js                 ← Service Worker PWA Offline First (v1.4.5)
+        ├── register-pwa.js       ← Registro de Service Worker
         ├── offline.html          ← Pantalla offline de cortesía
-        ├── icons/                ← Iconos PWA (192x192, 512x512, SVG/PNG)
-        ├── .htaccess             ← MIME Types (WASM, JSON, Manifest) y Cache-Control
-        └── [assets / audio / js] ← Recursos del juego
+        ├── icons/                ← Iconos PWA (192x192, 512x512)
+        └── .htaccess             ← MIME Types y caché optimizada
 ```
 
 ---
 
 ## 🚀 2. Métodos de Publicación
 
-### Opción A: Subir el archivo `caretech-games.zip` (Recomendado y más rápido)
+### Opción A: Despliegue Automatizado por SSH (Recomendado)
 
-1. En tu máquina local, ejecuta el script de empaquetado si realizaste cambios:
+Desde la terminal en tu máquina local:
+```bash
+cd caretech-games-pwa-deployment-v1
+npm run deploy
+```
+Este comando compila el paquete `caretech-games.zip`, se conecta de forma segura a Hostinger vía SSH2/SFTP, sube los archivos y extrae en `public_html/` sincronizando automáticamente los permisos y todas las rutas.
+
+### Opción B: Subida Manual de `caretech-games.zip`
+
+1. En tu máquina local, compila el paquete:
    ```bash
    cd caretech-games-pwa-deployment-v1
-   npm run prepare
+   npm run build:zip
    ```
-   *(También puedes usar directamente el archivo listo `caretech-games.zip` generado).*
-
-2. Ingresa a **[hPanel de Hostinger](https://hpanel.hostinger.com/)**.
-3. Selecciona tu dominio `caretechservices.com` y abre **Administrador de Archivos (File Manager)**.
-4. Entra a la carpeta `public_html/`.
-5. Si no existe la carpeta `games`, créala (`public_html/games/`) y entra en ella.
-6. Haz clic en el botón **Subir (Upload)** y sube `caretech-games.zip`.
-7. Haz clic derecho sobre el archivo subido y selecciona **Extraer (Extract)** dentro de `public_html/games/`.
-8. Asegúrate de que los archivos (`index.html`, `.htaccess`, carpeta `solitario/`) queden directamente en `public_html/games/`.
-9. ¡Listo! Puedes borrar el archivo `.zip` para ahorrar espacio.
+2. Sube `caretech-games.zip` a `public_html/` en el Administrador de Archivos de Hostinger y extráelo directamente.
 
 ---
 

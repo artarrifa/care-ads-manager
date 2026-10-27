@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Care Loyalty | Digital Loyalty Program (Apple & Google Wallet)</title>
-  <meta name="description" content="Crea tu programa de sellos y puntos en Apple Wallet y Google Wallet. Haz que tus clientes vuelvan más sin necesidad de descargar apps.">
+  <title>CareTech Services | Tecnología, Fidelización, Juegos Cognitivos & Bienestar</title>
+  <meta name="description" content="Ecosistema CareTech Services: estimulación cognitiva con CareGames, patrocinios y publicidad ética B2B, y fidelización digital en Apple Wallet y Google Wallet.">
   <meta name="theme-color" content="#081325">
 
   <!-- Open Graph / Meta -->
-  <meta property="og:title" content="Care Loyalty - Digital Loyalty Program">
-  <meta property="og:description" content="Turn visits into repeat customers with Apple Wallet & Google Wallet.">
+  <meta property="og:title" content="CareTech Services - Tecnología, Juegos Cognitivos & Fidelización Digital">
+  <meta property="og:description" content="Juegos accesibles con Teleasistencia SOS, publicidad ética para marcas y programas de fidelidad digital en Apple y Google Wallet.">
   <meta property="og:type" content="website">
 
   <!-- Google Fonts -->
@@ -20,7 +20,7 @@
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <link rel="stylesheet" href="styles.css?v=3.0">
+  <link rel="stylesheet" href="styles.css?v=3.1">
 </head>
 <body>
 
@@ -28,10 +28,18 @@
   <div class="top-bar">
     <div class="container top-bar-container">
       <div class="top-bar-text">
-        <span data-i18n="topBarAnnouncement">🚀 Empieza en minutos sin hardware especial. <strong>¡Prueba la demo hoy!</strong></span>
+        <span data-i18n="topBarAnnouncement">🚀 <strong>Ecosistema CareTech:</strong> Juegos con Teleasistencia SOS, Publicidad Ética y Fidelización Digital.</span>
       </div>
       
       <div class="top-bar-controls">
+        <!-- Direct Quick Shortcuts -->
+        <a href="/games/" class="top-direct-link" style="color: #67e8f9; font-weight: 700; text-decoration: none; font-size: 0.82rem; margin-right: 10px;">
+          <i class="fa-solid fa-gamepad"></i> CareGames
+        </a>
+        <a href="/publicidad/" class="top-direct-link" style="color: #34d399; font-weight: 700; text-decoration: none; font-size: 0.82rem; margin-right: 14px;">
+          <i class="fa-solid fa-bullhorn"></i> Publicidad B2B
+        </a>
+
         <!-- Language Switcher -->
         <div class="lang-selector-wrapper">
           <label class="control-label"><i class="fa-solid fa-language"></i></label>
@@ -63,23 +71,38 @@
   <!-- Header / Navigation -->
   <header class="site-header">
     <div class="container header-container">
-      <a href="#" class="brand-logo">
-        <div class="logo-badge"><i class="fa-solid fa-wallet"></i></div>
+      <a href="/" class="brand-logo">
+        <div class="logo-badge" style="background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);">
+          <i class="fa-solid fa-heart-pulse"></i>
+        </div>
         <div class="logo-text">
-          <span class="logo-title">CARE LOYALTY</span>
-          <span class="logo-sub" data-i18n="logoSubtitle">Fidelidad Digital</span>
+          <span class="logo-title">CARETECH SERVICES</span>
+          <span class="logo-sub">Salud, Tecnología & Cuidado</span>
         </div>
       </a>
 
       <nav class="nav-menu" id="navMenu">
-        <a href="#beneficios" class="nav-link" data-i18n="navBenefits">Beneficios</a>
-        <a href="#como-funciona" class="nav-link" data-i18n="navHowItWorks">Cómo Funciona</a>
-        <a href="#panel" class="nav-link" data-i18n="navDashboard">Panel</a>
-        <a href="#planes" class="nav-link" data-i18n="navPricing">Planes y Precios</a>
-        <a href="https://www.caretechapps.com/dashboard" target="_blank" rel="noopener noreferrer" class="nav-link nav-demo-link" data-i18n="navDemo">Demo</a>
+        <a href="/health/" class="nav-link"><i class="fa-solid fa-heart-pulse" style="color: #00f2fe;"></i> Care Health</a>
+        <a href="/games/" class="nav-link"><i class="fa-solid fa-gamepad" style="color: #34d399;"></i> Care Games</a>
+        <a href="/real-estate/" class="nav-link"><i class="fa-solid fa-building-shield" style="color: #fb923c;"></i> Real Estate</a>
+        <a href="/business/" class="nav-link"><i class="fa-solid fa-briefcase" style="color: #60a5fa;"></i> Business (Loyalty)</a>
+        <a href="/pets/" class="nav-link"><i class="fa-solid fa-paw" style="color: #67e8f9;"></i> Care Pets</a>
+        <a href="/development/" class="nav-link"><i class="fa-solid fa-laptop-code" style="color: #fbbf24;"></i> Development</a>
+        <a href="/publicidad/" class="nav-link" style="color: #94a3b8;"><i class="fa-solid fa-bullhorn" style="color: #60a5fa;"></i> Publicidad</a>
+        <a href="javascript:void(0)" onclick="openDonationModal()" class="nav-link" style="color: #f472b6;"><i class="fa-solid fa-heart"></i> Donar</a>
       </nav>
 
       <div class="header-actions">
+        <!-- Direct WeCare Buy Button in Header -->
+        <button type="button" class="btn btn-primary" onclick="openWeCareBuyModal()" style="padding: 9px 16px; font-size: 0.84rem; font-weight: 800; letter-spacing: 0.5px;">
+          <i class="fa-solid fa-cart-shopping"></i> <span>COMPRAR WECARE</span>
+        </button>
+
+        <!-- Quick EHR Salvavidas Link in Header -->
+        <a href="/health/" class="btn btn-secondary header-ehr-btn" style="padding: 9px 13px; font-size: 0.82rem; font-weight: 700; border-color: rgba(16, 185, 129, 0.45); color: #34d399; text-decoration: none;">
+          <i class="fa-solid fa-notes-medical"></i> <span>EHR Salvavidas</span>
+        </a>
+
         <!-- Quick Country Toggle Pills in Header -->
         <div class="header-pills">
           <button class="pill-btn active" data-region="colombia" onclick="changeRegion('colombia')">🇨🇴 COP</button>
@@ -93,11 +116,7 @@
           <button class="lang-pill" data-lang="en" onclick="changeLanguage('en')">EN</button>
         </div>
 
-        <a href="mailto:care@caretechservices.com" class="btn btn-email header-email-btn" title="Enviar correo">
-          <i class="fa-regular fa-envelope"></i>
-        </a>
-
-        <button class="btn btn-whatsapp header-wap-btn" onclick="openWhatsAppModal('General')">
+        <button class="btn btn-whatsapp header-wap-btn" onclick="openWhatsAppModal('General CareTech Services')">
           <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btnChatWhatsApp">WhatsApp</span>
         </button>
         <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir Menú">
@@ -107,130 +126,760 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero-section" id="hero">
+  <!-- ========================================================================
+       HERO PRINCIPAL - HUB CENTRAL CARETECH SERVICES (6 PILARES)
+       ======================================================================== -->
+  <section class="hub-hero-section" id="hero">
     <div class="hero-bg-glow glow-1"></div>
     <div class="hero-bg-glow glow-2"></div>
-    
-    <div class="container hero-container">
-      <div class="hero-content">
-        <div class="pill-tag">
-          <i class="fa-solid fa-sparkles"></i> <span data-i18n="heroBadge">Programa de fidelidad digital para negocios</span>
-        </div>
-        <h1 class="hero-title" id="heroTitle">
-          Haz que tus clientes <span class="gradient-text">vuelvan más.</span>
-        </h1>
-        <p class="hero-description" id="heroDesc">
-          Crea tu programa de sellos o puntos, entrégalo directamente en <strong>Apple Wallet</strong> o <strong>Google Wallet</strong> y convierte cada visita en una nueva oportunidad de venta recurrente.
+
+    <div class="container">
+      <div class="hub-hero-badge">
+        <i class="fa-solid fa-layer-group"></i> Portal Central · Ecosistema de 6 Áreas de Negocio
+      </div>
+
+      <h1 class="hub-main-title">
+        Tecnología diseñada para proteger, cuidar y conectar <span class="gradient-text">lo que más importa.</span>
+      </h1>
+
+      <p class="hub-main-subtitle">
+        Articulamos un ecosistema de seis divisiones estratégicas con máxima prioridad en salud personal con <strong>Care Health</strong> (WeCare &amp; Historia Clínica Salvavidas), estimulación cognitiva con <strong>Care Games</strong>, proptech senior, fidelización comercial B2B, cuidado animal e ingeniería digital.
+      </p>
+
+      <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px;">
+        <button type="button" class="btn btn-buy-wecare" onclick="openWeCareBuyModal()">
+          <i class="fa-solid fa-cart-shopping"></i> Comprar Licencia WeCare
+        </button>
+        <a href="/health/" class="btn btn-ehr-action">
+          <i class="fa-solid fa-notes-medical"></i> Acceder Gratis al EHR Salvavidas
+        </a>
+        <a href="/games/" class="btn btn-games-action">
+          <i class="fa-solid fa-gamepad"></i> Ir a Care Games
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       GRID PRINCIPAL: LAS 6 ÁREAS DE TRABAJO (ECOSISTEMA CARETECH)
+       ======================================================================== -->
+  <section class="hub-pillars-container" id="ecosistema">
+    <div class="container">
+      <div class="section-header text-center" style="margin-bottom: 30px;">
+        <span class="pill-tag" style="background: rgba(0, 198, 255, 0.12); border-color: rgba(0, 198, 255, 0.35); color: #67e8f9;">
+          <i class="fa-solid fa-network-wired"></i> Arquitectura Corporativa
+        </span>
+        <h2 class="section-title">
+          Ecosistema Integral: 6 Líneas Estratégicas
+        </h2>
+        <p class="section-subtitle">
+          Innovación de máxima prioridad en salud personal, entretenimiento cognitivo, espacios residenciales senior, fidelización B2B, protección animal y desarrollo de software.
         </p>
+      </div>
 
-        <!-- 4 Key Points -->
-        <div class="hero-highlights" id="beneficios">
-          <div class="highlight-item">
-            <span class="h-num">01</span>
-            <span class="h-text" data-i18n="highlight1">Sin app para el cliente</span>
+      <div class="hub-pillars-grid">
+
+        <!-- ==================================================================
+             ÁREA 1 (FLAGSHIP ACTIVA / MÁXIMA PRIORIDAD): CARE HEALTH
+             ================================================================== -->
+        <div class="pillar-card pillar-health-featured" id="health">
+          <div class="pillar-header-row">
+            <div class="pillar-icon-box icon-health">
+              <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+            <span class="pillar-status-badge badge-core-live" style="background: rgba(0, 210, 255, 0.2); border-color: #00f2fe; color: #67e8f9;">
+              <i class="fa-solid fa-star"></i> Activo · División Flagship de Salud
+            </span>
           </div>
-          <div class="highlight-item">
-            <span class="h-num">02</span>
-            <span class="h-text" data-i18n="highlight2">QR para registrar visitas</span>
+
+          <div class="pillar-name-wrap">
+            <span class="pillar-number">Área 01 · Núcleo de Salud, Registros Médicos &amp; Asistencia</span>
+            <h3 class="pillar-title" style="font-size: 1.85rem;">Care Health — Salud Soberana &amp; Emergencias</h3>
           </div>
-          <div class="highlight-item">
-            <span class="h-num">03</span>
-            <span class="h-text" data-i18n="highlight3">Premios y recompensas</span>
-          </div>
-          <div class="highlight-item">
-            <span class="h-num">04</span>
-            <span class="h-text" data-i18n="highlight4">Campañas por Wallet, WhatsApp & SMS</span>
+
+          <p class="pillar-desc" style="max-width: 980px; font-size: 0.96rem;">
+            El pilar fundamental de CareTech Services. Brindamos soberanía sobre tu información médica y auxilio inmediato para ti y tu familia a través de dos herramientas complementarias de alto impacto:
+          </p>
+
+          <!-- DUAL SUB-GRID: WECARE vs HISTORIA CLÍNICA SALVAVIDAS -->
+          <div class="health-dual-grid">
+
+            <!-- Sub-opción 1: WeCare App & Historia Clínica -->
+            <div class="health-subcard subcard-wecare">
+              <span class="subcard-badge subcard-badge-wecare">
+                <i class="fa-solid fa-lock"></i> Licencia Privada Personal &amp; Familiar
+              </span>
+              <h4 style="color: #ffffff; font-size: 1.25rem; font-weight: 800; margin-bottom: 10px;">
+                WeCare App — Historia Clínica Confidencial
+              </h4>
+              <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.55; margin-bottom: 16px;">
+                Aplicación móvil y web de uso 100% privado con cifrado de extremo a extremo tipo diario personal. Sin agendas comerciales compartidas ni intermediarios invasivos.
+              </p>
+
+              <ul class="pillar-features-list" style="margin-bottom: 20px;">
+                <li>
+                  <i class="fa-solid fa-shield-halved text-cyan"></i>
+                  <div><strong>Privacidad Absoluta:</strong> Cifrado local grado médico. Tus datos jamás se venden ni se comparten con terceros.</div>
+                </li>
+                <li>
+                  <i class="fa-solid fa-pills text-lime"></i>
+                  <div><strong>Control de Medicamentos:</strong> Dosis, posología y recordatorios automáticos familiares.</div>
+                </li>
+                <li>
+                  <i class="fa-solid fa-person-falling-burst" style="color: #f87171;"></i>
+                  <div><strong>Detección de Caídas &amp; GPS:</strong> Alerta inmediata a contactos clave en caso de emergencias.</div>
+                </li>
+              </ul>
+
+              <div class="pillar-action-row" style="padding-top: 14px;">
+                <!-- Botón CTA Primario: COMPRAR LICENCIA -->
+                <button type="button" class="btn-buy-wecare" onclick="openWeCareBuyModal()">
+                  <i class="fa-solid fa-cart-shopping"></i> COMPRAR LICENCIA
+                </button>
+                <a href="https://apps.apple.com/co/app/wecareapp/id6673915367" target="_blank" rel="noopener noreferrer" class="btn btn-outline-light" style="padding: 10px 14px; font-size: 0.84rem;">
+                  <i class="fa-brands fa-apple"></i> App Store
+                </a>
+                <a href="/health/" class="link-secondary-subtle">
+                  Ver Detalles WeCare ➔
+                </a>
+              </div>
+            </div>
+
+            <!-- Sub-opción 2: Historia Clínica Salvavidas (Free Online EHR) -->
+            <div class="health-subcard subcard-ehr">
+              <span class="subcard-badge subcard-badge-ehr">
+                <i class="fa-solid fa-bolt"></i> 100% Gratuito · Herramienta Web Inmediata
+              </span>
+              <h4 style="color: #ffffff; font-size: 1.25rem; font-weight: 800; margin-bottom: 10px;">
+                Historia Clínica Salvavidas — Free Online EHR
+              </h4>
+              <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.55; margin-bottom: 16px;">
+                Herramienta web de acceso rápido para emergencias médicas en línea. Genera tu ficha médica salvavidas inmediata (grupo sanguíneo, alergias, contactos SOS) accesible en segundos para paramédicos.
+              </p>
+
+              <ul class="pillar-features-list" style="margin-bottom: 20px;">
+                <li>
+                  <i class="fa-solid fa-bolt text-lime"></i>
+                  <div><strong>Acceso Instantáneo Sin Costo:</strong> 100% libre, sin registro obligatorio ni descargas pesadas.</div>
+                </li>
+                <li>
+                  <i class="fa-solid fa-notes-medical text-cyan"></i>
+                  <div><strong>Ficha Médica para Rescatistas:</strong> Alergias críticas, patologías base y teléfono de emergencia.</div>
+                </li>
+                <li>
+                  <i class="fa-solid fa-qrcode" style="color: #60a5fa;"></i>
+                  <div><strong>QR de Emergencia en Pantalla:</strong> Llévalo en la pantalla de bloqueo o imprímelo para tu billetera.</div>
+                </li>
+              </ul>
+
+              <div class="pillar-action-row" style="padding-top: 14px;">
+                <!-- Botón CTA Secundario: ACCEDER GRATIS AL EHR -->
+                <a href="/health/" class="btn-ehr-action">
+                  <i class="fa-solid fa-notes-medical"></i> ACCEDER GRATIS AL EHR
+                </a>
+                <a href="/health/#ehr-tool" class="link-secondary-subtle">
+                  Crear Ficha Médica Ahora ➔
+                </a>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <!-- CTA Buttons -->
-        <div class="hero-ctas">
-          <a href="https://www.caretechapps.com/dashboard" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-large">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> <span data-i18n="btnTryDemo">Probar Demo Gratis</span>
-          </a>
-          <button class="btn btn-whatsapp btn-large" onclick="openWhatsAppModal('Demo y Cotización')">
-            <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btnChatAdvisor">Chatear con un Asesor</span>
-          </button>
-          <a href="mailto:care@caretechservices.com" class="btn btn-secondary btn-large">
-            <i class="fa-regular fa-envelope"></i> <span data-i18n="btnEmailUs">Escribir por Email</span>
-          </a>
+        <!-- ==================================================================
+             ÁREA 2 (ACTIVA / BIENESTAR): CARE GAMES (ESTIMULACIÓN COGNITIVA)
+             ================================================================== -->
+        <div class="pillar-card pillar-games" id="caregames-pillar">
+          <div class="pillar-header-row">
+            <div class="pillar-icon-box icon-games-hub">
+              <i class="fa-solid fa-gamepad"></i>
+            </div>
+            <span class="pillar-status-badge badge-games-live">
+              <i class="fa-solid fa-circle-check"></i> Activo · Acceso Libre
+            </span>
+          </div>
+
+          <div class="pillar-name-wrap">
+            <span class="pillar-number">Área 02 · Bienestar Cognitivo &amp; Familia</span>
+            <h3 class="pillar-title">Care Games — Mente Activa &amp; Relax</h3>
+          </div>
+
+          <p class="pillar-desc">
+            Portal oficial de juegos de estimulación cognitiva diseñados para adultos mayores y familias, con interfaz accesible de alto contraste, cero ruidos molestos y botón de Teleasistencia SOS integrado.
+          </p>
+
+          <ul class="pillar-features-list">
+            <li>
+              <i class="fa-solid fa-brain text-lime"></i>
+              <div><strong>Estimulación Cognitiva Sin Frustración:</strong> Memoria de trabajo, cálculo y concentración sin temporizadores agobiantes.</div>
+            </li>
+            <li>
+              <i class="fa-solid fa-volume-xmark text-cyan"></i>
+              <div><strong>100% Cero Ruidos Molestos:</strong> Sin melodías estridentes ni anuncios invasivos que interrumpan la partida.</div>
+            </li>
+            <li>
+              <i class="fa-solid fa-life-ring" style="color: #f87171;"></i>
+              <div><strong>Teleasistencia SOS en Pantalla:</strong> Botón de auxilio permanente para alertar a familiares en caso de urgencia.</div>
+            </li>
+            <li>
+              <i class="fa-solid fa-wifi" style="color: #60a5fa;"></i>
+              <div><strong>Tecnología PWA Offline:</strong> Fichas grandes senior y funcionamiento sin consumir datos móviles.</div>
+            </li>
+          </ul>
+
+          <div class="pillar-action-row">
+            <!-- Botón CTA: JUGAR AHORA -->
+            <a href="/games/" class="btn-games-action">
+              <i class="fa-solid fa-play"></i> JUGAR AHORA
+            </a>
+            <a href="/games/solitario/" class="link-secondary-subtle">
+              Probar Solitario Care ➔
+            </a>
+          </div>
         </div>
 
-        <div class="hero-footnote">
-          <i class="fa-solid fa-bolt text-cyan"></i>
-          <span data-i18n="heroFootnote">Empieza en minutos. <strong>Sin hardware especial</strong>, funciona desde cualquier celular o tablet.</span>
+        <!-- ==================================================================
+             ÁREA 3 (EN CONSTRUCCIÓN): CARE REAL ESTATE (PROPTECH SENIOR)
+             ================================================================== -->
+        <div class="pillar-card in-construction pillar-real-estate" id="real-estate">
+          <div class="pillar-header-row">
+            <div class="pillar-icon-box icon-real-estate">
+              <i class="fa-solid fa-building-shield"></i>
+            </div>
+            <span class="pillar-status-badge badge-soon-gold">
+              <i class="fa-solid fa-screwdriver-wrench"></i> Próximamente / En Construcción
+            </span>
+          </div>
+
+          <div class="pillar-name-wrap">
+            <span class="pillar-number">Área 03 · PropTech &amp; Espacios Seguros</span>
+            <h3 class="pillar-title">Care Real Estate — Espacios Senior</h3>
+          </div>
+
+          <p class="pillar-desc">
+            Soluciones inmobiliarias asistidas y residencias inteligentes adaptadas para la tercera edad. Arquitectura ergonómica y telemetría preventiva para un envejecimiento activo y seguro.
+          </p>
+
+          <ul class="pillar-features-list">
+            <li>
+              <i class="fa-solid fa-house-chimney-medical" style="color: #fb923c;"></i>
+              <div><strong>Viviendas Asistidas Inteligentes:</strong> Detección pasiva de caídas y monitorización ambiental no invasiva sin cámaras.</div>
+            </li>
+            <li>
+              <i class="fa-solid fa-wheelchair text-cyan"></i>
+              <div><strong>Accesibilidad Universal Senior:</strong> Baños adaptados, pisos antideslizantes y pasillos amplios ergonómicos.</div>
+            </li>
+            <li>
+              <i class="fa-solid fa-tower-broadcast text-lime"></i>
+              <div><strong>Teleasistencia Domiciliaria:</strong> Botones de pánico y comunicación directa con la red médica de CareTech.</div>
+            </li>
+            <li>
+              <i class="fa-solid fa-users-rays" style="color: #60a5fa;"></i>
+              <div><strong>Comunidades y Senior Living:</strong> Entornos colaborativos diseñados para prevenir el aislamiento y promover la salud.</div>
+            </li>
+          </ul>
+
+          <div class="pillar-action-row">
+            <a href="/real-estate/" class="btn-soon-contact">
+              <i class="fa-solid fa-building"></i> Conocer Proyectos Residenciales
+            </a>
+            <span style="font-size: 0.8rem; color: #fb923c; margin-left: auto;">
+              <i class="fa-solid fa-calendar-days"></i> PropTech Senior
+            </span>
+          </div>
+        </div>
+
+        <!-- ==================================================================
+             ÁREA 4 (EN CONSTRUCCIÓN): CARE BUSINESS & CARE LOYALTY
+             ================================================================== -->
+        <div class="pillar-card in-construction pillar-business" id="business">
+          <div class="pillar-header-row">
+            <div class="pillar-icon-box icon-business">
+              <i class="fa-solid fa-briefcase"></i>
+            </div>
+            <span class="pillar-status-badge badge-soon-gold">
+              <i class="fa-solid fa-screwdriver-wrench"></i> Próximamente / En Construcción
+            </span>
+          </div>
+
+          <div class="pillar-name-wrap">
+            <span class="pillar-number">Área 04 · Soluciones B2B &amp; Fidelización</span>
+            <h3 class="pillar-title">Care Business — Care Loyalty &amp; B2B</h3>
+          </div>
+
+          <p class="pillar-desc">
+            Soluciones empresariales para clínicas, marcas y comercios. Destaca nuestro producto estrella <strong>Care Loyalty</strong>: fidelización inteligente en Apple Wallet y Google Wallet sin descargar apps.
+          </p>
+
+          <ul class="pillar-features-list">
+            <li>
+              <i class="fa-solid fa-wallet text-cyan"></i>
+              <div><strong>Care Loyalty Flagship:</strong> Pases de fidelidad en billeteras digitales con notificaciones push geolocalizadas.</div>
+            </li>
+            <li>
+              <i class="fa-solid fa-chart-line text-lime"></i>
+              <div><strong>Retención y Repetición de Compra:</strong> Cupones dinámicos, tarjetas de sellos y recompensas automatizadas.</div>
+            </li>
+            <li>
+              <i class="fa-solid fa-bullhorn" style="color: #60a5fa;"></i>
+              <div><strong>Publicidad Ética en CareGames:</strong> 14.5 minutos de atención real por sesión en un entorno libre de AdBlock.</div>
+            </li>
+            <li>
+              <i class="fa-solid fa-gauge-high" style="color: #f59e0b;"></i>
+              <div><strong>Dashboard de Métricas en Vivo:</strong> Análisis de clientes, canjes y retorno comercial en tiempo real.</div>
+            </li>
+          </ul>
+
+          <div class="pillar-action-row">
+            <a href="/business/" class="btn-soon-contact">
+              <i class="fa-solid fa-wallet"></i> Explorar Care Loyalty B2B
+            </a>
+            <a href="/publicidad/" class="link-secondary-subtle">
+              Ver Publicidad B2B ➔
+            </a>
+          </div>
+        </div>
+
+        <!-- ==================================================================
+             ÁREA 5 (EN CONSTRUCCIÓN): CARE PETS (BIENESTAR Y SALUD ANIMAL)
+             ================================================================== -->
+        <div class="pillar-card in-construction pillar-pets" id="pets">
+          <div class="pillar-header-row">
+            <div class="pillar-icon-box icon-pets">
+              <i class="fa-solid fa-paw"></i>
+            </div>
+            <span class="pillar-status-badge badge-soon-cyan">
+              <i class="fa-solid fa-shield-cat"></i> Próximamente / En Construcción
+            </span>
+          </div>
+
+          <div class="pillar-name-wrap">
+            <span class="pillar-number">Área 05 · Bienestar &amp; Trazabilidad Animal</span>
+            <h3 class="pillar-title">Care Pets — Salud Integral para Mascotas</h3>
+          </div>
+
+          <p class="pillar-desc">
+            Plataforma integral de seguimiento médico, historial veterinario digital y protección inteligente para animales de compañía y mascotas de la familia.
+          </p>
+
+          <ul class="pillar-features-list">
+            <li>
+              <i class="fa-solid fa-notes-medical text-cyan"></i>
+              <div><strong>Historial Clínico Veterinario:</strong> Vacunación, desparasitaciones, cirugías y peso al alcance de tu mano.</div>
+            </li>
+            <li>
+              <i class="fa-solid fa-bell text-lime"></i>
+              <div><strong>Recordatorios de Citas &amp; Dosis:</strong> Alertas automáticas para nunca pasar por alto una desparasitación o control.</div>
+            </li>
+            <li>
+              <i class="fa-solid fa-qrcode text-cyan"></i>
+              <div><strong>Placa Inteligente QR &amp; Localización:</strong> Canal de auxilio seguro y contacto directo si tu mascota se extravía.</div>
+            </li>
+            <li>
+              <i class="fa-solid fa-stethoscope" style="color: #f472b6;"></i>
+              <div><strong>Teleorientación Preventiva:</strong> Consejos veterinarios y nutrición preventiva para su longevidad.</div>
+            </li>
+          </ul>
+
+          <div class="pillar-action-row">
+            <a href="/pets/" class="btn-soon-contact">
+              <i class="fa-solid fa-paw"></i> Acceso Anticipado Care Pets
+            </a>
+            <span style="font-size: 0.8rem; color: #67e8f9; margin-left: auto;">
+              <i class="fa-solid fa-bell"></i> Early Access
+            </span>
+          </div>
+        </div>
+
+        <!-- ==================================================================
+             ÁREA 6 (EN CONSTRUCCIÓN): CARE DEVELOPMENT (SOFTWARE A MEDIDA)
+             ================================================================== -->
+        <div class="pillar-card in-construction pillar-dev" id="development">
+          <div class="pillar-header-row">
+            <div class="pillar-icon-box icon-dev">
+              <i class="fa-solid fa-laptop-code"></i>
+            </div>
+            <span class="pillar-status-badge badge-soon-gold">
+              <i class="fa-solid fa-screwdriver-wrench"></i> Próximamente / En Construcción
+            </span>
+          </div>
+
+          <div class="pillar-name-wrap">
+            <span class="pillar-number">Área 06 · Ingeniería &amp; Soluciones Corporativas</span>
+            <h3 class="pillar-title">Care Development — Software a Medida</h3>
+          </div>
+
+          <p class="pillar-desc">
+            División de ingeniería especializada en arquitectura de software, desarrollo de aplicaciones PWA y nativas, integraciones de APIs y soporte tecnológico corporativo.
+          </p>
+
+          <ul class="pillar-features-list">
+            <li>
+              <i class="fa-solid fa-code text-warning"></i>
+              <div><strong>Desarrollo Web &amp; Apps Nativas / PWA:</strong> Plataformas de alto rendimiento bajo estándares modernos de velocidad.</div>
+            </li>
+            <li>
+              <i class="fa-solid fa-arrows-split-up-and-left text-cyan"></i>
+              <div><strong>Integraciones de APIs &amp; Pasarelas:</strong> Conexión de historias clínicas, pagos (PayPal, Binance Pay, Wompi) y telemetría.</div>
+            </li>
+            <li>
+              <i class="fa-solid fa-cloud text-lime"></i>
+              <div><strong>Arquitectura Cloud &amp; Soporte 24/7:</strong> Infraestructura resiliente, bases de datos optimizadas y monitoreo proactivo.</div>
+            </li>
+            <li>
+              <i class="fa-solid fa-lock text-warning"></i>
+              <div><strong>Seguridad y Privacidad Normativa:</strong> Software auditado bajo estrictos protocolos de protección de datos de salud.</div>
+            </li>
+          </ul>
+
+          <div class="pillar-action-row">
+            <a href="/development/" class="btn-soon-contact">
+              <i class="fa-solid fa-file-signature"></i> Cotizar Solución de Software
+            </a>
+            <span style="font-size: 0.8rem; color: #fbbf24; margin-left: auto;">
+              <i class="fa-solid fa-laptop-code"></i> Consultoría Senior
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       1. SECCIÓN CAREGAMES (Juegos de Bienestar y Agilidad Mental)
+       ======================================================================== -->
+  <section class="section-caregames" id="caregames">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="pill-tag pill-tag-games">
+          <i class="fa-solid fa-gamepad"></i> <span>Ecosistema CareGames · Bienestar y Agilidad Mental</span>
+        </div>
+        <h2 class="section-title">
+          Juegos diseñados para la mente, <span class="gradient-text-cyan">el bienestar y la familia.</span>
+        </h2>
+        
+        <!-- Propuesta de Valor Única -->
+        <div class="value-quote-banner" style="max-width: 860px; margin: 16px auto 0 auto; text-align: center;">
+          <p>
+            <i class="fa-solid fa-quote-left" style="color: #06b6d4; margin-right: 8px;"></i>
+            <strong>Juegos diseñados para adultos mayores y familias</strong>, con estimulación cognitiva, cero ruidos molestos y botón de Teleasistencia SOS integrado.
+            <i class="fa-solid fa-quote-right" style="color: #06b6d4; margin-left: 8px;"></i>
+          </p>
         </div>
       </div>
 
-      <!-- Hero Visual: Phone / Digital Card Simulation -->
-      <div class="hero-visual">
-        <div class="phone-frame">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
-            
-            <!-- Wallet Pass Card -->
-            <div class="wallet-card">
-              <div class="card-header">
-                <div class="card-brand">
-                  <i class="fa-solid fa-mug-hot"></i>
-                  <span>ORAU</span>
-                </div>
-                <div class="card-type">
-                  <i class="fa-brands fa-apple"></i> Wallet
-                </div>
+      <div class="caregames-hero-grid">
+        <!-- Columna Izquierda: Pilares de Valor -->
+        <div class="caregames-left">
+          <div class="games-features-grid">
+            <div class="games-feature-card">
+              <div class="feature-icon-wrap icon-brain">
+                <i class="fa-solid fa-brain"></i>
               </div>
+              <h4>Estimulación Cognitiva Activa</h4>
+              <p>Mecánicas diseñadas para ejercitar la memoria de trabajo, la concentración y la agilidad espacial sin estrés ni frustración.</p>
+            </div>
 
-              <div class="card-body">
-                <div class="stamp-count-container">
-                  <div class="stamp-count" id="stampCounter">7<span>/10</span></div>
-                  <div class="stamp-label" data-i18n="walletStampsLabel">Sellos acumulados</div>
-                </div>
+            <div class="games-feature-card">
+              <div class="feature-icon-wrap icon-silence">
+                <i class="fa-solid fa-volume-xmark"></i>
+              </div>
+              <h4>100% Cero Ruidos Molestos</h4>
+              <p>Experiencia de paz mental: sin melodías estridentes, sin temporizadores agobiantes y sin anuncios invasivos a pantalla completa.</p>
+            </div>
 
-                <!-- Interactive Stamp Grid -->
-                <div class="stamps-grid" id="stampsGrid">
-                  <div class="stamp-circle active"><i class="fa-solid fa-check"></i></div>
-                  <div class="stamp-circle active"><i class="fa-solid fa-check"></i></div>
-                  <div class="stamp-circle active"><i class="fa-solid fa-check"></i></div>
-                  <div class="stamp-circle active"><i class="fa-solid fa-check"></i></div>
-                  <div class="stamp-circle active"><i class="fa-solid fa-check"></i></div>
-                  <div class="stamp-circle active"><i class="fa-solid fa-check"></i></div>
-                  <div class="stamp-circle active"><i class="fa-solid fa-check"></i></div>
-                  <div class="stamp-circle"><i class="fa-solid fa-coffee"></i></div>
-                  <div class="stamp-circle"><i class="fa-solid fa-coffee"></i></div>
-                  <div class="stamp-circle reward-circle"><i class="fa-solid fa-gift"></i></div>
-                </div>
+            <div class="games-feature-card">
+              <div class="feature-icon-wrap icon-sos">
+                <i class="fa-solid fa-life-ring"></i>
+              </div>
+              <h4>Teleasistencia SOS en 1 Clic</h4>
+              <p>Botón de emergencia permanente en pantalla, listo para alertar a familiares o llamar a emergencias médicas en caso de auxilio.</p>
+            </div>
 
-                <div class="card-meta">
-                  <div class="meta-col">
-                    <span class="meta-label" data-i18n="walletMemberLabel">MIEMBRO</span>
-                    <span class="meta-val">Al Caffe</span>
-                  </div>
-                  <div class="meta-col">
-                    <span class="meta-label" data-i18n="walletRewardLabel">RECOMPENSA</span>
-                    <span class="meta-val text-lime" data-i18n="walletRewardVal">Café Gratis</span>
-                  </div>
-                  <div class="meta-col">
-                    <span class="meta-label" data-i18n="walletBusinessLabel">NEGOCIO</span>
-                    <span class="meta-val">ORAU</span>
-                  </div>
-                </div>
+            <div class="games-feature-card">
+              <div class="feature-icon-wrap icon-pwa">
+                <i class="fa-solid fa-universal-access"></i>
+              </div>
+              <h4>PWA Accesible & Modo Senior</h4>
+              <p>Cartas y fichas extra-grandes de alto contraste, tipografía nítida para baja visión y soporte offline completo sin descargas.</p>
+            </div>
+          </div>
 
-                <div class="card-qr-section">
-                  <div class="qr-box">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https://www.caretechapps.com/dashboard" alt="Código QR de fidelidad" class="qr-img">
-                  </div>
-                  <p class="qr-text" data-i18n="walletScanText"><i class="fa-solid fa-qrcode"></i> Escanear tarjeta en caja</p>
-                </div>
+          <div class="caregames-ctas">
+            <a href="/games/solitario/" class="btn btn-primary btn-large btn-play-glow">
+              <i class="fa-solid fa-play"></i> Jugar Gratis al Instante
+            </a>
+            <a href="/games/" class="btn btn-outline-cyan btn-large">
+              <i class="fa-solid fa-border-all"></i> Explorar Portal de Juegos
+            </a>
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Tarjeta Visual Destacada de Solitario Care -->
+        <div class="game-showcase-card">
+          <div class="game-card-top-bar">
+            <span class="game-featured-tag">
+              <i class="fa-solid fa-trophy"></i> Juego Estrella
+            </span>
+            <span class="game-free-badge">
+              <i class="fa-solid fa-check"></i> 100% Gratis
+            </span>
+          </div>
+
+          <h3 style="font-size: 1.35rem; font-weight: 800; color: #fff; margin-bottom: 6px;">Solitario Care Klondike</h3>
+          <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 16px;">
+            El clásico juego de cartas adaptado especialmente para el bienestar cognitivo y la serenidad familiar.
+          </p>
+
+          <!-- Mockup Visual del Tablero -->
+          <div class="game-screen-mockup">
+            <div class="mockup-sos-header">
+              <span class="mockup-sos-pill">
+                <i class="fa-solid fa-bell"></i> SOS ACTIVO
+              </span>
+              <div class="mockup-score-box">
+                <span>Movimientos: <strong>12</strong></span>
+                <span>Puntos: <strong>140</strong></span>
               </div>
             </div>
 
-            <!-- Floating interactive prompt -->
-            <div class="wallet-action-bar">
-              <span data-i18n="walletSimulatePrompt">¡Simula sellar tarjeta!</span>
-              <button class="btn-stamp-add" id="btnSimulateStamp" data-i18n="btnAddStamp">+ Añadir Sello</button>
+            <!-- Fichas visuales de cartas -->
+            <div class="mockup-cards-row">
+              <div class="mockup-card-item card-back"></div>
+              <div class="mockup-card-item red">
+                <span>A</span>
+                <i class="fa-solid fa-heart"></i>
+              </div>
+              <div class="mockup-card-item black">
+                <span>K</span>
+                <i class="fa-solid fa-spade"></i>
+              </div>
+              <div class="mockup-card-item red">
+                <span>Q</span>
+                <i class="fa-solid fa-diamond"></i>
+              </div>
+              <div class="mockup-card-item black">
+                <span>J</span>
+                <i class="fa-solid fa-club"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Píldoras de Métricas -->
+          <div class="game-stats-pills">
+            <span class="stat-pill"><i class="fa-solid fa-clock text-cyan"></i> 14.5 min promedio</span>
+            <span class="stat-pill"><i class="fa-solid fa-eye text-lime"></i> Alto Contraste</span>
+            <span class="stat-pill"><i class="fa-solid fa-wifi" style="color: #60a5fa;"></i> Funciona Offline</span>
+          </div>
+
+          <a href="/games/solitario/" class="btn btn-primary w-100" style="font-weight: 700; padding: 12px; font-size: 0.95rem;">
+            <i class="fa-solid fa-play"></i> Probar Solitario Care Ahora
+          </a>
+
+          <div class="game-trust-footnote">
+            <span><i class="fa-solid fa-shield"></i> Sin registros</span>
+            <span><i class="fa-solid fa-mobile-screen"></i> Celular, Tablet y PC</span>
+            <span><i class="fa-solid fa-floppy-disk"></i> Guardado local</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       2. SECCIÓN DE PATROCINIOS Y PUBLICIDAD ÉTICA (B2B)
+       ======================================================================== -->
+  <section class="section-publicidad-b2b" id="publicidad">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="pill-tag pill-tag-b2b">
+          <i class="fa-solid fa-briefcase"></i> <span>Patrocinios & Publicidad Ética (B2B)</span>
+        </div>
+        <h2 class="section-title">
+          Tu marca en un entorno de <span class="gradient-text-emerald">máxima atención y confianza.</span>
+        </h2>
+
+        <!-- Gancho Comercial B2B -->
+        <div class="b2b-hook-highlight">
+          <p>
+            <i class="fa-solid fa-bullhorn" style="color: #10b981; margin-right: 8px;"></i>
+            <strong>Anúnciate ante una audiencia fiel, sin bloqueadores de anuncios (AdBlock), con 14.5 minutos de atención real por sesión y en un entorno de teleasistencia.</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- Métricas Clave B2B -->
+      <div class="b2b-metrics-grid">
+        <div class="b2b-metric-card">
+          <div class="b2b-metric-icon"><i class="fa-solid fa-shield-virus"></i></div>
+          <div class="b2b-metric-value">100% Inmune</div>
+          <div class="b2b-metric-label">Sin bloqueadores de anuncios (AdBlock). El banner vive integrado en el lienzo del juego.</div>
+        </div>
+
+        <div class="b2b-metric-card">
+          <div class="b2b-metric-icon"><i class="fa-solid fa-stopwatch"></i></div>
+          <div class="b2b-metric-value">14.5 Minutos</div>
+          <div class="b2b-metric-label">Atención sostenida y relajada, sin distracciones de redes sociales ni popups que compitan.</div>
+        </div>
+
+        <div class="b2b-metric-card">
+          <div class="b2b-metric-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+          <div class="b2b-metric-value">Asociación Positiva</div>
+          <div class="b2b-metric-label">Tu marca vinculada al cuidado, teleasistencia, inclusión y salud de los adultos mayores.</div>
+        </div>
+
+        <div class="b2b-metric-card">
+          <div class="b2b-metric-icon"><i class="fa-solid fa-arrow-pointer"></i></div>
+          <div class="b2b-metric-value">Triple Conversión</div>
+          <div class="b2b-metric-label">Botonera interactiva exclusiva para llevar tráfico directo a tu Web, Donaciones o Tienda.</div>
+        </div>
+      </div>
+
+      <!-- Simulador Visual del Banner con Triple Botonera -->
+      <div class="b2b-interactive-preview-card">
+        <div class="preview-card-header">
+          <div class="preview-title-badge">
+            <i class="fa-solid fa-eye"></i> Simulación en Tablero Real (Espacio de Banner Superior)
+          </div>
+          <span class="preview-status-pill">
+            <i class="fa-solid fa-check-double"></i> 1 Anunciante por Turno (Rotación 60s)
+          </span>
+        </div>
+
+        <!-- Mesa de Juego Verde con el Banner Real -->
+        <div class="preview-table-canvas">
+          <div class="interactive-live-banner">
+            <span class="live-badge-type-ad">PATROCINADO</span>
+
+            <div class="live-sponsor-avatar">
+              <i class="fa-solid fa-hospital-user"></i>
             </div>
 
+            <div class="live-sponsor-info">
+              <div class="live-sponsor-title">Clínica & Salud Familiar San Rafael</div>
+              <div class="live-sponsor-desc">Consultas preventivas, telemedicina 24/7 y planes de bienestar para adultos mayores.</div>
+            </div>
+
+            <!-- Botonera Interactiva: 🌐 Web, ❤️ Donación, 🛒 Tienda -->
+            <div class="live-triple-actions">
+              <button type="button" class="live-action-btn live-btn-web-action" onclick="previewBannerClick('web')" title="Simular clic a sitio web corporativo">
+                <i class="fa-solid fa-globe"></i> <span>Web</span>
+              </button>
+              <button type="button" class="live-action-btn live-btn-donate-action" onclick="previewBannerClick('donar')" title="Simular clic a donación o causa social">
+                <i class="fa-solid fa-heart"></i> <span>Donar</span>
+              </button>
+              <button type="button" class="live-action-btn live-btn-shop-action" onclick="previewBannerClick('tienda')" title="Simular clic a tienda online o citas">
+                <i class="fa-solid fa-cart-shopping"></i> <span>Tienda</span>
+              </button>
+              <span class="live-close-sim" onclick="previewBannerClick('close')" title="Cierre de cortesía">&times;</span>
+            </div>
+          </div>
+
+          <!-- Alerta de Feedback para interacción -->
+          <div class="banner-feedback-alert" id="bannerFeedbackToast">
+            <i id="bannerFeedbackIcon" class="fa-solid fa-circle-info"></i>
+            <span id="bannerFeedbackMsg">
+              <strong>Botonera Interactiva:</strong> Haz clic en cualquiera de los 3 botones (Web, Donar o Tienda) para simular cómo los jugadores interactúan con tu marca sin pausar su partida.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTAs de Publicidad B2B -->
+      <div class="b2b-ctas-wrap">
+        <a href="/publicidad/" class="btn btn-emerald btn-large">
+          <i class="fa-solid fa-bullhorn"></i> Conoce nuestros espacios publicitarios
+        </a>
+        <button class="btn btn-whatsapp btn-large" onclick="openWhatsAppModal('Publicidad B2B & Patrocinios')">
+          <i class="fa-brands fa-whatsapp"></i> Hablar con Asesor B2B
+        </button>
+        <p class="b2b-footnote-text">
+          <i class="fa-solid fa-bolt text-cyan"></i> Espacios de alta demanda para clínicas, aseguradoras, farmacias y comercios de bienestar. Activación rápida en 2 horas.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       3. BLOQUE DE APOYO COMUNITARIO Y DONACIONES (B2C)
+       ======================================================================== -->
+  <section class="section-donations" id="donaciones">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="pill-tag pill-tag-donation">
+          <i class="fa-solid fa-heart"></i> <span>Comunidad & Sostenibilidad Ética</span>
+        </div>
+        <h2 class="section-title">
+          Ayúdanos a mantener la tecnología <span class="gradient-text-pink">libre de ruidos y accesible para todos.</span>
+        </h2>
+        <p class="section-subtitle" style="max-width: 820px; margin: 12px auto 0 auto;">
+          CareTech Services es un proyecto comprometido con la estimulación cognitiva y la teleasistencia familiar. Para mantener los juegos sin popups invasivos ni suscripciones forzadas, agradecemos las micro-donaciones voluntarias de quienes valoran un internet más humano.
+        </p>
+      </div>
+
+      <!-- Widget de Donaciones -->
+      <div class="donations-card-wrapper">
+        <div class="donation-tiers-grid">
+          <!-- Tier 1 -->
+          <div class="donation-tier-item" onclick="selectDonationTier(1, this)">
+            <span class="tier-amount-value">$1 USD</span>
+            <span class="tier-currency-sub">≈ $4.000 COP</span>
+            <span class="tier-title-label">Un Café ☕</span>
+            <span class="tier-desc-mini">Apoyo simbólico para mantener servidores y ancho de banda activos.</span>
+          </div>
+
+          <!-- Tier 2 (Popular) -->
+          <div class="donation-tier-item active" onclick="selectDonationTier(3, this)">
+            <span class="tier-popular-tag">Más Popular</span>
+            <span class="tier-amount-value">$3 USD</span>
+            <span class="tier-currency-sub">≈ $12.000 COP</span>
+            <span class="tier-title-label">Apoyo Mensual ⭐</span>
+            <span class="tier-desc-mini">Cubre los costos de telemetría y teleasistencia para 10 familias.</span>
+          </div>
+
+          <!-- Tier 3 -->
+          <div class="donation-tier-item" onclick="selectDonationTier(5, this)">
+            <span class="tier-amount-value">$5 USD</span>
+            <span class="tier-currency-sub">≈ $20.000 COP</span>
+            <span class="tier-title-label">Padrino Care 🏆</span>
+            <span class="tier-desc-mini">Financia el desarrollo de nuevos niveles y ejercicios para la memoria.</span>
+          </div>
+
+          <!-- Tier 4 -->
+          <div class="donation-tier-item" onclick="selectDonationTier(10, this)">
+            <span class="tier-amount-value">$10 USD</span>
+            <span class="tier-currency-sub">≈ $40.000 COP</span>
+            <span class="tier-title-label">Impacto Total 🚀</span>
+            <span class="tier-desc-mini">Impulsa alianzas y donación de tablets a hogares geriátricos.</span>
+          </div>
+        </div>
+
+        <!-- Input de Aporte Personalizado -->
+        <div class="custom-donation-box">
+          <span class="custom-input-label">¿Deseas aportar otro monto voluntario?</span>
+          <div class="custom-input-wrap">
+            <span class="custom-currency-prefix">$</span>
+            <input type="number" id="customDonationInput" class="custom-amount-field" min="1" step="1" placeholder="Ej: 15" oninput="onCustomDonationInput(this.value)">
+            <span style="margin-left: 8px; font-size: 0.85rem; color: #94a3b8;">USD</span>
+          </div>
+        </div>
+
+        <!-- Botones de Acción de Donación -->
+        <div class="donation-actions-group">
+          <button type="button" class="btn btn-donate-heart btn-large" onclick="openDonationModal()">
+            <i class="fa-solid fa-heart-pulse"></i> Apoyar / Donar <span id="btnDonationAmountLabel">$3 USD</span> con PayPal o Tarjeta
+          </button>
+          
+          <a href="/donar/" class="btn btn-outline-light" style="padding: 10px 22px; font-size: 0.9rem;">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Conoce más detalles en el Portal de Donaciones
+          </a>
+
+          <!-- Indicadores de Confianza -->
+          <div class="donation-trust-pills">
+            <span><i class="fa-solid fa-shield-halved text-lime"></i> 100% Seguro vía PayPal & Tarjetas</span>
+            <span><i class="fa-solid fa-lock text-cyan"></i> Cifrado SSL 256-bit</span>
+            <span><i class="fa-solid fa-heart" style="color: #ec4899;"></i> Donación voluntaria sin cobros ocultos</span>
           </div>
         </div>
       </div>
@@ -589,27 +1238,44 @@
     <div class="container footer-container">
       <div class="footer-left">
         <div class="brand-logo">
-          <div class="logo-badge"><i class="fa-solid fa-wallet"></i></div>
-          <span class="logo-title">CARE LOYALTY</span>
+          <div class="logo-badge" style="background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);">
+            <i class="fa-solid fa-heart-pulse"></i>
+          </div>
+          <span class="logo-title">CARETECH SERVICES</span>
         </div>
-        <p class="footer-desc" data-i18n="footerDesc">
-          La plataforma digital de fidelización para negocios que quieren crecer su frecuencia de compra con Apple Wallet y Google Wallet.
+        <p class="footer-desc">
+          Ecosistema integral de tecnología para la salud, estimulación cognitiva, patrocinios éticos B2B y programas de fidelización digital en Apple Wallet y Google Wallet.
         </p>
       </div>
 
+      <!-- Columna: 6 Áreas de Negocio CareTech -->
+      <div class="footer-links-group" id="contacto">
+        <h4>6 Áreas de Negocio</h4>
+        <ul>
+          <li><a href="/health/"><i class="fa-solid fa-heart-pulse" style="color: #00f2fe; margin-right: 6px;"></i> Care Health (WeCare &amp; EHR)</a></li>
+          <li><a href="/games/"><i class="fa-solid fa-gamepad" style="color: #34d399; margin-right: 6px;"></i> Care Games</a></li>
+          <li><a href="/real-estate/"><i class="fa-solid fa-building-shield" style="color: #fb923c; margin-right: 6px;"></i> Care Real Estate</a></li>
+          <li><a href="/business/"><i class="fa-solid fa-briefcase" style="color: #60a5fa; margin-right: 6px;"></i> Care Business (Loyalty)</a></li>
+          <li><a href="/pets/"><i class="fa-solid fa-paw" style="color: #67e8f9; margin-right: 6px;"></i> Care Pets</a></li>
+          <li><a href="/development/"><i class="fa-solid fa-laptop-code" style="color: #fbbf24; margin-right: 6px;"></i> Care Development</a></li>
+          <li><a href="/publicidad/"><i class="fa-solid fa-bullhorn" style="color: #60a5fa; margin-right: 6px;"></i> Publicidad Ética B2B</a></li>
+          <li><a href="/donar/"><i class="fa-solid fa-heart" style="color: #ec4899; margin-right: 6px;"></i> Donaciones Comunitarias</a></li>
+        </ul>
+      </div>
+
       <div class="footer-links-group">
-        <h4 data-i18n="footerRegionsTitle">Enlaces por Región</h4>
+        <h4 data-i18n="footerRegionsTitle">Planes y Precios</h4>
         <ul>
           <li><a href="javascript:void(0)" onclick="changeRegion('colombia')">🇨🇴 Planes Colombia (COP)</a></li>
           <li><a href="javascript:void(0)" onclick="changeRegion('europa')">🇪🇺 Planes España & Europa (€ EUR)</a></li>
           <li><a href="javascript:void(0)" onclick="changeRegion('usa')">🇺🇸 Planes USA & Global ($ USD)</a></li>
-          <li><a href="https://www.caretechapps.com/dashboard" target="_blank">Demo Care Tech Apps</a></li>
+          <li><a href="https://www.caretechapps.com/dashboard" target="_blank" rel="noopener noreferrer">Demo Care Tech Apps</a></li>
         </ul>
       </div>
 
       <div class="footer-links-group">
         <h4 data-i18n="footerContactTitle">Contacto & Soporte</h4>
-        <p data-i18n="footerContactText">¿Tienes dudas o necesitas ayuda configurando tu cuenta en cualquier país?</p>
+        <p data-i18n="footerContactText">¿Tienes dudas o necesitas una cotización comercial para tu marca o clínica?</p>
         <div class="footer-contact-items">
           <a href="mailto:care@caretechservices.com" class="footer-contact-link">
             <i class="fa-regular fa-envelope text-cyan"></i> care@caretechservices.com
@@ -618,7 +1284,7 @@
             <i class="fa-brands fa-whatsapp text-lime"></i> +57 316 473 4660
           </a>
         </div>
-        <button class="btn btn-whatsapp btn-small" style="margin-top: 12px;" onclick="openWhatsAppModal('Soporte / Preguntas')">
+        <button class="btn btn-whatsapp btn-small" style="margin-top: 12px;" onclick="openWhatsAppModal('Soporte / Contacto')">
           <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btnFooterContact">Escríbenos directamente</span>
         </button>
       </div>
@@ -626,7 +1292,7 @@
     
     <div class="footer-bottom">
       <div class="container">
-        <p data-i18n="footerCopyright">© 2026 Care Loyalty · Care Tech Services. Todos los derechos reservados. Compatible con Apple Wallet & Google Wallet en todo el mundo.</p>
+        <p data-i18n="footerCopyright">© 2026 CareTech Services · Care Loyalty · CareGames. Todos los derechos reservados. Estimulación cognitiva y fidelización segura sin ruidos.</p>
       </div>
     </div>
   </footer>
@@ -1101,6 +1767,110 @@
     </div>
   </div>
 
-  <script src="app.js?v=3.0"></script>
+  <!-- Modal de Compra y Licenciamiento WeCare -->
+  <div class="modal-overlay" id="wecareBuyModal">
+    <div class="modal-container wecare-modal-container">
+      <button class="modal-close" onclick="closeWeCareBuyModal()">&times;</button>
+
+      <div class="modal-header text-center">
+        <div class="pillar-icon-box icon-wecare" style="margin: 0 auto 14px auto;">
+          <i class="fa-solid fa-heart-pulse"></i>
+        </div>
+        <h3 style="color: #ffffff; font-size: 1.35rem; font-weight: 800;">Adquirir Licencia WeCare</h3>
+        <p style="color: #94a3b8; font-size: 0.88rem; margin-top: 6px;">
+          Activa tu historia clínica digital privada, sin agendas comerciales ni intermediarios.
+        </p>
+      </div>
+
+      <div class="wecare-price-tag">
+        <div class="wecare-price-val">$19.90 <span style="font-size: 1rem; color: #cbd5e1;">USD / año</span></div>
+        <div class="wecare-price-sub">≈ $79.900 COP &bull; Licencia completa móvil & web para toda la familia</div>
+      </div>
+
+      <ul style="list-style: none; padding: 0; margin-bottom: 22px; display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; color: #cbd5e1;">
+        <li><i class="fa-solid fa-check text-cyan" style="margin-right: 8px;"></i> Cifrado médico privado de extremo a extremo</li>
+        <li><i class="fa-solid fa-check text-lime" style="margin-right: 8px;"></i> Registro y recordatorios de medicamentos</li>
+        <li><i class="fa-solid fa-check text-cyan" style="margin-right: 8px;"></i> Detección de caídas y teleasistencia con GPS</li>
+        <li><i class="fa-solid fa-check text-lime" style="margin-right: 8px;"></i> Acceso multidispositivo en iOS, Android y Navegador</li>
+      </ul>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <a href="https://paypal.me/caretechservices/19.90" target="_blank" rel="noopener noreferrer" class="btn btn-paypal w-100" style="padding: 13px; font-size: 0.95rem; font-weight: 700; text-align: center; text-decoration: none;">
+          <i class="fa-brands fa-paypal"></i> Pagar con PayPal o Tarjeta Internacional
+        </a>
+
+        <button type="button" class="btn btn-whatsapp w-100" onclick="openWhatsAppModal('Compra Licencia WeCare')" style="padding: 12px; font-size: 0.92rem;">
+          <i class="fa-brands fa-whatsapp"></i> Comprar y Activar por WhatsApp
+        </button>
+
+        <a href="https://apps.apple.com/co/app/wecareapp/id6673915367" target="_blank" rel="noopener noreferrer" class="btn btn-outline-light w-100" style="padding: 10px; font-size: 0.85rem; text-align: center; text-decoration: none;">
+          <i class="fa-brands fa-apple"></i> Descargar WeCareApp en Apple App Store
+        </a>
+      </div>
+
+      <p style="text-align: center; font-size: 0.74rem; color: #64748b; margin-top: 14px;">
+        🔒 Transacción segura y protegida. Soporte personalizado y factura digital.
+      </p>
+    </div>
+  </div>
+
+  <!-- Modal Rápido de Aportes y Donaciones Comunitarias -->
+  <div class="modal-overlay" id="quickDonationModal">
+    <div class="modal-container donation-modal-container">
+      <button class="modal-close" onclick="closeDonationModal()">&times;</button>
+
+      <div class="modal-header text-center">
+        <div class="donation-modal-badge">
+          <i class="fa-solid fa-heart-pulse"></i>
+        </div>
+        <h3 style="color: #ffffff; font-size: 1.35rem; font-weight: 800;">Micro-Donación de Apoyo</h3>
+        <p style="color: #94a3b8; font-size: 0.88rem; margin-top: 6px;">
+          Tu aporte voluntario mantiene los juegos libres de ruidos molestos y apoya la teleasistencia de adultos mayores:
+        </p>
+      </div>
+
+      <!-- Tiers dentro del Modal -->
+      <div class="modal-tier-buttons">
+        <button type="button" class="modal-tier-btn" data-amount="1" onclick="selectModalTier(1, this)">
+          $1 USD
+        </button>
+        <button type="button" class="modal-tier-btn active" data-amount="3" onclick="selectModalTier(3, this)">
+          $3 USD
+        </button>
+        <button type="button" class="modal-tier-btn" data-amount="5" onclick="selectModalTier(5, this)">
+          $5 USD
+        </button>
+      </div>
+
+      <!-- Resumen y Conversión Local -->
+      <div class="modal-amount-summary-box">
+        <span style="font-size: 0.8rem; color: #cbd5e1; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Monto a Aportar:</span>
+        <div class="modal-sum-amount" id="modalSelectedAmount">$3 USD</div>
+        <div class="modal-sum-approx" id="modalApproxCurrency">≈ $12.000 COP</div>
+      </div>
+
+      <!-- Input de Otro Monto en el Modal -->
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label for="modalCustomAmount" style="font-size: 0.85rem; color: #cbd5e1;"><i class="fa-solid fa-coins" style="color: #fbbf24;"></i> O escribe otro monto en USD:</label>
+        <input type="number" id="modalCustomAmount" min="1" step="1" placeholder="Ej: 15" oninput="onModalCustomAmount(this.value)" style="background: #0d1e38; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 10px 14px; color: #fff; width: 100%;">
+      </div>
+
+      <!-- Botón Principal de Pago con PayPal -->
+      <a id="btnModalPayPalAction" href="https://paypal.me/caretechservices/3" target="_blank" rel="noopener noreferrer" class="btn btn-donate-heart w-100" style="padding: 14px; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <i class="fa-brands fa-paypal"></i> Donar con PayPal o Tarjeta
+      </a>
+
+      <a href="/donar/" class="btn btn-outline-light w-100 mt-2" style="font-size: 0.88rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver opciones adicionales en el Portal de Donar
+      </a>
+
+      <div style="text-align: center; margin-top: 14px; font-size: 0.76rem; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <i class="fa-solid fa-shield-halved" style="color: #10b981;"></i>
+        <span>Procesamiento 100% cifrado y seguro vía PayPal Inc.</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=3.1"></script>
 </body>
 </html>

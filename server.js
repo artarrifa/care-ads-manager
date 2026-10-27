@@ -758,8 +758,8 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // Health Check
-  if (pathname === '/health') {
+  // Health Check API
+  if (pathname === '/api/health' || pathname === '/health-check') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     return res.end(JSON.stringify({
       status: 'healthy',
@@ -777,22 +777,28 @@ const server = http.createServer((req, res) => {
   let filePath = path.join(PUBLIC_DIR, safePath);
 
   fs.stat(filePath, (err, stats) => {
-    if (err || !stats.isFile()) {
-      // Fallback a index.html para SPA
-      filePath = path.join(PUBLIC_DIR, 'index.html');
+    if (!err && stats.isDirectory()) {
+      filePath = path.join(filePath, 'index.html');
     }
 
-    const ext = path.extname(filePath).toLowerCase();
-    const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-
-    fs.readFile(filePath, (readErr, content) => {
-      if (readErr) {
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
-        return res.end('Error interno del servidor');
+    fs.stat(filePath, (statErr, finalStats) => {
+      if (statErr || !finalStats.isFile()) {
+        // Fallback a index.html para SPA
+        filePath = path.join(PUBLIC_DIR, 'index.html');
       }
 
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(content);
+      const ext = path.extname(filePath).toLowerCase();
+      const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+
+      fs.readFile(filePath, (readErr, content) => {
+        if (readErr) {
+          res.writeHead(500, { 'Content-Type': 'text/plain' });
+          return res.end('Error interno del servidor');
+        }
+
+        res.writeHead(200, { 'Content-Type': contentType });
+        res.end(content);
+      });
     });
   });
 });

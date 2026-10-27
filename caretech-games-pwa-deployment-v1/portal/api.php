@@ -29,6 +29,11 @@ $dataDir = __DIR__ . '/data';
 if (!file_exists($dataDir)) {
     @mkdir($dataDir, 0755, true);
 }
+// The JSON stores hold advertiser contacts and telemetry: never serve them over HTTP.
+$dataGuard = $dataDir . '/.htaccess';
+if (!file_exists($dataGuard)) {
+    @file_put_contents($dataGuard, "Require all denied\n");
+}
 $campaignsFile = $dataDir . '/campaigns.json';
 $analyticsFile = $dataDir . '/analytics.json';
 $devicesFile   = $dataDir . '/devices.json';

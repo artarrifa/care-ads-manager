@@ -10,6 +10,9 @@
   RewriteCond %{HTTPS} off
   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+  # Server-side data stores (advertiser contacts, telemetry) are never public
+  RewriteRule ^data(/|$) - [F,L]
+
   # Route API requests to api.php
   RewriteRule ^api/v1/(.*)$ api.php [QSA,L]
 </IfModule>

@@ -40,4 +40,9 @@ $ok = ($privatePaypalConfig["clientId"] ?? null) === "id-from-private" && ($priv
 exit($ok ? 0 : 1);
 ' "$WORK/public_html" || fail "credentials not loaded from private file"
 echo "ok - credentials load from caretech-private/paypal.php"
+# 4. api.php protects its data directory even when only api.php is deployed.
+guard="$WORK/public_html/games/data/.htaccess"
+[ -f "$guard" ] && grep -q "Require all denied" "$guard" || fail "data/.htaccess guard not created"
+grep -q 'RewriteRule ^data(/|$) - \[F,L\]' portal/.htaccess || fail "portal/.htaccess does not block data/"
+echo "ok - data/ is denied over HTTP"
 echo "PASS"

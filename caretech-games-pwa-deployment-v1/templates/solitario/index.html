@@ -22,8 +22,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="care-ui.css?v=1.4.2">
-  <link rel="stylesheet" href="solitaire.css?v=1.4.2">
+  <link rel="stylesheet" href="care-ui.css?v=1.4.3">
+  <link rel="stylesheet" href="solitaire.css?v=1.4.3">
 
   <!-- Aislamiento Visual Crítico para Modales FTUX -->
   <style>
@@ -370,69 +370,72 @@
     </div>
   </div>
 
-  <!-- Modal de Ajustes y Personalización -->
-  <div id="settings-modal" class="modal-overlay">
-    <div class="modal-content">
+  <!-- Modal de Ajustes y Personalización Mejorado -->
+  <div id="settings-modal" class="modal-overlay" onclick="if(event.target === this) Solitaire.closeSettingsModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
       <div class="modal-header">
         <h3 style="font-size: 1.25rem; font-weight: 700;"><i class="fa-solid fa-gear"></i> Ajustes y Personalización</h3>
-        <button id="close-settings" class="modal-close">&times;</button>
+        <button id="close-settings" class="modal-close" onclick="Solitaire.closeSettingsModal()">&times;</button>
       </div>
 
-      <div class="setting-section-title"><i class="fa-solid fa-palette"></i> Tema Care (Línea Visual)</div>
+      <!-- Temas de Mesa -->
+      <div class="setting-section-title"><i class="fa-solid fa-palette"></i> Fondo del Tablero</div>
       <div class="swatch-grid" id="bg-swatches">
-        <div class="swatch-item active" data-theme="theme-care-green">
+        <div class="swatch-item active" data-theme="theme-care-green" onclick="Solitaire.setTheme('theme-care-green')">
           <div class="swatch-preview bg-swatch-green"></div>
-          <span class="swatch-label">Care Green (Default)</span>
+          <span class="swatch-label">Care Green</span>
         </div>
-        <div class="swatch-item" data-theme="theme-care-blue">
+        <div class="swatch-item" data-theme="theme-care-blue" onclick="Solitaire.setTheme('theme-care-blue')">
           <div class="swatch-preview bg-swatch-dark"></div>
           <span class="swatch-label">Care Blue</span>
         </div>
-        <div class="swatch-item" data-theme="theme-wood">
+        <div class="swatch-item" data-theme="theme-wood" onclick="Solitaire.setTheme('theme-wood')">
           <div class="swatch-preview bg-swatch-wood"></div>
           <span class="swatch-label">Caoba</span>
         </div>
-        <div class="swatch-item" data-theme="theme-royal-purple">
+        <div class="swatch-item" data-theme="theme-royal-purple" onclick="Solitaire.setTheme('theme-royal-purple')">
           <div class="swatch-preview bg-swatch-purple"></div>
           <span class="swatch-label">Púrpura</span>
         </div>
-        <div class="swatch-item" data-theme="theme-high-contrast">
+        <div class="swatch-item" data-theme="theme-high-contrast" onclick="Solitaire.setTheme('theme-high-contrast')">
           <div class="swatch-preview bg-swatch-contrast"></div>
           <span class="swatch-label">Alto Contraste</span>
         </div>
       </div>
 
-      <div class="setting-section-title"><i class="fa-solid fa-layer-group"></i> Reverso de Cartas (Mazo)</div>
+      <!-- Reversos de Cartas -->
+      <div class="setting-section-title"><i class="fa-solid fa-layer-group"></i> Reverso de Cartas</div>
       <div class="swatch-grid" id="deck-swatches">
-        <div class="swatch-item active" data-deck="deck-blue">
+        <div class="swatch-item active" data-deck="deck-blue" onclick="Solitaire.setDeck('deck-blue')">
           <div class="swatch-preview deck-swatch-blue"></div>
           <span class="swatch-label">Azul Clásico</span>
         </div>
-        <div class="swatch-item" data-deck="deck-red">
+        <div class="swatch-item" data-deck="deck-red" onclick="Solitaire.setDeck('deck-red')">
           <div class="swatch-preview deck-swatch-red"></div>
           <span class="swatch-label">Rojo Imperial</span>
         </div>
-        <div class="swatch-item" data-deck="deck-emerald">
+        <div class="swatch-item" data-deck="deck-emerald" onclick="Solitaire.setDeck('deck-emerald')">
           <div class="swatch-preview deck-swatch-emerald"></div>
           <span class="swatch-label">Esmeralda</span>
         </div>
-        <div class="swatch-item" data-deck="deck-dark">
+        <div class="swatch-item" data-deck="deck-dark" onclick="Solitaire.setDeck('deck-dark')">
           <div class="swatch-preview deck-swatch-dark"></div>
           <span class="swatch-label">Cyber Black</span>
         </div>
-        <div class="swatch-item" data-deck="deck-gold">
+        <div class="swatch-item" data-deck="deck-gold" onclick="Solitaire.setDeck('deck-gold')">
           <div class="swatch-preview deck-swatch-gold"></div>
-          <span class="swatch-label">Dorado Vintage</span>
+          <span class="swatch-label">Dorado</span>
         </div>
       </div>
 
+      <!-- Reglas -->
       <div class="setting-section-title"><i class="fa-solid fa-sliders"></i> Reglas de Partida</div>
       <div class="setting-row">
         <div>
           <strong style="display: block; font-size: 0.95rem;">Modo de Robo</strong>
           <span style="font-size: 0.8rem; color: #94a3b8;">Cartas extraídas del montón</span>
         </div>
-        <select id="draw-mode-select" class="setting-select">
+        <select id="draw-mode-select" class="setting-select" onchange="Solitaire.setDrawMode(this.value)">
           <option value="1">1 Carta (Fácil / Senior)</option>
           <option value="3">3 Cartas (Clásico)</option>
         </select>
@@ -443,32 +446,49 @@
           <strong style="display: block; font-size: 0.95rem;">Efectos de Sonido</strong>
           <span style="font-size: 0.8rem; color: #94a3b8;">Sintetizador Web Audio</span>
         </div>
-        <select id="sound-select" class="setting-select">
+        <select id="sound-select" class="setting-select" onchange="Solitaire.setSound(this.value)">
           <option value="on">Activado</option>
           <option value="off">Silencio</option>
         </select>
       </div>
 
-      <div class="setting-section-title"><i class="fa-solid fa-triangle-exclamation"></i> Configuración SOS</div>
-      <div class="setting-row">
-        <div>
-          <strong style="display: block; font-size: 0.9rem;">WhatsApp Contacto</strong>
-          <span style="font-size: 0.75rem; color: #94a3b8;">Ej: 573001234567</span>
+      <!-- Configuración SOS Asistida -->
+      <div class="setting-section-title"><i class="fa-solid fa-triangle-exclamation"></i> Contacto de Emergencia SOS</div>
+      <div style="background: rgba(220, 38, 38, 0.12); border: 1px solid rgba(220, 38, 38, 0.35); border-radius: 12px; padding: 12px; margin-bottom: 14px;">
+        <label style="display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 6px; font-weight: 700;">
+          WhatsApp de tu Familiar o Cuidador:
+        </label>
+        <div style="display: flex; gap: 8px;">
+          <input type="tel" id="sos-wa-input" class="setting-select" placeholder="Ej: 573001234567" style="flex: 1; padding: 10px; font-size: 0.95rem;">
+          <button type="button" onclick="Solitaire.saveSOSPhone()" style="background: #10b981; color: #fff; border: none; padding: 0 16px; border-radius: 8px; font-weight: 700; cursor: pointer; white-space: nowrap;">
+            Guardar
+          </button>
         </div>
-        <input type="tel" id="sos-wa-input" class="setting-select" placeholder="573001234567" style="width: 130px;" onchange="localStorage.setItem('care_sos_wa_number', this.value)">
+        <div id="sos-save-feedback" style="display: none; font-size: 0.78rem; color: #34d399; margin-top: 6px; font-weight: 700;">
+          ✓ Número guardado correctamente
+        </div>
+        <button type="button" onclick="Solitaire.closeSettingsModal(); CareFTUX.openQuickSOS();" style="background: none; border: none; color: #93c5fd; font-size: 0.82rem; text-decoration: underline; cursor: pointer; margin-top: 8px; display: block;">
+          Abrir asistente SOS completo (Nombre y Teléfono Nacional)
+        </button>
       </div>
 
-      <div style="margin-top: 14px; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px;">
-        <a href="/games/publicidad/" target="_blank" style="color: var(--accent-cyan); font-size: 0.88rem; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+      <!-- Enlace a Publicidad -->
+      <div style="margin-top: 10px; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px;">
+        <a href="/publicidad/" target="_blank" style="color: var(--accent-cyan); font-size: 0.88rem; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
           <i class="fa-solid fa-bullhorn"></i> Anuncia tu marca en este juego
         </a>
       </div>
 
-      <div style="margin-top: 14px; text-align: center;">
+      <div style="margin-top: 10px; text-align: center;">
         <button id="pwa-install-btn" class="nav-btn" style="background:#2563eb; color:#fff; width:100%; padding:10px; border-radius:8px; display:none;">
           <i class="fa-solid fa-download"></i> Instalar como App en este dispositivo
         </button>
       </div>
+
+      <!-- Botón Principal Senior de Cierre y Guardado -->
+      <button type="button" onclick="Solitaire.closeSettingsModal()" style="width: 100%; background: #2563eb; color: #fff; border: none; padding: 14px; border-radius: 999px; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); margin-top: 14px;">
+        <i class="fa-solid fa-check"></i> Listo / Guardar y Volver al Juego
+      </button>
     </div>
   </div>
 

@@ -149,29 +149,58 @@
     <div class="kpi-grid">
       <div class="kpi-card">
         <div class="kpi-label">Activaciones Nuevas (Hoy)</div>
-        <div class="kpi-value">1,248</div>
-        <div class="kpi-sub"><i class="fa-solid fa-arrow-up"></i> +18.4% vs ayer</div>
+        <div class="kpi-value" id="kpi-today-devices">0</div>
+        <div class="kpi-sub" style="color: var(--accent-emerald);"><i class="fa-solid fa-bolt"></i> Registro automático</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">Activaciones Mes</div>
-        <div class="kpi-value">26,840</div>
+        <div class="kpi-label">Total Dispositivos / Usuarios</div>
+        <div class="kpi-value" id="kpi-total-devices">0</div>
         <div class="kpi-sub" style="color: var(--accent-cyan);"><i class="fa-solid fa-mobile-screen"></i> PWA Local-First</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">Impresiones Ads</div>
-        <div class="kpi-value">18,450</div>
-        <div class="kpi-sub">60s / slot</div>
+        <div class="kpi-label">Impresiones Banners</div>
+        <div class="kpi-value" id="kpi-impressions">0</div>
+        <div class="kpi-sub">Rotación no intrusiva</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">Total Clics (CTR 5.7%)</div>
-        <div class="kpi-value">612</div>
-        <div class="kpi-sub">Web: 421 · Don: 87 · Shop: 203</div>
+        <div class="kpi-label">Total Clics Telemetría</div>
+        <div class="kpi-value" id="kpi-clicks">0</div>
+        <div class="kpi-sub" id="kpi-clicks-sub">Web · Donación · Anunciar</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">Ingresos Publicidad</div>
-        <div class="kpi-value">$1,420 <span style="font-size:1rem;">USD</span></div>
-        <div class="kpi-sub" style="color: #fbbf24;">≈ $5.680.000 COP</div>
+        <div class="kpi-label">Campañas Patrocinadas</div>
+        <div class="kpi-value" id="kpi-campaigns">1</div>
+        <div class="kpi-sub" style="color: #fbbf24;"><i class="fa-solid fa-award"></i> Care Loyalty Activa</div>
       </div>
+    </div>
+
+    <!-- Live Registered Devices Table -->
+    <div class="panel-card" style="margin-bottom: 24px;">
+      <div class="panel-title" style="display: flex; justify-content: space-between; align-items: center;">
+        <span><i class="fa-solid fa-users" style="color: var(--accent-cyan);"></i> Usuarios y Dispositivos Registrados en Vivo</span>
+        <button onclick="loadAdminStats()" style="background: rgba(37,99,235,0.2); border: 1px solid rgba(37,99,235,0.4); color: #93c5fd; padding: 4px 10px; border-radius: 6px; font-size: 0.78rem; cursor: pointer;">
+          <i class="fa-solid fa-rotate"></i> Actualizar
+        </button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Dispositivo (Hash)</th>
+            <th>Juego</th>
+            <th>País</th>
+            <th>Plataforma</th>
+            <th>Instalación PWA</th>
+            <th>Fecha de Registro</th>
+          </tr>
+        </thead>
+        <tbody id="live-devices-tbody">
+          <tr>
+            <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 18px;">
+              Cargando registros de usuarios en vivo...
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- Breakdown Tables -->
@@ -306,5 +335,60 @@
     </div>
   </div>
 
+  <script>
+    async function loadAdminStats() {
+      try {
+        const res = await fetch('/games/api.php?action=admin_stats').catch(() => fetch('/api.php?action=admin_stats'));
+        if (!res || !res.ok) return;
+        const data = await res.json();
+        if (!data || !data.stats) return;
+
+        const s = data.stats;
+        document.getElementById('kpi-today-devices').textContent = s.todayDevices || 0;
+        document.getElementById('kpi-total-devices').textContent = s.totalDevices || 0;
+
+        const impressions = (s.events && s.events.ad_impression) || 0;
+        document.getElementById('kpi-impressions').textContent = impressions;
+
+        const totalClicks = ((s.events && s.events.ad_click) || 0) +
+                            ((s.events && s.events.ad_donation_click) || 0) +
+                            ((s.events && s.events.ad_shop_click) || 0);
+        document.getElementById('kpi-clicks').textContent = totalClicks;
+        document.getElementById('kpi-clicks-sub').textContent = `Web: ${(s.events && s.events.ad_click) || 0} · Don: ${(s.events && s.events.ad_donation_click) || 0} · Anunc: ${(s.events && s.events.ad_shop_click) || 0}`;
+
+        if (s.campaignsCount) {
+          document.getElementById('kpi-campaigns').textContent = s.campaignsCount;
+        }
+
+        const tbody = document.getElementById('live-devices-tbody');
+        if (tbody) {
+          if (!s.recentDevices || s.recentDevices.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 18px;">Aún no hay dispositivos registrados hoy. Las partidas nuevas aparecerán aquí en vivo.</td></tr>';
+          } else {
+            tbody.innerHTML = s.recentDevices.map(d => {
+              const country = d.country || 'CO';
+              const pwaLabel = d.standalone ? '<span style="color: #34d399; font-weight: 700;">✓ Sí (Instalada)</span>' : '<span style="color: #94a3b8;">Navegador Web</span>';
+              const shortHash = d.installIdHash ? d.installIdHash.substring(0, 14) + '...' : 'Anónimo';
+              return `
+                <tr>
+                  <td><code>${shortHash}</code></td>
+                  <td><strong>${d.gameId || 'Solitario Care'}</strong></td>
+                  <td><strong>${country}</strong></td>
+                  <td><i class="fa-solid fa-${d.uaClass === 'mobile' ? 'mobile-screen' : 'laptop'}"></i> ${d.uaClass || 'mobile'}</td>
+                  <td>${pwaLabel}</td>
+                  <td><span style="font-size: 0.8rem; color: #94a3b8;">${d.registeredAt || '-'}</span></td>
+                </tr>
+              `;
+            }).join('');
+          }
+        }
+      } catch (e) {
+        console.warn('Error loading admin stats:', e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadAdminStats);
+    setInterval(loadAdminStats, 30000);
+  </script>
 </body>
 </html>

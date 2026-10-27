@@ -329,6 +329,7 @@
     document.querySelectorAll('#deck-swatches .swatch-item').forEach(el => {
       el.classList.toggle('active', el.getAttribute('data-deck') === deck);
     });
+    if (typeof render === 'function') render();
   }
 
   function bindCustomizationSwatches() {
@@ -1165,7 +1166,25 @@
     showStatsModal,
     showSettingsModal() {
       const modal = document.getElementById('settings-modal');
-      if (modal) modal.classList.add('active');
+      if (modal) {
+        modal.classList.add('active');
+        const waInput = document.getElementById('sos-wa-input');
+        if (waInput) {
+          waInput.value = localStorage.getItem('care_sos_wa_number') || localStorage.getItem('care_sos_phone') || '';
+        }
+        const currentTheme = localStorage.getItem('care_selected_theme') || localStorage.getItem('care_solitaire_theme') || 'theme-care-green';
+        const currentDeck = localStorage.getItem('care_solitaire_deck') || 'deck-blue';
+        document.querySelectorAll('#bg-swatches .swatch-item').forEach(el => {
+          el.classList.toggle('active', el.getAttribute('data-theme') === currentTheme);
+        });
+        document.querySelectorAll('#deck-swatches .swatch-item').forEach(el => {
+          el.classList.toggle('active', el.getAttribute('data-deck') === currentDeck);
+        });
+        const drawSelect = document.getElementById('draw-mode-select');
+        if (drawSelect) drawSelect.value = state.drawMode.toString();
+        const soundSelect = document.getElementById('sound-select');
+        if (soundSelect) soundSelect.value = state.soundEnabled ? 'on' : 'off';
+      }
     },
     closeSettingsModal() {
       const modal = document.getElementById('settings-modal');
@@ -1177,6 +1196,34 @@
     },
     setTheme,
     setDeck,
+    setDrawMode(mode) {
+      state.drawMode = parseInt(mode, 10);
+      localStorage.setItem('care_solitaire_draw', state.drawMode.toString());
+      const select = document.getElementById('draw-mode-select');
+      if (select) select.value = mode;
+    },
+    setSound(val) {
+      state.soundEnabled = val === 'on';
+      localStorage.setItem('care_solitaire_sound', state.soundEnabled.toString());
+      const select = document.getElementById('sound-select');
+      if (select) select.value = val;
+    },
+    saveSOSPhone() {
+      const input = document.getElementById('sos-wa-input');
+      const val = input ? input.value.trim() : '';
+      if (val) {
+        localStorage.setItem('care_sos_wa_number', val);
+        localStorage.setItem('care_sos_phone', val);
+      }
+      const feedback = document.getElementById('sos-save-feedback');
+      if (feedback) {
+        feedback.style.display = 'block';
+        setTimeout(() => { feedback.style.display = 'none'; }, 2500);
+      }
+      if (window.CareFTUX && window.CareFTUX.updateSOSBadge) {
+        window.CareFTUX.updateSOSBadge();
+      }
+    },
     state
   };
 

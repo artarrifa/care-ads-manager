@@ -23,10 +23,10 @@
 /* ==============================================================================
    THEMES (FONDOS DE MESA)
    ============================================================================== */
-body.theme-classic-green {
+body.theme-care-green, body.theme-classic-green {
   --bg-table-gradient: radial-gradient(circle at 50% 20%, #178347 0%, #0e5e30 55%, #083c1d 100%);
 }
-body.theme-care-dark {
+body.theme-care-blue, body.theme-care-dark {
   --bg-table-gradient: radial-gradient(circle at 50% 25%, #173564 0%, #0c1e3a 60%, #050d1a 100%);
 }
 body.theme-wood {

@@ -866,6 +866,359 @@
         justify-content: flex-end;
       }
     }
+
+    /* ======================================================================
+       ESTILOS ESTRATÉGICOS: B2B PUBLICIDAD & DONACIONES COMUNITARIAS
+       ====================================================================== */
+    .value-quote-banner {
+      background: rgba(13, 31, 61, 0.75);
+      border-left: 4px solid var(--accent-cyan);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 16px 22px;
+      margin: 20px auto 0 auto;
+      max-width: 880px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+    }
+    .value-quote-banner p {
+      color: #e2e8f0;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+    .value-quote-banner strong {
+      color: #67e8f9;
+    }
+
+    .btn-play-glow {
+      animation: playPulse 2.4s infinite ease-in-out;
+      background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%) !important;
+      color: #fff !important;
+      font-weight: 800 !important;
+    }
+    @keyframes playPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0, 198, 255, 0.5); }
+      50% { box-shadow: 0 0 0 14px rgba(0, 198, 255, 0); }
+    }
+
+    /* B2B Section */
+    .section-publicidad-b2b {
+      background: linear-gradient(180deg, rgba(8, 19, 37, 0.9) 0%, rgba(5, 11, 22, 0.95) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: var(--radius-lg);
+      padding: 48px 36px;
+      margin-bottom: 60px;
+      position: relative;
+    }
+    .b2b-hook-highlight {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: var(--radius-md);
+      padding: 18px 24px;
+      margin: 20px auto 36px auto;
+      max-width: 900px;
+      text-align: center;
+    }
+    .b2b-hook-highlight p {
+      color: #e2e8f0;
+      font-size: 1.12rem;
+      line-height: 1.6;
+    }
+    .b2b-hook-highlight strong {
+      color: #34d399;
+    }
+
+    .b2b-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 40px;
+    }
+    .b2b-metric-card {
+      background: #0a172c;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 22px 18px;
+      text-align: center;
+      transition: var(--transition);
+    }
+    .b2b-metric-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(16, 185, 129, 0.4);
+      background: #0d1e38;
+    }
+    .b2b-metric-icon {
+      font-size: 1.8rem;
+      color: #34d399;
+      margin-bottom: 10px;
+    }
+    .b2b-metric-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+    .b2b-metric-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Interactive Banner Simulation */
+    .b2b-interactive-preview-card {
+      background: #07152c;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+      margin-bottom: 30px;
+    }
+    .preview-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .preview-title-badge {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .preview-status-pill {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .preview-table-canvas {
+      background: radial-gradient(circle, #0e4428 0%, #072716 100%);
+      border: 2px solid #166534;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+    }
+    .interactive-live-banner {
+      background: linear-gradient(90deg, #0d2752 0%, #133975 100%);
+      border: 1px solid rgba(59, 130, 246, 0.6);
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+    }
+    .live-badge-type-ad {
+      background: rgba(37, 99, 235, 0.35);
+      border: 1px solid rgba(59, 130, 246, 0.6);
+      color: #bfdbfe;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+    .live-sponsor-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .live-sponsor-info {
+      flex-grow: 1;
+      min-width: 0;
+    }
+    .live-sponsor-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+    .live-sponsor-desc {
+      font-size: 0.76rem;
+      color: #94a3b8;
+      line-height: 1.3;
+    }
+
+    .live-triple-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .live-action-btn {
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    .live-btn-web-action { background: #2563eb; color: #fff; }
+    .live-btn-donate-action { background: #ec4899; color: #fff; }
+    .live-btn-shop-action { background: #10b981; color: #fff; }
+    .live-close-sim {
+      color: #94a3b8;
+      font-size: 1.15rem;
+      padding: 0 4px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .banner-feedback-alert {
+      background: rgba(13, 31, 61, 0.9);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin-top: 12px;
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .b2b-ctas-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      text-align: center;
+    }
+    .btn-emerald {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+      color: #ffffff !important;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: var(--radius-full);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35);
+    }
+
+    /* Community Donations Section */
+    .section-donations {
+      background: linear-gradient(180deg, rgba(13, 31, 61, 0.6) 0%, rgba(8, 19, 37, 0.9) 100%);
+      border: 1px solid rgba(236, 72, 153, 0.25);
+      border-radius: var(--radius-lg);
+      padding: 48px 36px;
+      margin-bottom: 60px;
+    }
+    .donations-card-wrapper {
+      max-width: 860px;
+      margin: 24px auto 0;
+      text-align: center;
+    }
+    .donation-tiers-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin: 24px 0;
+    }
+    .donation-tier-item {
+      background: #0a172c;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+    .donation-tier-item:hover, .donation-tier-item.active {
+      border-color: #ec4899;
+      background: rgba(236, 72, 153, 0.12);
+      transform: translateY(-2px);
+    }
+    .tier-popular-tag {
+      position: absolute;
+      top: -9px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ec4899;
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+    }
+    .tier-amount-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #ffffff;
+      display: block;
+    }
+    .tier-title-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-top: 4px;
+      display: block;
+    }
+    .tier-desc-mini {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      display: block;
+    }
+    .btn-donate-heart {
+      background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%) !important;
+      color: #ffffff !important;
+      font-weight: 800;
+      padding: 14px 28px;
+      border-radius: var(--radius-full);
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 18px rgba(236, 72, 153, 0.4);
+    }
+
+    @media (max-width: 860px) {
+      .b2b-metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .donation-tiers-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .interactive-live-banner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .live-triple-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+    @media (max-width: 540px) {
+      .b2b-metrics-grid { grid-template-columns: 1fr; }
+      .donation-tiers-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -911,6 +1264,8 @@
       <nav class="header-nav">
         <a href="/games/" class="nav-item active">Inicio</a>
         <a href="/games/solitario/" class="nav-item">Solitario Care</a>
+        <a href="#publicidad" class="nav-item">Publicidad B2B</a>
+        <a href="#donaciones" class="nav-item">Donar</a>
         <a href="#beneficios" class="nav-item">Salud Mental</a>
         <a href="#sos-info" class="nav-item">Seguridad SOS</a>
         <a href="#en-tu-movil" class="nav-item">En tu Celular</a>
@@ -936,6 +1291,15 @@
       <p class="hero-desc">
         Sin descargas pesadas, sin anuncios que congelen la pantalla y sin sonidos molestos. Pensados para disfrutar a cualquier edad, con botón de auxilio SOS para tu tranquilidad.
       </p>
+
+      <!-- Propuesta de Valor Única -->
+      <div class="value-quote-banner">
+        <p>
+          <i class="fa-solid fa-quote-left" style="color: #06b6d4; margin-right: 8px;"></i>
+          <strong>Juegos diseñados para adultos mayores y familias</strong>, con estimulación cognitiva, cero ruidos molestos y botón de Teleasistencia SOS integrado.
+          <i class="fa-solid fa-quote-right" style="color: #06b6d4; margin-left: 8px;"></i>
+        </p>
+      </div>
 
       <!-- Sello de Confianza CareTech -->
       <div class="trust-banner-grid">
@@ -991,8 +1355,8 @@
           </div>
 
           <div class="featured-actions">
-            <a href="/games/solitario/" class="btn btn-accent" style="font-size: 1.05rem; padding: 14px 32px;">
-              <i class="fa-solid fa-play"></i> Jugar Solitario Ahora
+            <a href="/games/solitario/" class="btn btn-primary btn-play-glow" style="font-size: 1.05rem; padding: 14px 32px;">
+              <i class="fa-solid fa-play"></i> Jugar Gratis al Instante
             </a>
             <a href="#en-tu-movil" class="btn btn-outline">
               <i class="fa-solid fa-mobile-screen"></i> Añadir a mi Celular
@@ -1133,6 +1497,167 @@
               </button>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECCIÓN DE PATROCINIOS Y PUBLICIDAD ÉTICA (B2B)
+         ==================================================================== -->
+    <section class="section-publicidad-b2b" id="publicidad">
+      <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+        <span class="hero-pill" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #34d399;">
+          <i class="fa-solid fa-briefcase"></i> Patrocinios & Publicidad Ética (B2B)
+        </span>
+        <h3 class="section-title" style="margin-top: 12px;">
+          Tu marca en un entorno de <span style="color: #34d399;">máxima atención y confianza.</span>
+        </h3>
+      </div>
+
+      <!-- Gancho Comercial B2B -->
+      <div class="b2b-hook-highlight">
+        <p>
+          <i class="fa-solid fa-bullhorn" style="color: #10b981; margin-right: 8px;"></i>
+          <strong>Anúnciate ante una audiencia fiel, sin bloqueadores de anuncios (AdBlock), con 14.5 minutos de atención real por sesión y en un entorno de teleasistencia.</strong>
+        </p>
+      </div>
+
+      <!-- Métricas Clave B2B -->
+      <div class="b2b-metrics-grid">
+        <div class="b2b-metric-card">
+          <div class="b2b-metric-icon"><i class="fa-solid fa-shield-virus"></i></div>
+          <div class="b2b-metric-value">100% Inmune</div>
+          <div class="b2b-metric-label">Sin bloqueadores de anuncios (AdBlock). El banner vive integrado en el lienzo del juego.</div>
+        </div>
+
+        <div class="b2b-metric-card">
+          <div class="b2b-metric-icon"><i class="fa-solid fa-stopwatch"></i></div>
+          <div class="b2b-metric-value">14.5 Minutos</div>
+          <div class="b2b-metric-label">Atención sostenida y relajada, sin distracciones de redes sociales ni popups que compitan.</div>
+        </div>
+
+        <div class="b2b-metric-card">
+          <div class="b2b-metric-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+          <div class="b2b-metric-value">Asociación Positiva</div>
+          <div class="b2b-metric-label">Tu marca vinculada al cuidado, teleasistencia, inclusión y salud de los adultos mayores.</div>
+        </div>
+
+        <div class="b2b-metric-card">
+          <div class="b2b-metric-icon"><i class="fa-solid fa-arrow-pointer"></i></div>
+          <div class="b2b-metric-value">Triple Conversión</div>
+          <div class="b2b-metric-label">Botonera interactiva exclusiva para llevar tráfico directo a tu Web, Donaciones o Tienda.</div>
+        </div>
+      </div>
+
+      <!-- Simulador Visual del Banner con Triple Botonera -->
+      <div class="b2b-interactive-preview-card">
+        <div class="preview-card-header">
+          <div class="preview-title-badge">
+            <i class="fa-solid fa-eye"></i> Simulación en Tablero Real (Espacio de Banner Superior)
+          </div>
+          <span class="preview-status-pill">
+            <i class="fa-solid fa-check-double"></i> 1 Anunciante por Turno (Rotación 60s)
+          </span>
+        </div>
+
+        <!-- Mesa de Juego Verde con el Banner Real -->
+        <div class="preview-table-canvas">
+          <div class="interactive-live-banner">
+            <span class="live-badge-type-ad">PATROCINADO</span>
+
+            <div class="live-sponsor-avatar">
+              <i class="fa-solid fa-hospital-user"></i>
+            </div>
+
+            <div class="live-sponsor-info">
+              <div class="live-sponsor-title">Clínica & Salud Familiar San Rafael</div>
+              <div class="live-sponsor-desc">Consultas preventivas, telemedicina 24/7 y planes de bienestar para adultos mayores.</div>
+            </div>
+
+            <!-- Botonera Interactiva: 🌐 Web, ❤️ Donación, 🛒 Tienda -->
+            <div class="live-triple-actions">
+              <button type="button" class="live-action-btn live-btn-web-action" onclick="previewBannerClick('web')" title="Simular clic a sitio web corporativo">
+                <i class="fa-solid fa-globe"></i> <span>Web</span>
+              </button>
+              <button type="button" class="live-action-btn live-btn-donate-action" onclick="previewBannerClick('donar')" title="Simular clic a donación o causa social">
+                <i class="fa-solid fa-heart"></i> <span>Donar</span>
+              </button>
+              <button type="button" class="live-action-btn live-btn-shop-action" onclick="previewBannerClick('tienda')" title="Simular clic a tienda online o citas">
+                <i class="fa-solid fa-cart-shopping"></i> <span>Tienda</span>
+              </button>
+              <span class="live-close-sim" onclick="previewBannerClick('close')" title="Cierre de cortesía">&times;</span>
+            </div>
+          </div>
+
+          <!-- Alerta de Feedback para interacción -->
+          <div class="banner-feedback-alert" id="bannerFeedbackToast" style="display: flex;">
+            <i id="bannerFeedbackIcon" class="fa-solid fa-circle-info" style="color: #34d399;"></i>
+            <span id="bannerFeedbackMsg">
+              <strong>Botonera Interactiva:</strong> Haz clic en cualquiera de los 3 botones (Web, Donar o Tienda) para simular cómo los jugadores interactúan con tu marca sin pausar su partida.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTAs de Publicidad B2B -->
+      <div class="b2b-ctas-wrap">
+        <a href="/publicidad/" class="btn btn-emerald">
+          <i class="fa-solid fa-bullhorn"></i> Conoce nuestros espacios publicitarios
+        </a>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         BLOQUE DE APOYO COMUNITARIO Y DONACIONES (B2C)
+         ==================================================================== -->
+    <section class="section-donations" id="donaciones">
+      <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+        <span class="hero-pill" style="background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.4); color: #f472b6;">
+          <i class="fa-solid fa-heart"></i> Comunidad & Sostenibilidad Ética
+        </span>
+        <h3 class="section-title" style="margin-top: 12px;">
+          Ayúdanos a mantener los juegos <span style="color: #ec4899;">libres de ruidos y accesibles.</span>
+        </h3>
+        <p class="section-subtitle" style="margin-top: 8px;">
+          CareTech Services es un proyecto comprometido con la salud mental, el bienestar senior y la teleasistencia familiar. Agradecemos las micro-donaciones voluntarias que mantienen los servidores activos y libres de publicidad invasiva.
+        </p>
+      </div>
+
+      <div class="donations-card-wrapper">
+        <div class="donation-tiers-grid">
+          <div class="donation-tier-item" onclick="selectDonationTier(1, this)">
+            <span class="tier-amount-value">$1 USD</span>
+            <span class="tier-title-label">Un Café ☕</span>
+            <span class="tier-desc-mini">Apoyo simbólico para servidores y ancho de banda.</span>
+          </div>
+
+          <div class="donation-tier-item active" onclick="selectDonationTier(3, this)">
+            <span class="tier-popular-tag">Más Popular</span>
+            <span class="tier-amount-value">$3 USD</span>
+            <span class="tier-title-label">Apoyo Mensual ⭐</span>
+            <span class="tier-desc-mini">Mantiene 1 juego libre de publicidad y apoya a 10 familias.</span>
+          </div>
+
+          <div class="donation-tier-item" onclick="selectDonationTier(5, this)">
+            <span class="tier-amount-value">$5 USD</span>
+            <span class="tier-title-label">Padrino Care 🏆</span>
+            <span class="tier-desc-mini">Financia el desarrollo de nuevos juegos de memoria.</span>
+          </div>
+
+          <div class="donation-tier-item" onclick="selectDonationTier(10, this)">
+            <span class="tier-amount-value">$10 USD</span>
+            <span class="tier-title-label">Impacto Total 🚀</span>
+            <span class="tier-desc-mini">Impulsa donaciones a hogares geriátricos.</span>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 20px;">
+          <button type="button" class="btn btn-donate-heart" onclick="openDonationModal()">
+            <i class="fa-solid fa-heart-pulse"></i> Apoyar / Donar Ahora (<span id="portalDonationAmountLabel">$3 USD</span>)
+          </button>
+          <a href="/donar/" class="btn btn-outline">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Portal de Donaciones
+          </a>
         </div>
       </div>
     </section>
@@ -1291,7 +1816,48 @@
   </div>
 
   <script>
-    let selectedAmount = 1;
+    let selectedAmount = 3;
+
+    function previewBannerClick(actionType) {
+      const toast = document.getElementById('bannerFeedbackToast');
+      const msgEl = document.getElementById('bannerFeedbackMsg');
+      const iconEl = document.getElementById('bannerFeedbackIcon');
+      if (!toast || !msgEl || !iconEl) return;
+
+      toast.style.display = 'flex';
+
+      if (actionType === 'web') {
+        iconEl.className = 'fa-solid fa-globe';
+        iconEl.style.color = '#3b82f6';
+        msgEl.innerHTML = '<strong>Acción Web:</strong> Redirige al sitio web oficial o landing page del anunciante en una pestaña nueva sin interrumpir la partida.';
+      } else if (actionType === 'donar') {
+        iconEl.className = 'fa-solid fa-heart';
+        iconEl.style.color = '#ec4899';
+        msgEl.innerHTML = '<strong>Acción Donación:</strong> Conecta a causas sociales, voluntariado o recaudación de fondos corporativa de la marca.';
+      } else if (actionType === 'tienda') {
+        iconEl.className = 'fa-solid fa-cart-shopping';
+        iconEl.style.color = '#10b981';
+        msgEl.innerHTML = '<strong>Acción Tienda / Ofertas:</strong> Lleva al catálogo de productos, promociones especiales o reserva de citas médicas.';
+      } else if (actionType === 'close') {
+        iconEl.className = 'fa-solid fa-clock';
+        iconEl.style.color = '#f59e0b';
+        msgEl.innerHTML = '<strong>Cierre de Cortesía:</strong> El jugador puede ocultar el banner por 60 segundos si desea máxima concentración visual.';
+      }
+    }
+
+    function selectDonationTier(amount, elem) {
+      selectedAmount = amount;
+      document.querySelectorAll('.donation-tier-item').forEach(p => p.classList.remove('active'));
+      if (elem) elem.classList.add('active');
+      const label = document.getElementById('portalDonationAmountLabel');
+      if (label) label.innerText = `$${amount} USD`;
+
+      const paypalLink = document.getElementById('paypal-donate-link');
+      if (paypalLink) {
+        paypalLink.href = `https://paypal.me/caretechservices/${amount}`;
+      }
+    }
+
     function openDonationModal() {
       const modal = document.getElementById('donation-modal');
       if (modal) modal.classList.add('active');

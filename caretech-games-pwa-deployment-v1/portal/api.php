@@ -316,6 +316,67 @@ if ($isEventsReq && $method === 'POST') {
 }
 
 // ==============================================================================
+// 3.1. GET /games/api.php?action=admin_stats (Live Device & Telemetry Analytics)
+// ==============================================================================
+if ($action === 'admin_stats' || strpos($requestUri, '/api/v1/admin/stats') !== false) {
+    header('Content-Type: application/json');
+    $devices = getStoredJson($devicesFile);
+    $analytics = getStoredJson($analyticsFile);
+    $campaigns = getStoredJson($campaignsFile);
+
+    $totalDevices = count($devices);
+    $todayStr = date('Y-m-d');
+    $todayDevices = 0;
+    $countryCounts = [];
+    $uaCounts = ['mobile' => 0, 'desktop' => 0, 'tablet' => 0];
+    $pwaCount = 0;
+
+    foreach ($devices as $d) {
+        $reg = $d['registeredAt'] ?? '';
+        if (strpos($reg, $todayStr) === 0) {
+            $todayDevices++;
+        }
+        $c = $d['country'] ?? 'CO';
+        $countryCounts[$c] = ($countryCounts[$c] ?? 0) + 1;
+        $ua = $d['uaClass'] ?? 'mobile';
+        $uaCounts[$ua] = ($uaCounts[$ua] ?? 0) + 1;
+        if (!empty($d['standalone'])) {
+            $pwaCount++;
+        }
+    }
+
+    $eventCounts = [
+        'ad_impression' => 0,
+        'ad_click' => 0,
+        'ad_donation_click' => 0,
+        'ad_shop_click' => 0,
+        'game_start' => 0,
+        'game_win' => 0
+    ];
+    foreach ($analytics as $evt) {
+        $type = $evt['eventType'] ?? '';
+        if (isset($eventCounts[$type])) {
+            $eventCounts[$type]++;
+        }
+    }
+
+    echo json_encode([
+        'success' => true,
+        'stats' => [
+            'totalDevices' => $totalDevices,
+            'todayDevices' => $todayDevices,
+            'pwaInstalls' => $pwaCount,
+            'countryCounts' => $countryCounts,
+            'uaCounts' => $uaCounts,
+            'events' => $eventCounts,
+            'recentDevices' => array_slice(array_reverse($devices), 0, 50),
+            'campaignsCount' => count($campaigns)
+        ]
+    ]);
+    exit;
+}
+
+// ==============================================================================
 // 4. PRICING & CAMPAIGN STORE ENDPOINTS
 // ==============================================================================
 if ((strpos($requestUri, '/api/v1/games/pricing') !== false || $action === 'pricing') && $method === 'GET') {

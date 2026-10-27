@@ -212,7 +212,7 @@ if ($isBannersReq && $method === 'GET') {
             'logo' => 'https://caretechservices.com/assets/logo.png',
             'webUrl' => 'https://caretechservices.com/loyalty/',
             'donationUrl' => 'https://caretechservices.com/donar/',
-            'shopUrl' => 'https://caretechservices.com/tienda/',
+            'shopUrl' => 'https://caretechservices.com/publicidad/',
             'slotMinute' => $currentMinute,
             'syncTime' => time()
         ]);
@@ -225,7 +225,7 @@ if ($isBannersReq && $method === 'GET') {
             'logo' => 'https://caretechservices.com/assets/logo.png',
             'webUrl' => 'https://caretechservices.com',
             'donationUrl' => 'https://caretechservices.com/donar/',
-            'shopUrl' => 'https://caretechservices.com/tienda/',
+            'shopUrl' => 'https://caretechservices.com/publicidad/',
             'slotMinute' => $currentMinute,
             'syncTime' => time()
         ]);

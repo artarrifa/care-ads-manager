@@ -280,6 +280,9 @@
         if (ad.donationUrl) {
           donateBtn.href = ad.donationUrl;
           donateBtn.style.display = 'inline-flex';
+          if (!donateBtn.innerHTML.includes('Donar')) {
+            donateBtn.innerHTML = '<i class="fa-solid fa-heart"></i> Donar';
+          }
         } else {
           donateBtn.style.display = 'none';
         }
@@ -289,6 +292,9 @@
         if (ad.shopUrl) {
           shopBtn.href = ad.shopUrl;
           shopBtn.style.display = 'inline-flex';
+          if (!shopBtn.innerHTML.includes('Anunciar')) {
+            shopBtn.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> Anunciar';
+          }
         } else {
           shopBtn.style.display = 'none';
         }

@@ -75,7 +75,7 @@ conn.on('ready', () => {
 });
 
 function runRemoteExtraction(conn) {
-  const cmd = `cd ${remoteExtractDir} && unzip -o caretech-games.zip && rm -f caretech-games.zip && chmod -R 755 games && (cd wp-content/plugins && unzip -o caretech-games-platform-plugin.zip && rm -f caretech-games-platform-plugin.zip || true) && echo "DEPLOY_COMPLETED_SUCCESSFULLY"`;
+  const cmd = `cd ${remoteExtractDir} && unzip -o caretech-games.zip && rm -f caretech-games.zip && chmod -R 755 games && (cp -rf games/donar . 2>/dev/null || true) && (cp -rf games/publicidad . 2>/dev/null || true) && (cd wp-content/plugins && unzip -o caretech-games-platform-plugin.zip && rm -f caretech-games-platform-plugin.zip || true) && echo "DEPLOY_COMPLETED_SUCCESSFULLY"`;
   console.log(`🔧 Ejecutando extracción remota: ${cmd}`);
 
   conn.exec(cmd, (err, stream) => {

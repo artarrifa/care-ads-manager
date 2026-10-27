@@ -21,7 +21,7 @@
         "logo": "https://caretechservices.com/assets/logo.png",
         "webUrl": "https://caretechservices.com/loyalty/",
         "donationUrl": "https://caretechservices.com/donar/",
-        "shopUrl": "https://caretechservices.com/tienda/"
+        "shopUrl": "https://caretechservices.com/publicidad/"
       },
       "bottom": {
         "campaignId": "CAMP_CARE_INSTITUTIONAL",
@@ -31,7 +31,7 @@
         "logo": "https://caretechservices.com/assets/logo.png",
         "webUrl": "https://caretechservices.com",
         "donationUrl": "https://caretechservices.com/donar/",
-        "shopUrl": "https://caretechservices.com/tienda/"
+        "shopUrl": "https://caretechservices.com/publicidad/"
       }
     }
   },

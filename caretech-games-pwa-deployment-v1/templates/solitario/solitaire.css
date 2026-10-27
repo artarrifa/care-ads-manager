@@ -188,16 +188,22 @@ html, body {
 }
 .live-btn {
   padding: 4px 8px;
-  border-radius: 5px;
-  font-size: 0.7rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
   font-weight: 700;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
+  white-space: nowrap;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.live-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
 }
 .live-btn-web { background: #2563eb; color: #fff; }
-.live-btn-donate { background: #ec4899; color: #fff; }
+.live-btn-donate { background: #ef4444; color: #fff; }
 .live-btn-shop { background: #10b981; color: #fff; }
 
 .ad-close-btn {

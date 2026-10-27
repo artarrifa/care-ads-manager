@@ -22,8 +22,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="care-ui.css?v=1.4.3">
-  <link rel="stylesheet" href="solitaire.css?v=1.4.3">
+  <link rel="stylesheet" href="care-ui.css?v=1.4.4">
+  <link rel="stylesheet" href="solitaire.css?v=1.4.4">
 
   <!-- Aislamiento Visual Crítico para Modales FTUX -->
   <style>
@@ -441,15 +441,29 @@
         </select>
       </div>
 
-      <div class="setting-row">
+      <div class="setting-row" style="align-items: center;">
         <div>
           <strong style="display: block; font-size: 0.95rem;">Efectos de Sonido</strong>
-          <span style="font-size: 0.8rem; color: #94a3b8;">Sintetizador Web Audio</span>
+          <span style="font-size: 0.8rem; color: #94a3b8;">Sonido al mover y voltear cartas</span>
         </div>
-        <select id="sound-select" class="setting-select" onchange="Solitaire.setSound(this.value)">
-          <option value="on">Activado</option>
-          <option value="off">Silencio</option>
-        </select>
+        <button type="button" id="sound-toggle-btn" onclick="Solitaire.toggleSound()" style="
+          background: #10b981;
+          color: #ffffff;
+          border: none;
+          padding: 9px 18px;
+          border-radius: 999px;
+          font-size: 0.9rem;
+          font-weight: 800;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          transition: all 0.2s ease;
+          min-width: 130px;
+          justify-content: center;
+        ">
+          <i class="fa-solid fa-volume-high"></i> <span id="sound-toggle-label">Activado</span>
+        </button>
       </div>
 
       <!-- Configuración SOS Asistida -->
@@ -641,9 +655,9 @@
   </div>
 
   <!-- Scripts: CarePlatform -> ServiceWorker Registration -> Solitario Game Engine -->
-  <script src="care-platform.js?v=1.2.0"></script>
-  <script src="register-pwa.js?v=1.2.0"></script>
-  <script src="solitaire.js?v=1.2.0"></script>
+  <script src="care-platform.js?v=1.4.4"></script>
+  <script src="register-pwa.js?v=1.4.4"></script>
+  <script src="solitaire.js?v=1.4.4"></script>
   <script>
     const CareFTUX = {
       emergencyInfo: null,

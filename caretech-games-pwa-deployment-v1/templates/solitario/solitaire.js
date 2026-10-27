@@ -61,6 +61,12 @@
         this.ctx = new AudioCtx();
       }
     },
+    unlock() {
+      this.init();
+      if (this.ctx && this.ctx.state === 'suspended') {
+        this.ctx.resume();
+      }
+    },
     playCard() {
       if (!state.soundEnabled) return;
       try {
@@ -297,6 +303,21 @@
     CareAdsService.init();
   }
 
+  function updateSoundButtonUI() {
+    const btn = document.getElementById('sound-toggle-btn');
+    if (btn) {
+      if (state.soundEnabled) {
+        btn.style.background = '#10b981';
+        btn.style.color = '#ffffff';
+        btn.innerHTML = '<i class="fa-solid fa-volume-high"></i> <span id="sound-toggle-label">Activado</span>';
+      } else {
+        btn.style.background = 'rgba(255, 255, 255, 0.12)';
+        btn.style.color = '#94a3b8';
+        btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> <span id="sound-toggle-label">Silencio</span>';
+      }
+    }
+  }
+
   function loadSettings() {
     const savedDraw = localStorage.getItem('care_solitaire_draw');
     if (savedDraw) state.drawMode = parseInt(savedDraw, 10);
@@ -304,7 +325,7 @@
 
     const savedSound = localStorage.getItem('care_solitaire_sound');
     if (savedSound !== null) state.soundEnabled = savedSound === 'true';
-    if (els.soundSelect) els.soundSelect.value = state.soundEnabled ? 'on' : 'off';
+    updateSoundButtonUI();
 
     const savedTheme = localStorage.getItem('care_selected_theme') || localStorage.getItem('care_solitaire_theme') || 'theme-care-green';
     const savedDeck = localStorage.getItem('care_solitaire_deck') || 'deck-blue';
@@ -890,6 +911,11 @@
     }
 
     // Direct pointer and touch handlers for mobile & desktop
+    const unlockAudioOnce = () => { audio.unlock(); };
+    window.addEventListener('pointerdown', unlockAudioOnce, { once: true, passive: true });
+    window.addEventListener('touchstart', unlockAudioOnce, { once: true, passive: true });
+    window.addEventListener('click', unlockAudioOnce, { once: true, passive: true });
+
     document.addEventListener('pointerdown', handlePointerDown);
     document.addEventListener('pointermove', handlePointerMove);
     document.addEventListener('pointerup', handlePointerUp);
@@ -1182,8 +1208,7 @@
         });
         const drawSelect = document.getElementById('draw-mode-select');
         if (drawSelect) drawSelect.value = state.drawMode.toString();
-        const soundSelect = document.getElementById('sound-select');
-        if (soundSelect) soundSelect.value = state.soundEnabled ? 'on' : 'off';
+        updateSoundButtonUI();
       }
     },
     closeSettingsModal() {
@@ -1196,6 +1221,15 @@
     },
     setTheme,
     setDeck,
+    toggleSound() {
+      audio.unlock();
+      state.soundEnabled = !state.soundEnabled;
+      localStorage.setItem('care_solitaire_sound', state.soundEnabled.toString());
+      updateSoundButtonUI();
+      if (state.soundEnabled) {
+        audio.playSuccess();
+      }
+    },
     setDrawMode(mode) {
       state.drawMode = parseInt(mode, 10);
       localStorage.setItem('care_solitaire_draw', state.drawMode.toString());
@@ -1203,10 +1237,13 @@
       if (select) select.value = mode;
     },
     setSound(val) {
+      audio.unlock();
       state.soundEnabled = val === 'on';
       localStorage.setItem('care_solitaire_sound', state.soundEnabled.toString());
-      const select = document.getElementById('sound-select');
-      if (select) select.value = val;
+      updateSoundButtonUI();
+      if (state.soundEnabled) {
+        audio.playSuccess();
+      }
     },
     saveSOSPhone() {
       const input = document.getElementById('sos-wa-input');

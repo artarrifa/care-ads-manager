@@ -52,6 +52,25 @@ function saveStoredJson($file, $data) {
     file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 }
 
+// Load Private PayPal Configuration (strictly located outside public_html in caretech-private/)
+$privatePaypalConfig = null;
+$possiblePrivatePaths = [
+    dirname(__DIR__, 2) . '/caretech-private/paypal.php',
+    dirname(__DIR__, 3) . '/caretech-private/paypal.php',
+    __DIR__ . '/../../caretech-private/paypal.php',
+    __DIR__ . '/../../../caretech-private/paypal.php',
+    isset($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] . '/../caretech-private/paypal.php' : null
+];
+foreach ($possiblePrivatePaths as $privPath) {
+    if ($privPath && file_exists($privPath)) {
+        $loadedConfig = @include $privPath;
+        if (is_array($loadedConfig)) {
+            $privatePaypalConfig = $loadedConfig;
+            break;
+        }
+    }
+}
+
 // Load Pricing Config
 $pricingFile = __DIR__ . '/../../config/pricing.json';
 if (!file_exists($pricingFile)) {
@@ -67,8 +86,6 @@ $pricingData = file_exists($pricingFile) ? json_decode(file_get_contents($pricin
     'paypalMerchantEmail' => 'alexis.tarrifa@gmail.com',
     'paypalMerchantId' => '6L4ZTMT48MEEL',
     'paypalMeUsername' => 'alexistarrifa',
-    'paypalClientId' => 'BAAqqtlAVEAYcI4HczDkLgzyejjP8NInCX8DojUaNHOLrpkdMB9nXNTClEUTSrNqzpDR76fc7T7HWPUEjU',
-    'paypalClientSecret' => 'ENaCuy_s3dvlkgLhdSE8SfW_lWAxKp8eO_o7xqfS2yAiumYxeZ4ob6EYavEjYSvjmVp8i5Ws_1nPYiyk',
     'copExchangeRate' => 4000,
     'priorityFeeUsd' => 120,
     'plans' => [
@@ -81,10 +98,14 @@ $pricingData = file_exists($pricingFile) ? json_decode(file_get_contents($pricin
     ]
 ];
 
+// Sanitize: Nunca permitir credenciales privadas en pricingData
+unset($pricingData['paypalClientSecret']);
+unset($pricingData['paypalClientId']);
+
 // Generar orden oficial en PayPal REST API v2 (CheckoutNow)
-function getPayPalRestOrderUrl($totalUsd, $campaignId, $brandName, $planId, $pricingData) {
-    $clientId = $pricingData['paypalClientId'] ?? null;
-    $clientSecret = $pricingData['paypalClientSecret'] ?? null;
+function getPayPalRestOrderUrl($totalUsd, $campaignId, $brandName, $planId, $pricingData, $privatePaypalConfig = null) {
+    $clientId = $privatePaypalConfig['clientId'] ?? null;
+    $clientSecret = $privatePaypalConfig['clientSecret'] ?? null;
     if (!$clientId || !$clientSecret) {
         return null;
     }
@@ -381,7 +402,10 @@ if ($action === 'admin_stats' || strpos($requestUri, '/api/v1/admin/stats') !== 
 // ==============================================================================
 if ((strpos($requestUri, '/api/v1/games/pricing') !== false || $action === 'pricing') && $method === 'GET') {
     header('Content-Type: application/json');
-    echo json_encode(['success' => true, 'pricing' => $pricingData]);
+    $publicPricing = $pricingData;
+    unset($publicPricing['paypalClientSecret']);
+    unset($publicPricing['paypalClientId']);
+    echo json_encode(['success' => true, 'pricing' => $publicPricing]);
     exit;
 }
 
@@ -483,7 +507,7 @@ if ((strpos($requestUri, '/api/v1/games/campaigns/create') !== false || $action 
     
     // Prioridad 1: Orden oficial PayPal REST API v2 (CheckoutNow con soporte de tarjetas internacionales)
     // Prioridad 2: PayPal.Me directo sin error de carrito
-    $restOrderUrl = getPayPalRestOrderUrl($totalUsd, $campaignId, $newCampaign['brandName'], $planId, $pricingData);
+    $restOrderUrl = getPayPalRestOrderUrl($totalUsd, $campaignId, $newCampaign['brandName'], $planId, $pricingData, $privatePaypalConfig);
     $paypalCheckoutUrl = $restOrderUrl ?: $paypalMeUrl;
 
     echo json_encode([

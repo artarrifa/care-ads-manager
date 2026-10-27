@@ -5,8 +5,6 @@
   "paypalMerchantEmail": "alexis.tarrifa@gmail.com",
   "paypalMerchantId": "6L4ZTMT48MEEL",
   "paypalMeUsername": "alexistarrifa",
-  "paypalClientId": "BAAqqtlAVEAYcI4HczDkLgzyejjP8NInCX8DojUaNHOLrpkdMB9nXNTClEUTSrNqzpDR76fc7T7HWPUEjU",
-  "paypalClientSecret": "ENaCuy_s3dvlkgLhdSE8SfW_lWAxKp8eO_o7xqfS2yAiumYxeZ4ob6EYavEjYSvjmVp8i5Ws_1nPYiyk",
   "paypalWebsitePreferencesUrl": "https://www.paypal.com/businessmanage/account/website",
   "copExchangeRate": 4000,
   "slotDurationSeconds": 60,

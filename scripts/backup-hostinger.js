@@ -8,11 +8,20 @@ const { Client } = require('ssh2');
 const fs = require('fs');
 const path = require('path');
 
+// Credentials come only from the environment (never commit them). Prefer an SSH key over a password.
+const required = ['HOSTINGER_HOST', 'HOSTINGER_USER'];
+const missing = required.filter((name) => !process.env[name]);
+if (missing.length || !(process.env.HOSTINGER_SSH_KEY || process.env.HOSTINGER_PASSWORD)) {
+  console.error(`Faltan variables: ${[...missing, 'HOSTINGER_SSH_KEY o HOSTINGER_PASSWORD'].join(', ')}`);
+  process.exit(1);
+}
 const config = {
-  host: '5.183.10.22',
-  port: 65002,
-  username: 'u845296761',
-  password: 'Esteban$3451$',
+  host: process.env.HOSTINGER_HOST,
+  port: Number(process.env.HOSTINGER_PORT || 65002),
+  username: process.env.HOSTINGER_USER,
+  ...(process.env.HOSTINGER_SSH_KEY
+    ? { privateKey: require('fs').readFileSync(process.env.HOSTINGER_SSH_KEY) }
+    : { password: process.env.HOSTINGER_PASSWORD }),
   readyTimeout: 30000
 };
 

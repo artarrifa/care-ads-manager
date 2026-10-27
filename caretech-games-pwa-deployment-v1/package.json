@@ -7,8 +7,8 @@
     "prepare": "node scripts/prepare-deploy.js",
     "prepare:cocos": "node scripts/prepare-deploy.js ../solitario-care-vp1/cocos-project/build/web-mobile",
     "serve": "node scripts/serve.js",
-    "deploy": "node scripts/prepare-deploy.js && node -e \"const { execSync } = require('child_process'); execSync('cd dist && cp games/index.html index.html && cp -rf games/publicidad publicidad && cp -rf games/donar donar && rm -f ../caretech-games.zip && zip -r ../caretech-games.zip index.html games publicidad donar && cp ../caretech-games.zip ../../caretech-games.zip'); console.log('✅ caretech-games.zip generado');\" && node scripts/deploy-hostinger.js",
-    "build:zip": "node scripts/prepare-deploy.js && node -e \"const { execSync } = require('child_process'); execSync('cd dist && cp games/index.html index.html && cp -rf games/publicidad publicidad && cp -rf games/donar donar && rm -f ../caretech-games.zip && zip -r ../caretech-games.zip index.html games publicidad donar && cp ../caretech-games.zip ../../caretech-games.zip'); console.log('✅ caretech-games.zip generado con éxito');\""
+    "build:zip": "node scripts/build-package.js",
+    "deploy": "node scripts/build-package.js && node scripts/deploy-hostinger.js"
   },
   "keywords": [
     "caretech",

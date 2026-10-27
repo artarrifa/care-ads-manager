@@ -62,10 +62,12 @@
       }
     },
     unlock() {
-      this.init();
-      if (this.ctx && this.ctx.state === 'suspended') {
-        this.ctx.resume();
-      }
+      try {
+        this.init();
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+      } catch (e) {}
     },
     playCard() {
       if (!state.soundEnabled) return;
@@ -305,16 +307,17 @@
 
   function updateSoundButtonUI() {
     const btn = document.getElementById('sound-toggle-btn');
-    if (btn) {
-      if (state.soundEnabled) {
-        btn.style.background = '#10b981';
-        btn.style.color = '#ffffff';
-        btn.innerHTML = '<i class="fa-solid fa-volume-high"></i> <span id="sound-toggle-label">Activado</span>';
-      } else {
-        btn.style.background = 'rgba(255, 255, 255, 0.12)';
-        btn.style.color = '#94a3b8';
-        btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> <span id="sound-toggle-label">Silencio</span>';
-      }
+    if (!btn) return;
+    if (state.soundEnabled) {
+      btn.style.background = '#10b981';
+      btn.style.color = '#ffffff';
+      btn.style.boxShadow = '0 4px 14px rgba(16, 185, 129, 0.4)';
+      btn.innerHTML = '<i class="fa-solid fa-volume-high"></i> <span id="sound-toggle-label">Activado</span>';
+    } else {
+      btn.style.background = 'rgba(255, 255, 255, 0.14)';
+      btn.style.color = '#94a3b8';
+      btn.style.boxShadow = 'none';
+      btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> <span id="sound-toggle-label">Silencio</span>';
     }
   }
 
@@ -991,10 +994,15 @@
         localStorage.setItem('care_solitaire_draw', state.drawMode.toString());
       });
     }
-    if (els.soundSelect) {
-      els.soundSelect.addEventListener('change', (e) => {
-        state.soundEnabled = e.target.value === 'on';
-        localStorage.setItem('care_solitaire_sound', state.soundEnabled.toString());
+
+    const soundToggleBtn = document.getElementById('sound-toggle-btn');
+    if (soundToggleBtn) {
+      soundToggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (window.Solitaire && window.Solitaire.toggleSound) {
+          window.Solitaire.toggleSound();
+        }
       });
     }
   }
@@ -1222,12 +1230,14 @@
     setTheme,
     setDeck,
     toggleSound() {
-      audio.unlock();
       state.soundEnabled = !state.soundEnabled;
       localStorage.setItem('care_solitaire_sound', state.soundEnabled.toString());
       updateSoundButtonUI();
       if (state.soundEnabled) {
-        audio.playSuccess();
+        try {
+          audio.unlock();
+          audio.playSuccess();
+        } catch (e) {}
       }
     },
     setDrawMode(mode) {
@@ -1237,12 +1247,14 @@
       if (select) select.value = mode;
     },
     setSound(val) {
-      audio.unlock();
       state.soundEnabled = val === 'on';
       localStorage.setItem('care_solitaire_sound', state.soundEnabled.toString());
       updateSoundButtonUI();
       if (state.soundEnabled) {
-        audio.playSuccess();
+        try {
+          audio.unlock();
+          audio.playSuccess();
+        } catch (e) {}
       }
     },
     saveSOSPhone() {

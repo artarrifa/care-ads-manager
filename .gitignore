@@ -6,3 +6,7 @@ dist/
 caretech-games.zip
 backups/
 *.tar.gz
+
+# Server-only secrets
+caretech-private/
+private-config/paypal.php

@@ -402,9 +402,10 @@ if ($action === 'admin_stats' || strpos($requestUri, '/api/v1/admin/stats') !== 
 // ==============================================================================
 if ((strpos($requestUri, '/api/v1/games/pricing') !== false || $action === 'pricing') && $method === 'GET') {
     header('Content-Type: application/json');
-    $publicPricing = $pricingData;
-    unset($publicPricing['paypalClientSecret']);
-    unset($publicPricing['paypalClientId']);
+    // Strip anything that looks like a credential, even if it is added back to pricing.json by mistake.
+    $publicPricing = array_filter($pricingData, function ($key) {
+        return !preg_match('/secret|token|password|apikey|api_key|clientid/i', $key);
+    }, ARRAY_FILTER_USE_KEY);
     echo json_encode(['success' => true, 'pricing' => $publicPricing]);
     exit;
 }

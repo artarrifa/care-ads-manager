@@ -22,8 +22,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="care-ui.css?v=1.4.6">
-  <link rel="stylesheet" href="solitaire.css?v=1.4.6">
+  <link rel="stylesheet" href="care-ui.css?v=1.5.0">
+  <link rel="stylesheet" href="solitaire.css?v=1.5.0">
 
   <!-- Aislamiento Visual Crítico para Modales FTUX -->
   <style>
@@ -430,6 +430,12 @@
           </div>
           <span class="swatch-label">Minimalista</span>
         </div>
+        <div class="swatch-item" data-card-style="vector-procedural" onclick="window.Solitaire && window.Solitaire.setCardStyle && window.Solitaire.setCardStyle('vector-procedural')">
+          <div class="swatch-preview" style="background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 900; color: #dc2626; font-size: 0.95rem; line-height: 1; border: 1px solid rgba(255,255,255,0.3);">
+            <span>A ♥</span>
+          </div>
+          <span class="swatch-label">Care Gigante</span>
+        </div>
       </div>
 
       <!-- Reversos de Cartas -->
@@ -684,9 +690,9 @@
   </div>
 
   <!-- Scripts: CarePlatform -> ServiceWorker Registration -> Solitario Game Engine -->
-  <script src="care-platform.js?v=1.4.6"></script>
-  <script src="register-pwa.js?v=1.4.6"></script>
-  <script src="solitaire.js?v=1.4.6"></script>
+  <script src="care-platform.js?v=1.5.0"></script>
+  <script src="register-pwa.js?v=1.5.0"></script>
+  <script src="solitaire.js?v=1.5.0"></script>
   <script>
     const CareFTUX = {
       emergencyInfo: null,

@@ -1,10 +1,10 @@
 /**
  * CareTech Games - Solitario Care Service Worker (PWA Offline First)
  * Scope: /games/solitario/
- * Version: 1.4.6
+ * Version: 1.5.0
  */
 
-const CACHE_NAME = 'caretech-solitario-v1.4.6';
+const CACHE_NAME = 'caretech-solitario-v1.5.0';
 const SCOPE_PATH = '/games/solitario/';
 
 // Core assets to pre-cache on install

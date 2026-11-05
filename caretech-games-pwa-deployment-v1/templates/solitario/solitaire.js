@@ -987,6 +987,12 @@
       const cardEl = createCardElement(top);
       cardEl.setAttribute('data-source', 'stock');
       els.stock.appendChild(cardEl);
+      els.stock.classList.remove('is-empty');
+    } else {
+      els.stock.classList.add('is-empty');
+      if (state.waste.length > 0) {
+        els.stock.innerHTML = '<div class="stock-reload-hint" title="Toca para reciclar el mazo"><i class="fa-solid fa-rotate-right"></i></div>';
+      }
     }
   }
 

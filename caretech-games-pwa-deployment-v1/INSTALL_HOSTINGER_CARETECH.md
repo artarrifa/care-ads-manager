@@ -34,14 +34,14 @@ public_html/
     ├── publicidad/               ← Espejo sincronizado de publicidad
     ├── donar/                    ← Espejo sincronizado de donaciones
     ├── config/pricing.json       ← Tarifario publicitario
-    └── solitario/                ← Solitario Care PWA (v1.4.5)
+    └── solitario/                ← Solitario Care PWA (v1.4.6)
         ├── index.html            ← Interfaz, FTUX y modales
-        ├── solitaire.js          ← Motor del juego y Web Audio
+        ├── solitaire.js          ← Motor del juego, Auto-Guardado Dual (LocalStorage/IndexedDB) y Web Audio
         ├── solitaire.css         ← Estilos del juego y cartas
         ├── care-ui.css           ← Sistema visual CareTech UI
         ├── care-platform.js      ← SDK de anuncios y telemetría
         ├── manifest.webmanifest  ← Configuración PWA
-        ├── sw.js                 ← Service Worker PWA Offline First (v1.4.5)
+        ├── sw.js                 ← Service Worker PWA Offline First (v1.4.6)
         ├── register-pwa.js       ← Registro de Service Worker
         ├── offline.html          ← Pantalla offline de cortesía
         ├── icons/                ← Iconos PWA (192x192, 512x512)

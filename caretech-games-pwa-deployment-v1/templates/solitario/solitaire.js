@@ -295,13 +295,189 @@
     }
   };
 
+  // =========================================================================
+  // Native Dual Storage Engine: LocalStorage + IndexedDB for 100% Offline Game State
+  // =========================================================================
+  const GameStorage = {
+    LOCAL_KEY: 'care_solitaire_saved_game',
+    DB_NAME: 'CareTechSolitaireDB',
+    DB_VERSION: 1,
+    STORE_NAME: 'gameState',
+
+    save(gameState) {
+      // 1. Direct synchronous save in LocalStorage (instant, zero overhead)
+      try {
+        localStorage.setItem(this.LOCAL_KEY, JSON.stringify(gameState));
+      } catch (err) {
+        console.warn('[Solitaire Care] Error en LocalStorage save:', err);
+      }
+
+      // 2. Direct asynchronous mirror in IndexedDB
+      this.saveToIndexedDB(gameState);
+    },
+
+    load() {
+      try {
+        const raw = localStorage.getItem(this.LOCAL_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.tableau && Array.isArray(parsed.tableau)) {
+            return parsed;
+          }
+        }
+      } catch (err) {
+        console.warn('[Solitaire Care] Error en LocalStorage load:', err);
+      }
+      return null;
+    },
+
+    clear() {
+      try {
+        localStorage.removeItem(this.LOCAL_KEY);
+      } catch (err) {}
+      this.clearIndexedDB();
+    },
+
+    saveToIndexedDB(gameState) {
+      if (!window.indexedDB) return;
+      try {
+        const req = window.indexedDB.open(this.DB_NAME, this.DB_VERSION);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(this.STORE_NAME)) {
+            db.createObjectStore(this.STORE_NAME, { keyPath: 'id' });
+          }
+        };
+        req.onsuccess = (e) => {
+          const db = e.target.result;
+          try {
+            const tx = db.transaction(this.STORE_NAME, 'readwrite');
+            tx.objectStore(this.STORE_NAME).put({
+              id: 'active_game',
+              ...gameState,
+              updatedAt: Date.now()
+            });
+          } catch (txErr) {}
+        };
+      } catch (e) {}
+    },
+
+    clearIndexedDB() {
+      if (!window.indexedDB) return;
+      try {
+        const req = window.indexedDB.open(this.DB_NAME, this.DB_VERSION);
+        req.onsuccess = (e) => {
+          const db = e.target.result;
+          if (db.objectStoreNames.contains(this.STORE_NAME)) {
+            try {
+              const tx = db.transaction(this.STORE_NAME, 'readwrite');
+              tx.objectStore(this.STORE_NAME).delete('active_game');
+            } catch (err) {}
+          }
+        };
+      } catch (e) {}
+    }
+  };
+
+  function saveCurrentGame() {
+    if (state.isAutoCompleting) return;
+    if (!state.tableau || state.tableau.length !== 7) return;
+
+    // Solo guardar si hay progreso real (movimientos, cartas o tiempo)
+    const hasProgress = state.moves > 0 || state.waste.length > 0 || state.timeSeconds > 0;
+    if (!hasProgress) return;
+
+    const snapshot = {
+      version: 1,
+      stock: state.stock,
+      waste: state.waste,
+      foundations: state.foundations,
+      tableau: state.tableau,
+      score: state.score,
+      moves: state.moves,
+      timeSeconds: state.timeSeconds,
+      drawMode: state.drawMode,
+      history: (state.history || []).slice(-15),
+      timestamp: Date.now()
+    };
+    GameStorage.save(snapshot);
+  }
+
+  function restoreSavedGame() {
+    const saved = GameStorage.load();
+    if (!saved || !saved.tableau || !Array.isArray(saved.tableau) || saved.tableau.length !== 7) {
+      return false;
+    }
+
+    const countStock = saved.stock ? saved.stock.length : 0;
+    const countWaste = saved.waste ? saved.waste.length : 0;
+    const countFoundations = saved.foundations ? saved.foundations.reduce((acc, f) => acc + f.length, 0) : 0;
+    const countTableau = saved.tableau ? saved.tableau.reduce((acc, col) => acc + col.length, 0) : 0;
+    const totalCards = countStock + countWaste + countFoundations + countTableau;
+
+    if (totalCards !== 52) {
+      console.warn('[Solitaire Care] Partida guardada no válida (total cartas != 52). Descartando.');
+      GameStorage.clear();
+      return false;
+    }
+
+    clearInterval(state.timerInterval);
+    state.stock = saved.stock || [];
+    state.waste = saved.waste || [];
+    state.foundations = saved.foundations || [[], [], [], []];
+    state.tableau = saved.tableau;
+    state.score = typeof saved.score === 'number' ? saved.score : 0;
+    state.moves = typeof saved.moves === 'number' ? saved.moves : 0;
+    state.timeSeconds = typeof saved.timeSeconds === 'number' ? saved.timeSeconds : 0;
+    state.drawMode = saved.drawMode || state.drawMode;
+    state.history = Array.isArray(saved.history) ? saved.history : [];
+    state.isPlaying = false;
+    state.isAutoCompleting = false;
+
+    if (els.victoryModal) els.victoryModal.classList.remove('active');
+    stopConfetti();
+
+    if (els.drawSelect) els.drawSelect.value = state.drawMode.toString();
+
+    updateTimerDisplay();
+    render();
+    updateUI();
+    showResumeToast();
+    return true;
+  }
+
+  function showResumeToast() {
+    let toast = document.getElementById('care-resume-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'care-resume-toast';
+      toast.style.cssText = 'position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(13,34,66,0.95);color:#38bdf8;border:1px solid rgba(56,189,248,0.45);padding:10px 18px;border-radius:9999px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:700;box-shadow:0 10px 25px rgba(0,0,0,0.5);display:flex;align-items:center;gap:8px;z-index:99999;opacity:0;transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;';
+      toast.innerHTML = '<i class="fa-solid fa-rotate-right"></i> <span>Partida anterior reanudada</span>';
+      document.body.appendChild(toast);
+    }
+
+    requestAnimationFrame(() => {
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateX(-50%) translateY(0)';
+      setTimeout(() => {
+        if (toast) {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateX(-50%) translateY(20px)';
+        }
+      }, 2600);
+    });
+  }
+
   // Initialize
   function init() {
     initElements();
     loadSettings();
     bindEvents();
     bindCustomizationSwatches();
-    startNewGame();
+    const resumed = restoreSavedGame();
+    if (!resumed) {
+      startNewGame();
+    }
     CareAdsService.init();
   }
 
@@ -406,6 +582,7 @@
   }
 
   function startNewGame() {
+    GameStorage.clear();
     clearInterval(state.timerInterval);
     state.timeSeconds = 0;
     state.moves = 0;
@@ -737,6 +914,7 @@
   }
 
   function triggerVictory() {
+    GameStorage.clear();
     clearInterval(state.timerInterval);
     audio.playWin();
     startConfetti();
@@ -902,6 +1080,7 @@
     if (els.score) els.score.textContent = state.score.toString();
     if (els.moves) els.moves.textContent = state.moves.toString();
     if (els.navUndoBtn) els.navUndoBtn.disabled = state.history.length === 0;
+    saveCurrentGame();
   }
 
   function bindEvents() {
@@ -1005,6 +1184,17 @@
         }
       });
     }
+
+    // Auto-save on page exit, background tab switch, or app minimization
+    window.addEventListener('beforeunload', () => {
+      saveCurrentGame();
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        saveCurrentGame();
+      }
+    });
   }
 
   let tapStartTime = 0;
@@ -1107,6 +1297,7 @@
       else if (dragState.source === 'foundation') card = state.foundations[dragState.sourceIdx][state.foundations[dragState.sourceIdx].length - 1];
 
       if (card && canMoveToTableau(card, colIdx) && !(dragState.source === 'tableau' && dragState.sourceIdx === colIdx)) {
+        startTimerIfNeeded();
         pushState();
         executeMove(dragState.source, dragState.sourceIdx, dragState.cardIdx, 'tableau', colIdx);
         state.score += 5;
@@ -1131,6 +1322,7 @@
       }
 
       if (card && canMoveToFoundation(card, fIdx)) {
+        startTimerIfNeeded();
         pushState();
         executeMove(dragState.source, dragState.sourceIdx, dragState.cardIdx, 'foundation', fIdx);
         state.score += 10;
@@ -1273,6 +1465,9 @@
         window.CareFTUX.updateSOSBadge();
       }
     },
+    saveGame: saveCurrentGame,
+    restoreGame: restoreSavedGame,
+    clearSavedGame: () => GameStorage.clear(),
     state
   };
 

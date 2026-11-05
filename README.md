@@ -84,6 +84,16 @@ Desplegado en producción en **[caretechservices.com](https://caretechservices.c
 - **Configuración de WhatsApp SOS con Botón de Guardado:** Pre-carga el número guardado, incluye botón `[ Guardar ]` con mensaje de confirmación verde (*"✓ Guardado"*) y acceso al asistente completo.
 - **Botón Senior de Cierre:** Botón grande y de alto contraste `[ ✓ Listo / Guardar y Volver al Juego ]` (52px de altura).
 
+### 4. Almacenamiento Local Híbrido (IndexedDB y LocalStorage)
+- **Ejecución 100% Directa en el Navegador:** Sin plugins de terceros, puentes nativos ni dependencias externas.
+- **Auto-Guardado en Tiempo Real:** El estado completo de la partida activa (`tableau`, `foundations`, `stock`, `waste`, `score`, `moves`, `timeSeconds`, `drawMode`, y últimos 15 snapshots de `history` para Deshacer) se guarda automáticamente en cada interacción del jugador.
+- **Reanudación Transparente:** Al reabrir la PWA o refrescar el navegador, el motor valida la integridad de las 52 cartas, restaura el tapete en la posición exacta y muestra un aviso visual suave: *"Partida anterior reanudada"*.
+- **Sincronización Dual (LocalStorage + IndexedDB):**
+  - **`LocalStorage` (`care_solitaire_saved_game`):** Lectura síncrona inmediata con 0 ms de latencia al cargar la interfaz.
+  - **`IndexedDB` (`CareTechSolitaireDB`):** Espejo asíncrono estructurado para máxima durabilidad de datos y resistencia ante purgas del sistema operativo.
+- **Protección de Ciclo de Vida Móvil:** Detecta eventos `beforeunload` y `visibilitychange` para salvar la partida en segundo plano al bloquear la pantalla o recibir llamadas.
+- **Limpieza Inteligente:** La partida guardada se restablece al ganar (`triggerVictory()`) o al pulsar *"Nueva Partida"*, evitando partidas residuales o doble conteo de estadísticas.
+
 ---
 
 ## 📣 Sistema Publicitario Interactivo B2B (3 Botones)

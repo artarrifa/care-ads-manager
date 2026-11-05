@@ -364,6 +364,30 @@ html, body {
   touch-action: none;
 }
 
+/* Integración 4 Barajas SVG Normalizadas */
+.card.has-svg-deck {
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  border-radius: var(--card-radius, 8px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.22) !important;
+}
+
+.card.has-svg-deck.face-down {
+  background: transparent !important;
+}
+
+.card-svg-full {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: fill !important;
+  display: block !important;
+  pointer-events: none !important;
+  border-radius: inherit !important;
+  user-select: none !important;
+  -webkit-user-drag: none !important;
+}
+
 .card.red { color: var(--card-red); }
 .card.black { color: var(--card-black); }
 

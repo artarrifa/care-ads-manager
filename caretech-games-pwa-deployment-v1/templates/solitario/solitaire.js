@@ -46,6 +46,7 @@
     soundEnabled: true,
     theme: 'theme-classic-green',
     deck: 'deck-blue',
+    cardStyle: 'accessible',
     isAutoCompleting: false
   };
 
@@ -508,8 +509,10 @@
 
     const savedTheme = localStorage.getItem('care_selected_theme') || localStorage.getItem('care_solitaire_theme') || 'theme-care-green';
     const savedDeck = localStorage.getItem('care_solitaire_deck') || 'deck-blue';
+    const savedCardStyle = localStorage.getItem('care_solitaire_card_style') || 'accessible';
     setTheme(savedTheme);
     setDeck(savedDeck);
+    setCardStyle(savedCardStyle);
   }
 
   function setTheme(theme) {
@@ -532,6 +535,15 @@
     if (typeof render === 'function') render();
   }
 
+  function setCardStyle(cardStyle) {
+    state.cardStyle = cardStyle;
+    localStorage.setItem('care_solitaire_card_style', cardStyle);
+    document.querySelectorAll('#card-style-swatches .swatch-item').forEach(el => {
+      el.classList.toggle('active', el.getAttribute('data-card-style') === cardStyle);
+    });
+    if (typeof render === 'function') render();
+  }
+
   function bindCustomizationSwatches() {
     document.querySelectorAll('#bg-swatches .swatch-item').forEach(el => {
       el.addEventListener('click', (e) => {
@@ -546,6 +558,14 @@
         e.preventDefault();
         const deck = el.getAttribute('data-deck');
         if (deck) setDeck(deck);
+      });
+    });
+
+    document.querySelectorAll('#card-style-swatches .swatch-item').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const style = el.getAttribute('data-card-style');
+        if (style) setCardStyle(style);
       });
     });
   }
@@ -1052,11 +1072,26 @@
     </svg>`
   };
 
-  // Large-format Card Template Matching User Screenshot
+  const SUIT_TO_CODE = { hearts: 'H', diamonds: 'D', clubs: 'C', spades: 'S' };
+
+  // Large-format Card Template Supporting 4 SVG Decks & Procedural Art
   function createCardElement(card) {
     const el = document.createElement('div');
     el.className = `card ${card.color} ${card.faceUp ? 'face-up' : 'face-down'}`;
     el.setAttribute('data-card-id', card.id.toString());
+
+    if (state.cardStyle && ['accessible', 'classic', 'modern', 'minimalist'].includes(state.cardStyle)) {
+      el.classList.add('has-svg-deck');
+      if (card.faceUp) {
+        const suitCode = SUIT_TO_CODE[card.suit] || 'H';
+        const svgSrc = `assets/cards/${state.cardStyle}/${suitCode}-${card.value}.svg`;
+        el.innerHTML = `<img src="${svgSrc}" alt="${card.label}${card.symbol}" class="card-svg-full" draggable="false" loading="eager" />`;
+      } else {
+        const backSrc = `assets/cards/${state.cardStyle}/back.svg`;
+        el.innerHTML = `<img src="${backSrc}" alt="Reverso" class="card-svg-full card-svg-back" draggable="false" loading="eager" />`;
+      }
+      return el;
+    }
 
     if (card.faceUp) {
       let centerGraphic = `<div class="card-center-giant">${card.symbol}</div>`;
@@ -1406,6 +1441,10 @@
         document.querySelectorAll('#deck-swatches .swatch-item').forEach(el => {
           el.classList.toggle('active', el.getAttribute('data-deck') === currentDeck);
         });
+        const currentCardStyle = localStorage.getItem('care_solitaire_card_style') || state.cardStyle || 'accessible';
+        document.querySelectorAll('#card-style-swatches .swatch-item').forEach(el => {
+          el.classList.toggle('active', el.getAttribute('data-card-style') === currentCardStyle);
+        });
         const drawSelect = document.getElementById('draw-mode-select');
         if (drawSelect) drawSelect.value = state.drawMode.toString();
         updateSoundButtonUI();
@@ -1421,6 +1460,7 @@
     },
     setTheme,
     setDeck,
+    setCardStyle,
     toggleSound() {
       state.soundEnabled = !state.soundEnabled;
       localStorage.setItem('care_solitaire_sound', state.soundEnabled.toString());

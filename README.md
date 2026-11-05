@@ -76,6 +76,13 @@ Desplegado en producción en **[caretechservices.com](https://caretechservices.c
 - **Alertas de Auxilio por WhatsApp y SMS:** Solicitud con geolocalización GPS automática (`https://maps.google.com/?q={lat},{lng}`) para rescate rápido del adulto mayor si se desorienta o se siente mal.
 
 ### 3. Ajustes y Personalización Accesible
+- **4 Barajas Completas de Cartas SVG (Normalizadas):**
+  - 🧓 **Jumbo Senior (`accessible`):** Diseñada para baja visión y adultos mayores con índices de gran formato (Saul Spatz).
+  - ♠️ **Casino Poker (`classic`):** Baraja clásica de alta definición estilo Bicycle / Poker de casino (Austin Gabriel).
+  - 🎨 **Moderna RevK (`modern`):** Baraja vectorial estilizada estándar basada en diseños clásicos de Goodall & Son (Adrian Kennard / RevK).
+  - 📐 **Minimalista (`minimalist`):** Diseño contemporáneo flat vector con estética limpia (Matt Cain).
+  - Cada baraja contiene exactamente **53 archivos SVG vectoriales** (52 cartas `{SUIT}-{VALUE}.svg` + 1 `back.svg`).
+  - Verificación por script: `node scripts/verify-cards.js`.
 - **5 Fondos de Mesa (Temas Care):** *Care Green (Oficial)*, *Care Blue*, *Caoba (Wood)*, *Púrpura Imperial* y *Alto Contraste*.
 - **5 Reversos de Baraja:** *Azul Clásico*, *Rojo Imperial*, *Esmeralda*, *Cyber Black* y *Dorado Vintage* con redibujado instantáneo de las cartas en la mesa (`render()`).
 - **Botón Toggle de Efectos de Sonido:**

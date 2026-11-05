@@ -19,7 +19,7 @@ expect {
 }
 
 puts "===> Extracting on remote server..."
-spawn ssh -p $port -o StrictHostKeyChecking=no $user@$host "cd domains/caretechservices.com/public_html && unzip -o caretech-games.zip && rm -f caretech-games.zip && echo 'DEPLOY_SUCCESS'"
+spawn ssh -p $port -o StrictHostKeyChecking=no $user@$host "cd domains/caretechservices.com/public_html && unzip -o caretech-games.zip && rm -f caretech-games.zip && (cp -rf games/solitario . 2>/dev/null || true) && chmod -R 755 games solitario && echo 'DEPLOY_SUCCESS'"
 expect {
     "password:" {
         send "$pass\r"

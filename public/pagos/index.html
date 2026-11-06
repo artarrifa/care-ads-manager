@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Unificado de Pagos Seguros | CareTech Services</title>
+  <meta name="description" content="Portal oficial de pagos unificados para CareTech Services. Paga donaciones, publicidad, suscripciones y servicios con ePayco (PSE, Nequi), Mercado Pago, PayPal y Binance Pay.">
+  <meta name="theme-color" content="#081325">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- ePayco Smart Checkout SDK Oficial -->
+  <script type="text/javascript" src="https://checkout.epayco.co/checkout.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #081325;
+      --bg-card: #0d1f3d;
+      --bg-card-hover: #132b52;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --primary: #2563eb;
+      --primary-light: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #ef4444;
+      --accent-purple: #8b5cf6;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    .site-header {
+      padding: 16px 0;
+      background: rgba(13, 31, 61, 0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+    .logo-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+    .logo-title {
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -0.5px;
+    }
+    .logo-title span { color: var(--accent-cyan); }
+    .logo-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      display: block;
+      margin-top: -2px;
+    }
+
+    .header-badges {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ssl-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #6ee7b7;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s;
+    }
+    .nav-link:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
+
+    /* Hero */
+    .portal-hero {
+      text-align: center;
+      padding: 36px 0 24px;
+    }
+    .portal-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(37, 99, 235, 0.14);
+      border: 1px solid rgba(37, 99, 235, 0.35);
+      color: #93c5fd;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .portal-title {
+      font-size: 2.3rem;
+      font-weight: 900;
+      letter-spacing: -0.8px;
+      margin-bottom: 10px;
+    }
+    .portal-title span {
+      background: linear-gradient(135deg, #60a5fa, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .portal-desc {
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto;
+      font-size: 1.02rem;
+    }
+
+    /* Main Checkout Grid */
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      margin-bottom: 50px;
+    }
+
+    .card-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+    }
+
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: #93c5fd;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 10px;
+    }
+
+    /* Service Selector Tabs */
+    .services-nav {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .service-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 14px 12px;
+      text-align: left;
+      cursor: pointer;
+      color: #fff;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .service-btn:hover {
+      background: rgba(37, 99, 235, 0.1);
+      border-color: rgba(37, 99, 235, 0.3);
+    }
+    .service-btn.active {
+      background: rgba(37, 99, 235, 0.18);
+      border-color: var(--primary-light);
+      box-shadow: 0 0 16px rgba(37, 99, 235, 0.3);
+    }
+    .service-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .service-icon.donar { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+    .service-icon.publicidad { background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); }
+    .service-icon.solo { background: rgba(0, 158, 227, 0.18); color: #38bdf8; }
+    .service-icon.custom { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+
+    .service-label { font-size: 0.9rem; font-weight: 700; display: block; }
+    .service-hint { font-size: 0.72rem; color: var(--text-muted); display: block; margin-top: 2px; }
+
+    /* Currency & Amount Selection */
+    .currency-switch-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 8px 14px;
+    }
+    .currency-pills {
+      display: flex;
+      gap: 6px;
+    }
+    .curr-pill {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-muted);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .curr-pill.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .amount-presets {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .preset-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-sm);
+      padding: 10px 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .preset-btn:hover { background: rgba(255, 255, 255, 0.08); }
+    .preset-btn.active {
+      background: rgba(16, 185, 129, 0.18);
+      border-color: var(--accent-emerald);
+      color: #6ee7b7;
+    }
+
+    .custom-input-row {
+      display: flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-sm);
+      padding: 8px 14px;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .custom-input-row span { font-weight: 800; font-size: 1.1rem; color: var(--accent-cyan); }
+    .custom-input-row input {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      width: 100%;
+      outline: none;
+    }
+
+    /* Billing Info Form */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .form-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 0.92rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-input:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
+    }
+
+    /* Gateway Selection Cards */
+    .gateways-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .gateway-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .gateway-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .gateway-card.selected {
+      background: rgba(37, 99, 235, 0.12);
+      border-color: var(--primary-light);
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.2);
+    }
+    .gateway-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .gw-epayco { background: linear-gradient(135deg, #ff7a00, #e05e00); color: #fff; }
+    .gw-mp { background: linear-gradient(135deg, #009ee3, #007eb5); color: #fff; }
+    .gw-paypal { background: linear-gradient(135deg, #003087, #0070ba); color: #fff; }
+    .gw-binance { background: linear-gradient(135deg, #f3ba2f, #ca9517); color: #000; }
+
+    .gw-info h4 { font-size: 0.98rem; font-weight: 800; margin-bottom: 2px; }
+    .gw-info p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.35; }
+    .gw-badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      margin-left: 6px;
+    }
+    .badge-colombia { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .badge-sub { background: rgba(6, 182, 212, 0.2); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.4); }
+    .badge-global { background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.4); }
+    .badge-crypto { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
+
+    /* Summary & Submit Box */
+    .order-summary {
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .summary-row.total {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 10px;
+      margin-top: 10px;
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+    .summary-row.total .price-highlight {
+      color: var(--accent-emerald);
+      font-size: 1.35rem;
+    }
+
+    .btn-submit-payment {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), #1d4ed8);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 16px 24px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
+      transition: all 0.2s ease;
+      min-height: 56px;
+    }
+    .btn-submit-payment:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 36px rgba(37, 99, 235, 0.6);
+    }
+    .btn-submit-payment:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Trust & Guarantees */
+    .trust-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 20px;
+      font-size: 0.76rem;
+      color: #64748b;
+      flex-wrap: wrap;
+    }
+
+    /* Modal / Alert message */
+    .status-banner {
+      display: none;
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 20px;
+      font-size: 0.88rem;
+      align-items: center;
+      gap: 12px;
+    }
+    .status-banner.error {
+      display: flex;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+    .status-banner.info {
+      display: flex;
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      color: #a5f3fc;
+    }
+
+    @media (max-width: 860px) {
+      .checkout-layout { grid-template-columns: 1fr; }
+      .services-nav { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .portal-title { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand-logo">
+        <div class="logo-badge">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">CARE<span>TECH</span> PAY</span>
+          <span class="logo-sub">Portal Oficial de Pagos</span>
+        </div>
+      </a>
+      <div class="header-badges">
+        <div class="ssl-badge">
+          <i class="fa-solid fa-lock"></i> SSL 256-Bit Seguro
+        </div>
+        <button type="button" class="nav-link" style="background: rgba(255, 122, 0, 0.15); border: 1px solid rgba(255, 122, 0, 0.35); color: #fbbf24; cursor: pointer;" onclick="openEpaycoConfigModal()">
+          <i class="fa-solid fa-key"></i> Llaves ePayco
+        </button>
+        <a href="/donar/" class="nav-link"><i class="fa-solid fa-heart"></i> Donar</a>
+        <a href="/publicidad/" class="nav-link"><i class="fa-solid fa-bullhorn"></i> Publicidad</a>
+        <a href="/games/solitario/" class="nav-link"><i class="fa-solid fa-gamepad"></i> Solitario Care</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Header -->
+  <main class="container">
+    <section class="portal-hero">
+      <div class="portal-tag">
+        <i class="fa-solid fa-building-columns"></i> Pasarelas Reguladas &bull; Cero Fallas
+      </div>
+      <h1 class="portal-title">
+        Portal Unificado de <span>Pagos Seguros</span>
+      </h1>
+      <p class="portal-desc">
+        Procesa aportes comunitarios, patrocinios B2B, suscripciones de software y servicios con ePayco, Mercado Pago, PayPal y Binance Pay en un solo lugar.
+      </p>
+    </section>
+
+    <!-- Alert / Status Banner -->
+    <div id="status-banner" class="status-banner"></div>
+
+    <!-- Main Checkout Form Layout -->
+    <div class="checkout-layout">
+
+      <!-- Left Column: Service & Billing Data -->
+      <div class="card-box">
+        <div class="section-title">
+          <i class="fa-solid fa-cubes"></i> 1. Selecciona el Servicio o Concepto
+        </div>
+
+        <div class="services-nav">
+          <button type="button" class="service-btn active" onclick="selectService('donar', this)">
+            <div class="service-icon donar"><i class="fa-solid fa-heart"></i></div>
+            <div>
+              <span class="service-label">Donación Comunitaria</span>
+              <span class="service-hint">Juegos y SOS para adultos mayores</span>
+            </div>
+          </button>
+
+          <button type="button" class="service-btn" onclick="selectService('publicidad', this)">
+            <div class="service-icon publicidad"><i class="fa-solid fa-bullhorn"></i></div>
+            <div>
+              <span class="service-label">Publicidad & Patrocinio</span>
+              <span class="service-hint">Banners interactivos B2B</span>
+            </div>
+          </button>
+
+          <button type="button" class="service-btn" onclick="selectService('plan_solo', this)">
+            <div class="service-icon solo"><i class="fa-solid fa-bolt"></i></div>
+            <div>
+              <span class="service-label">Plan Solo (Mercado Pago)</span>
+              <span class="service-hint">Suscripción recurrente oficial</span>
+            </div>
+          </button>
+
+          <button type="button" class="service-btn" onclick="selectService('custom', this)">
+            <div class="service-icon custom"><i class="fa-solid fa-receipt"></i></div>
+            <div>
+              <span class="service-label">Pago Libre / Factura</span>
+              <span class="service-hint">Monto abierto personalizado</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Currency & Amounts -->
+        <div class="section-title" style="margin-top: 24px;">
+          <i class="fa-solid fa-money-bill-wave"></i> 2. Monto a Pagar
+        </div>
+
+        <div class="currency-switch-box">
+          <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">Moneda seleccionada:</span>
+          <div class="currency-pills">
+            <button type="button" id="curr-cop" class="curr-pill active" onclick="setCurrency('COP')">COP 🇨🇴</button>
+            <button type="button" id="curr-usd" class="curr-pill" onclick="setCurrency('USD')">USD 🇺🇸</button>
+          </div>
+        </div>
+
+        <div class="amount-presets" id="presets-container">
+          <!-- Dinamicos segun moneda -->
+        </div>
+
+        <div class="custom-input-row">
+          <span id="currency-symbol">$</span>
+          <input type="number" id="input-amount" min="1" step="any" placeholder="Ingresa el monto" oninput="handleAmountInput(this.value)">
+          <span id="currency-label" style="font-size: 0.85rem; color: #94a3b8;">COP</span>
+        </div>
+
+        <!-- Billing Info -->
+        <div class="section-title" style="margin-top: 24px;">
+          <i class="fa-solid fa-id-card"></i> 3. Datos del Pagador / Facturación
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cust-name">Nombre Completo / Razón Social *</label>
+            <input type="text" id="cust-name" class="form-input" placeholder="Ej: Carlos Gómez" required>
+          </div>
+          <div class="form-group">
+            <label for="cust-email">Correo Electrónico *</label>
+            <input type="email" id="cust-email" class="form-input" placeholder="carlos@correo.com" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cust-phone">WhatsApp / Celular *</label>
+            <input type="tel" id="cust-phone" class="form-input" placeholder="3164734660" required>
+          </div>
+          <div class="form-group">
+            <label for="cust-doc">Nº Documento / NIT (Requerido por PSE) *</label>
+            <input type="text" id="cust-doc" class="form-input" placeholder="1020304050" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Gateway Selection & Final Checkout -->
+      <div class="card-box" style="display: flex; flex-direction: column;">
+        <div class="section-title">
+          <i class="fa-solid fa-credit-card"></i> 4. Elige tu Medio de Pago
+        </div>
+
+        <div class="gateways-grid">
+          <!-- ePayco Card -->
+          <div class="gateway-card selected" id="gw-card-epayco" onclick="selectGateway('epayco')">
+            <div class="gateway-logo gw-epayco">
+              <i class="fa-solid fa-building-columns"></i>
+            </div>
+            <div class="gw-info">
+              <h4>ePayco <span class="gw-badge badge-colombia">PSE &bull; Nequi &bull; Tarjetas</span></h4>
+              <p>Débito bancario PSE (Bancolombia, Davivienda, etc.), Nequi, Daviplata, Tarjetas y Efecty.</p>
+            </div>
+          </div>
+
+          <!-- Mercado Pago Card -->
+          <div class="gateway-card" id="gw-card-mercadopago" onclick="selectGateway('mercadopago')">
+            <div class="gateway-logo gw-mp">
+              <i class="fa-solid fa-handshake"></i>
+            </div>
+            <div class="gw-info">
+              <h4>Mercado Pago <span class="gw-badge badge-sub">Plan Solo &bull; Cuotas</span></h4>
+              <p>Suscripción automática (ID <code>ef5d45af5b...</code>), dinero en cuenta y tarjetas de crédito.</p>
+            </div>
+          </div>
+
+          <!-- PayPal Card -->
+          <div class="gateway-card" id="gw-card-paypal" onclick="selectGateway('paypal')">
+            <div class="gateway-logo gw-paypal">
+              <i class="fa-brands fa-paypal"></i>
+            </div>
+            <div class="gw-info">
+              <h4>PayPal <span class="gw-badge badge-global">Internacional</span></h4>
+              <p>Tarjetas de crédito o débito Visa, Mastercard, American Express internacionales y saldo PayPal.</p>
+            </div>
+          </div>
+
+          <!-- Binance Pay Card -->
+          <div class="gateway-card" id="gw-card-binance" onclick="selectGateway('binance')">
+            <div class="gateway-logo gw-binance">
+              <i class="fa-brands fa-bitcoin"></i>
+            </div>
+            <div class="gw-info">
+              <h4>Binance Pay <span class="gw-badge badge-crypto">Cripto 0% Fee</span></h4>
+              <p>USDT (Tether), BTC, ETH directo con código QR sin comisiones bancarias.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+          <div class="summary-row">
+            <span>Concepto:</span>
+            <strong id="sum-service-label">Donación Comunitaria CareTech</strong>
+          </div>
+          <div class="summary-row">
+            <span>Tasa de cambio:</span>
+            <span>1 USD = 4.000 COP</span>
+          </div>
+          <div class="summary-row">
+            <span>Equivalencia aproximada:</span>
+            <span id="sum-equivalent">$5.00 USD</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total a pagar:</span>
+            <span class="price-highlight" id="sum-total">$20.000 COP</span>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <button type="button" id="btn-pay-action" class="btn-submit-payment" onclick="executePayment()">
+          <i class="fa-solid fa-lock"></i>
+          <span id="btn-pay-text">Pagar con ePayco</span>
+        </button>
+
+        <div class="trust-footer">
+          <span><i class="fa-solid fa-shield-halved" style="color: #10b981;"></i> Cifrado de grado bancario</span>
+          <span><i class="fa-solid fa-circle-check" style="color: #06b6d4;"></i> PCI-DSS Seguro</span>
+          <span><i class="fa-solid fa-receipt" style="color: #f59e0b;"></i> Comprobante instantáneo</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const EXCHANGE_RATE = 4000;
+    const MERCADO_PAGO_SOLO_PLAN_ID = 'ef5d45af5bd347a7830da2fbec0ea42d';
+    const MERCADO_PAGO_SOLO_URL = `https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id=${MERCADO_PAGO_SOLO_PLAN_ID}`;
+
+    let currentService = 'donar';
+    let currentCurrency = 'COP';
+    let currentGateway = 'epayco';
+    let currentAmount = 20000; // Por defecto en COP
+    let epaycoConfigData = null;
+
+    const PRESETS_COP = [
+      { label: '$4.000', value: 4000 },
+      { label: '$12.000', value: 12000 },
+      { label: '$20.000', value: 20000 },
+      { label: '$40.000', value: 40000 },
+      { label: '$140.000', value: 140000 },
+      { label: '$480.000', value: 480000 }
+    ];
+
+    const PRESETS_USD = [
+      { label: '$1', value: 1 },
+      { label: '$3', value: 3 },
+      { label: '$5', value: 5 },
+      { label: '$10', value: 10 },
+      { label: '$35', value: 35 },
+      { label: '$120', value: 120 }
+    ];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      renderPresets();
+      parseUrlParams();
+      await fetchPaymentConfig();
+      updateDisplay();
+    });
+
+    async function fetchPaymentConfig() {
+      try {
+        const res = await fetch('/api.php?action=payments_config');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.gateways) {
+            epaycoConfigData = data.gateways.epayco;
+          }
+        }
+      } catch (e) {
+        console.warn('Config fetch fallback:', e);
+      }
+    }
+
+    function parseUrlParams() {
+      const params = new URLSearchParams(window.location.search);
+      const s = params.get('service');
+      const cur = params.get('currency');
+      const amt = params.get('amount');
+      const gw = params.get('gateway') || params.get('method');
+      const plan = params.get('plan');
+
+      if (s) {
+        selectService(s);
+      } else if (plan === 'solo') {
+        selectService('plan_solo');
+      }
+
+      if (cur && ['COP', 'USD'].includes(cur.toUpperCase())) {
+        setCurrency(cur.toUpperCase());
+      }
+
+      if (amt && parseFloat(amt) > 0) {
+        currentAmount = parseFloat(amt);
+        document.getElementById('input-amount').value = currentAmount;
+      }
+
+      if (gw && ['epayco', 'mercadopago', 'paypal', 'binance'].includes(gw.toLowerCase())) {
+        selectGateway(gw.toLowerCase());
+      }
+    }
+
+    function selectService(service, elem) {
+      currentService = service;
+      document.querySelectorAll('.service-btn').forEach(b => b.classList.remove('active'));
+      if (elem) {
+        elem.classList.add('active');
+      } else {
+        const btn = document.querySelector(`.service-btn .service-icon.${service}`)?.closest('.service-btn');
+        if (btn) btn.classList.add('active');
+      }
+
+      if (service === 'donar') {
+        document.getElementById('sum-service-label').textContent = 'Donación Comunitaria CareTech Games';
+        if (currentCurrency === 'COP' && currentAmount < 4000) currentAmount = 20000;
+        if (currentCurrency === 'USD' && currentAmount > 50) currentAmount = 5;
+      } else if (service === 'publicidad') {
+        document.getElementById('sum-service-label').textContent = 'Publicidad B2B en Juegos CareTech';
+        if (currentCurrency === 'USD') currentAmount = 120;
+        else currentAmount = 480000;
+      } else if (service === 'plan_solo') {
+        document.getElementById('sum-service-label').textContent = 'Suscripción Recurrente Plan Solo';
+        selectGateway('mercadopago');
+        if (currentCurrency === 'USD') currentAmount = 9.90;
+        else currentAmount = 39900;
+      } else {
+        document.getElementById('sum-service-label').textContent = 'Pago Libre / Servicios CareTech';
+      }
+
+      document.getElementById('input-amount').value = currentAmount;
+      updateDisplay();
+    }
+
+    function setCurrency(cur) {
+      if (currentCurrency === cur) return;
+
+      if (cur === 'USD') {
+        currentAmount = Math.max(1, Math.round((currentAmount / EXCHANGE_RATE) * 100) / 100);
+      } else {
+        currentAmount = Math.max(4000, Math.round(currentAmount * EXCHANGE_RATE));
+      }
+      currentCurrency = cur;
+
+      document.getElementById('curr-cop').classList.toggle('active', cur === 'COP');
+      document.getElementById('curr-usd').classList.toggle('active', cur === 'USD');
+      document.getElementById('currency-symbol').textContent = cur === 'COP' ? '$' : 'USD $';
+      document.getElementById('currency-label').textContent = cur;
+      document.getElementById('input-amount').value = currentAmount;
+
+      renderPresets();
+      updateDisplay();
+    }
+
+    function renderPresets() {
+      const container = document.getElementById('presets-container');
+      const list = currentCurrency === 'COP' ? PRESETS_COP : PRESETS_USD;
+      container.innerHTML = '';
+
+      list.forEach(item => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `preset-btn ${currentAmount === item.value ? 'active' : ''}`;
+        btn.textContent = item.label;
+        btn.onclick = () => {
+          currentAmount = item.value;
+          document.getElementById('input-amount').value = item.value;
+          document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          updateDisplay();
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function handleAmountInput(val) {
+      const num = parseFloat(val);
+      if (num && num > 0) {
+        currentAmount = num;
+        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+        updateDisplay();
+      }
+    }
+
+    function selectGateway(gw) {
+      currentGateway = gw;
+      document.querySelectorAll('.gateway-card').forEach(c => c.classList.remove('selected'));
+      const activeCard = document.getElementById(`gw-card-${gw}`);
+      if (activeCard) activeCard.classList.add('selected');
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      let amountCop, amountUsd;
+      if (currentCurrency === 'COP') {
+        amountCop = currentAmount;
+        amountUsd = Math.round((amountCop / EXCHANGE_RATE) * 100) / 100;
+        document.getElementById('sum-total').textContent = `$${amountCop.toLocaleString('es-CO')} COP`;
+        document.getElementById('sum-equivalent').textContent = `~$${amountUsd.toFixed(2)} USD`;
+      } else {
+        amountUsd = currentAmount;
+        amountCop = Math.round(amountUsd * EXCHANGE_RATE);
+        document.getElementById('sum-total').textContent = `$${amountUsd.toFixed(2)} USD`;
+        document.getElementById('sum-equivalent').textContent = `~$${amountCop.toLocaleString('es-CO')} COP`;
+      }
+
+      // Action Button Label
+      const btnText = document.getElementById('btn-pay-text');
+      if (currentGateway === 'epayco') {
+        btnText.textContent = `Pagar $${amountCop.toLocaleString('es-CO')} COP con ePayco (PSE / Nequi / Tarjetas)`;
+      } else if (currentGateway === 'mercadopago') {
+        if (currentService === 'plan_solo') {
+          btnText.textContent = `Suscribirse con Mercado Pago (Plan Solo)`;
+        } else {
+          btnText.textContent = `Pagar con Mercado Pago`;
+        }
+      } else if (currentGateway === 'paypal') {
+        btnText.textContent = `Pagar $${amountUsd.toFixed(2)} USD con PayPal / Tarjeta`;
+      } else if (currentGateway === 'binance') {
+        btnText.textContent = `Pagar ${amountUsd.toFixed(2)} USDT con Binance Pay`;
+      }
+    }
+
+    function showStatus(msg, type = 'error') {
+      const banner = document.getElementById('status-banner');
+      banner.className = `status-banner ${type}`;
+      banner.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> <div>${msg}</div>`;
+      banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function clearStatus() {
+      const banner = document.getElementById('status-banner');
+      banner.className = 'status-banner';
+      banner.innerHTML = '';
+    }
+
+    async function executePayment() {
+      clearStatus();
+      const name = document.getElementById('cust-name').value.trim();
+      const email = document.getElementById('cust-email').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
+      const doc = document.getElementById('cust-doc').value.trim();
+
+      if (!name) {
+        showStatus('Por favor ingresa tu nombre completo o razón social.');
+        document.getElementById('cust-name').focus();
+        return;
+      }
+      if (!email || !email.includes('@') || !email.includes('.')) {
+        showStatus('Por favor ingresa un correo electrónico válido para enviarte el comprobante de pago.');
+        document.getElementById('cust-email').focus();
+        return;
+      }
+      if (!phone) {
+        showStatus('Por favor ingresa un número de teléfono o WhatsApp de contacto.');
+        document.getElementById('cust-phone').focus();
+        return;
+      }
+      if (!doc) {
+        showStatus('Por favor ingresa tu número de identificación / NIT (requerido por las pasarelas colombianas para PSE y facturación).');
+        document.getElementById('cust-doc').focus();
+        return;
+      }
+
+      const btn = document.getElementById('btn-pay-action');
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Conectando pasarela segura...`;
+
+      try {
+        const payload = {
+          service: currentService,
+          currency: currentCurrency,
+          amount: currentAmount,
+          gateway: currentGateway,
+          customer: { name, email, phone, document: doc }
+        };
+
+        const res = await fetch('/api.php?action=create_payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (!data.success) {
+          throw new Error(data.error || 'No se pudo generar la orden de pago');
+        }
+
+        const gateways = data.gateways || {};
+
+        // 1. Manejo ePayco
+        if (currentGateway === 'epayco') {
+          const epaycoData = gateways.epayco;
+          const publicKey = (epaycoConfigData && epaycoConfigData.publicKey) ? epaycoConfigData.publicKey : (epaycoData.key || '');
+
+          if (window.ePayco && publicKey) {
+            const handler = window.ePayco.checkout.configure({
+              key: publicKey,
+              test: Boolean(epaycoData.test)
+            });
+            handler.open({
+              name: epaycoData.name,
+              description: epaycoData.description,
+              invoice: epaycoData.invoice,
+              currency: 'cop',
+              amount: String(data.amountCop),
+              tax_base: '0',
+              tax: '0',
+              country: 'co',
+              lang: 'es',
+              external: 'false',
+              extra1: epaycoData.extra1,
+              extra2: epaycoData.extra2,
+              confirmation: epaycoData.confirmation,
+              response: epaycoData.response,
+              name_billing: name,
+              email_billing: email,
+              mobilephone_billing: phone,
+              number_doc_billing: doc
+            });
+          } else {
+            // Ofrecer opciones de pago inmediatas sin fallas
+            showStatus(`
+              <div style="width: 100%;">
+                <div style="font-weight: 800; font-size: 1rem; margin-bottom: 6px;">
+                  <i class="fa-solid fa-credit-card"></i> Opciones de pago inmediato en Colombia:
+                </div>
+                <div style="margin-bottom: 12px; font-size: 0.88rem;">
+                  Puedes pagar ahora mismo con <strong>PSE, Nequi, Daviplata o Tarjetas</strong> usando <strong>Mercado Pago</strong>, o registrar tus llaves de ePayco obtenidas en <a href="https://dashboard.epayco.com/dashboard" target="_blank" style="color: #67e8f9; text-decoration: underline;">dashboard.epayco.com</a>.
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                  <a href="${gateways.mercadopago?.soloPlanCheckoutUrl || MERCADO_PAGO_SOLO_URL}" target="_blank" class="btn-submit-payment" style="flex: 1; min-height: 44px; padding: 10px 18px; font-size: 0.9rem; text-decoration: none; background: linear-gradient(135deg, #009ee3, #007eb5);">
+                    <i class="fa-solid fa-bolt"></i> Continuar con Mercado Pago (PSE / Tarjetas)
+                  </a>
+                  <a href="https://wa.me/573164734660?text=${encodeURIComponent('Hola CareTech, deseo pagar ' + data.amountCop + ' COP para la orden ' + data.reference + ' vía Nequi/Bancolombia/PSE')}" target="_blank" class="btn-submit-payment" style="flex: 1; min-height: 44px; padding: 10px 18px; font-size: 0.9rem; text-decoration: none; background: linear-gradient(135deg, #10b981, #059669);">
+                    <i class="fa-brands fa-whatsapp"></i> Pago Directo WhatsApp
+                  </a>
+                  <button type="button" onclick="openEpaycoConfigModal()" class="btn-submit-payment" style="flex: 1; min-height: 44px; padding: 10px 18px; font-size: 0.9rem; background: linear-gradient(135deg, #ff7a00, #d95d00);">
+                    <i class="fa-solid fa-key"></i> Pegar Llave de ePayco
+                  </button>
+                </div>
+              </div>
+            `, 'info');
+          }
+        }
+
+        // 2. Manejo Mercado Pago
+        else if (currentGateway === 'mercadopago') {
+          const mpUrl = gateways.mercadopago?.soloPlanCheckoutUrl || MERCADO_PAGO_SOLO_URL;
+          window.location.href = mpUrl;
+        }
+
+        // 3. Manejo PayPal
+        else if (currentGateway === 'paypal') {
+          const ppUrl = gateways.paypal?.paypalMeUrl || `https://www.paypal.com/paypalme/alexistarrifa/${data.amountUsd}USD`;
+          window.location.href = ppUrl;
+        }
+
+        // 4. Manejo Binance Pay
+        else if (currentGateway === 'binance') {
+          window.location.href = data.receiptUrl;
+        }
+
+      } catch (err) {
+        console.error('Error al procesar pago:', err);
+        showStatus('Error de conexión con la pasarela: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        updateDisplay();
+      }
+    }
+
+    // Modal de Configuracion Rapida de ePayco
+    function openEpaycoConfigModal() {
+      const modal = document.getElementById('epayco-config-modal');
+      if (modal) modal.style.display = 'flex';
+      const curKey = epaycoConfigData?.publicKey || '';
+      if (curKey) document.getElementById('cfg-epayco-pub').value = curKey;
+    }
+
+    function closeEpaycoConfigModal() {
+      const modal = document.getElementById('epayco-config-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    async function saveEpaycoConfig() {
+      const pubKey = document.getElementById('cfg-epayco-pub').value.trim();
+      const pKey = document.getElementById('cfg-epayco-pkey').value.trim();
+      const custId = document.getElementById('cfg-epayco-cust').value.trim();
+      const isTest = document.getElementById('cfg-epayco-test').checked;
+
+      if (!pubKey) {
+        alert('Por favor ingresa tu PUBLIC_KEY de ePayco.');
+        return;
+      }
+
+      const saveBtn = document.getElementById('btn-save-epayco-cfg');
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+
+      try {
+        const res = await fetch('/api.php?action=save_epayco_config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            publicKey: pubKey,
+            pKey: pKey,
+            pCustIdCliente: custId,
+            testMode: isTest
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('¡Llaves de ePayco guardadas y activadas con éxito!');
+          closeEpaycoConfigModal();
+          await fetchPaymentConfig();
+          updateDisplay();
+        } else {
+          alert('Error guardando llaves: ' + (data.error || 'Error desconocido'));
+        }
+      } catch (e) {
+        alert('Error conectando con el servidor: ' + e.message);
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Guardar y Activar ePayco';
+      }
+    }
+  </script>
+
+  <!-- Modal Configuracion ePayco -->
+  <div id="epayco-config-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); max-width: 520px; width: 100%; padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); position: relative;">
+      <button type="button" onclick="closeEpaycoConfigModal()" style="position: absolute; top: 18px; right: 18px; background: transparent; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer;">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; color: #fbbf24;">
+        <i class="fa-solid fa-key" style="font-size: 1.4rem;"></i>
+        <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff;">Configurar Llaves de ePayco</h3>
+      </div>
+      <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 18px;">
+        Obtén tus llaves oficiales ingresando a tu panel de ePayco:<br>
+        👉 <a href="https://dashboard.epayco.com/dashboard" target="_blank" rel="noopener" style="color: var(--accent-cyan); text-decoration: underline; font-weight: 700;">https://dashboard.epayco.com/dashboard</a> &gt; <strong>Integraciones</strong> &gt; <strong>Llaves API</strong>.
+      </p>
+
+      <div class="form-group">
+        <label for="cfg-epayco-pub">PUBLIC_KEY * (Llave Pública)</label>
+        <input type="text" id="cfg-epayco-pub" class="form-input" placeholder="Ej: 491e0800d7e10b48614477028..." required>
+      </div>
+
+      <div class="form-group">
+        <label for="cfg-epayco-cust">P_CUST_ID_CLIENTE (ID de Cliente ePayco)</label>
+        <input type="text" id="cfg-epayco-cust" class="form-input" placeholder="Ej: 123456">
+      </div>
+
+      <div class="form-group">
+        <label for="cfg-epayco-pkey">P_KEY (Llave para verificación de firma SHA-256)</label>
+        <input type="text" id="cfg-epayco-pkey" class="form-input" placeholder="Ej: 2a3b4c5d6e...">
+      </div>
+
+      <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+        <input type="checkbox" id="cfg-epayco-test" style="width: 18px; height: 18px; cursor: pointer;">
+        <label for="cfg-epayco-test" style="font-size: 0.85rem; color: #cbd5e1; cursor: pointer;">Activar modo Sandbox / Pruebas (desmarca para producción real)</label>
+      </div>
+
+      <div style="display: flex; gap: 10px;">
+        <button type="button" id="btn-save-epayco-cfg" onclick="saveEpaycoConfig()" class="btn-submit-payment" style="background: linear-gradient(135deg, #ff7a00, #d95d00);">
+          <i class="fa-solid fa-check"></i> Guardar y Activar ePayco
+        </button>
+        <button type="button" onclick="closeEpaycoConfigModal()" class="btn-submit-payment" style="background: rgba(255,255,255,0.1); width: auto; padding: 0 20px;">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -13,6 +13,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+  <!-- ePayco Smart Checkout SDK Oficial -->
+  <script type="text/javascript" src="https://checkout.epayco.co/checkout.js"></script>
+
   <style>
     :root {
       --bg-dark: #081325;
@@ -844,13 +847,25 @@
           <div class="total-cop" id="sum-total-cop">&asymp; $480.000 COP (Tasa 4.000 COP/USD)</div>
 
           <!-- Checkout Buttons -->
-          <button class="btn-checkout btn-paypal" onclick="submitCampaign('PAYPAL')">
-            <i class="fa-brands fa-paypal"></i> Pagar con PayPal (Tarjetas / Saldo USD)
+          <button class="btn-checkout" style="background: linear-gradient(135deg, #ff7a00, #d95d00); margin-bottom: 8px;" onclick="submitCampaign('EPAYCO')">
+            <i class="fa-solid fa-building-columns"></i> Pagar con ePayco (PSE &bull; Nequi &bull; Tarjetas Colombia)
           </button>
 
-          <button class="btn-checkout btn-crypto" onclick="submitCampaign('CRYPTO')">
+          <button class="btn-checkout" style="background: linear-gradient(135deg, #009ee3, #007eb5); margin-bottom: 8px;" onclick="submitCampaign('MERCADOPAGO')">
+            <i class="fa-solid fa-handshake"></i> Suscripción con Mercado Pago (Plan Solo)
+          </button>
+
+          <button class="btn-checkout btn-paypal" style="margin-bottom: 8px;" onclick="submitCampaign('PAYPAL')">
+            <i class="fa-brands fa-paypal"></i> Pagar con PayPal (Tarjetas Internacionales / USD)
+          </button>
+
+          <button class="btn-checkout btn-crypto" style="margin-bottom: 8px;" onclick="submitCampaign('CRYPTO')">
             <i class="fa-brands fa-bitcoin"></i> Pagar con Criptomonedas (Binance Pay)
           </button>
+
+          <a id="btn-portal-ads" href="/pagos/?service=publicidad" class="btn-checkout" style="background: linear-gradient(135deg, #10b981, #059669); text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <i class="fa-solid fa-shield-halved"></i> Abrir en Portal Unificado de Pagos
+          </a>
         </div>
       </div>
     </div>
@@ -871,6 +886,21 @@
         <div><strong>Total Facturado:</strong> <span id="res-total" style="color: #fbbf24;"></span></div>
       </div>
 
+      <!-- ePayco Container -->
+      <div id="res-epayco-container" style="display: none; margin-bottom: 20px;">
+        <button id="res-epayco-action" type="button" class="btn-checkout" style="background: linear-gradient(135deg, #ff7a00, #d95d00); width: 100%; margin-bottom: 8px;">
+          <i class="fa-solid fa-building-columns"></i> Iniciar Pago Seguro ePayco (PSE / Nequi / Tarjetas)
+        </button>
+      </div>
+
+      <!-- Mercado Pago Container -->
+      <div id="res-mp-container" style="display: none; margin-bottom: 20px;">
+        <a id="res-mp-action" href="#" target="_blank" class="btn-checkout" style="background: linear-gradient(135deg, #009ee3, #007eb5); text-decoration: none; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;">
+          <i class="fa-solid fa-handshake"></i> Continuar Suscripción Mercado Pago (Plan Solo)
+        </a>
+      </div>
+
+      <!-- PayPal Container -->
       <div id="res-paypal-container" style="display: none; margin-bottom: 20px;">
         <a id="res-paypal-action" href="#" target="_blank" class="btn-checkout btn-paypal" style="text-decoration: none; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;">
           <i class="fa-brands fa-paypal"></i> Continuar al Pago en PayPal
@@ -1030,11 +1060,60 @@
         const data = await res.json();
         if (data.success) {
           document.getElementById('res-campaign-id').textContent = data.campaign.id;
-          document.getElementById('res-payment-method').textContent = paymentMethod === 'PAYPAL' ? 'PayPal (Tarjetas Débito / Crédito / Saldo USD)' : 'Binance Pay (Cripto 0%)';
+          
+          let methodLabel = 'PayPal (USD)';
+          if (paymentMethod === 'EPAYCO') methodLabel = 'ePayco (PSE / Nequi / Tarjetas Colombia)';
+          else if (paymentMethod === 'MERCADOPAGO') methodLabel = 'Mercado Pago (Suscripción Plan Solo)';
+          else if (paymentMethod === 'CRYPTO') methodLabel = 'Binance Pay (Cripto USDT 0%)';
+          document.getElementById('res-payment-method').textContent = methodLabel;
           document.getElementById('res-total').textContent = `$${data.campaign.totalUsd} USD (≈ $${data.campaign.totalCop.toLocaleString('es-CO')} COP)`;
           
+          const epaycoContainer = document.getElementById('res-epayco-container');
+          const mpContainer = document.getElementById('res-mp-container');
           const paypalContainer = document.getElementById('res-paypal-container');
-          if (paymentMethod === 'PAYPAL' && data.checkout) {
+          
+          epaycoContainer.style.display = 'none';
+          mpContainer.style.display = 'none';
+          paypalContainer.style.display = 'none';
+
+          // 1. Manejo ePayco
+          if (paymentMethod === 'EPAYCO' && data.checkout?.epayco) {
+            epaycoContainer.style.display = 'block';
+            const epaycoBtn = document.getElementById('res-epayco-action');
+            const epData = data.checkout.epayco;
+            epaycoBtn.onclick = () => {
+              if (window.ePayco && epData.key) {
+                const handler = window.ePayco.checkout.configure({
+                  key: epData.key,
+                  test: Boolean(epData.test)
+                });
+                handler.open(epData);
+              } else {
+                window.location.href = `/pagos/?service=publicidad&plan=${encodeURIComponent(currentPlan)}&ref=${encodeURIComponent(data.campaign.id)}&gateway=epayco`;
+              }
+            };
+            // Autodisparo si es posible
+            if (window.ePayco && epData.key) {
+              try {
+                const handler = window.ePayco.checkout.configure({ key: epData.key, test: Boolean(epData.test) });
+                handler.open(epData);
+              } catch(e) {}
+            }
+          }
+
+          // 2. Manejo Mercado Pago
+          else if (paymentMethod === 'MERCADOPAGO') {
+            mpContainer.style.display = 'block';
+            const mpAction = document.getElementById('res-mp-action');
+            const mpUrl = data.checkout?.mercadopago?.soloPlanCheckoutUrl || 'https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id=ef5d45af5bd347a7830da2fbec0ea42d';
+            mpAction.href = mpUrl;
+            try {
+              window.open(mpUrl, '_blank');
+            } catch(e) {}
+          }
+
+          // 3. Manejo PayPal
+          else if (paymentMethod === 'PAYPAL' && data.checkout) {
             const paypalAction = document.getElementById('res-paypal-action');
             const paypalMeAction = document.getElementById('res-paypalme-action');
             if (data.checkout.paypalCheckoutUrl && paypalAction) {
@@ -1048,8 +1127,6 @@
             try {
               window.open(data.checkout.paypalCheckoutUrl, '_blank');
             } catch(e) {}
-          } else {
-            paypalContainer.style.display = 'none';
           }
 
           document.getElementById('success-modal').classList.add('active');

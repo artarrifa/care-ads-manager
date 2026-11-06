@@ -13,6 +13,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+  <!-- ePayco Smart Checkout SDK Oficial -->
+  <script type="text/javascript" src="https://checkout.epayco.co/checkout.js"></script>
+
   <style>
     :root {
       --bg-dark: #081325;
@@ -463,15 +466,37 @@
             <input type="number" id="custom-amount-input" min="1" step="1" placeholder="Monto libre" oninput="handleCustomAmount(this.value)">
             <span style="font-size: 0.8rem; color: #94a3b8;">USD</span>
           </div>
+          <div style="font-size: 0.85rem; color: #6ee7b7; margin-top: 6px; font-weight: 700;">
+            Equivalente: <span id="cop-equivalent">~$4.000 COP</span>
+          </div>
         </div>
 
-        <a id="donate-action-btn" href="https://paypal.me/caretechservices/1" target="_blank" rel="noopener" class="donate-submit-btn">
-          <i class="fa-brands fa-paypal"></i> Donar <span id="btn-amount-label">$1 USD</span> con PayPal o Tarjeta
-        </a>
+        <!-- Unified Payment Method Buttons -->
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
+          <!-- ePayco (PSE, Nequi, Tarjetas Colombia) -->
+          <button type="button" id="btn-epayco-donate" onclick="donateWithEpayco()" class="donate-submit-btn" style="background: linear-gradient(135deg, #ff7a00, #d95d00); box-shadow: 0 10px 25px rgba(255, 122, 0, 0.4);">
+            <i class="fa-solid fa-building-columns"></i> Donar <span id="label-epayco-amount">$4.000 COP</span> con ePayco (PSE &bull; Nequi &bull; Tarjetas)
+          </button>
+
+          <!-- Mercado Pago Suscripcion Mensual Plan Solo -->
+          <a id="btn-mp-plan-solo" href="https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id=ef5d45af5bd347a7830da2fbec0ea42d" target="_blank" rel="noopener" class="donate-submit-btn" style="background: linear-gradient(135deg, #009ee3, #007eb5); box-shadow: 0 10px 25px rgba(0, 158, 227, 0.4);">
+            <i class="fa-solid fa-arrows-rotate"></i> Donación Mensual con Mercado Pago (Plan Solo)
+          </a>
+
+          <!-- PayPal / Tarjetas Internacionales -->
+          <a id="donate-action-btn" href="https://paypal.me/caretechservices/1" target="_blank" rel="noopener" class="donate-submit-btn">
+            <i class="fa-brands fa-paypal"></i> Donar <span id="btn-amount-label">$1 USD</span> con PayPal / Tarjeta Internacional
+          </a>
+
+          <!-- Portal Unificado de Pagos -->
+          <a id="btn-portal-unificado" href="/pagos/?service=donar&amount=1&currency=USD" class="donate-submit-btn" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);">
+            <i class="fa-solid fa-shield-halved"></i> Abrir en el Portal Unificado de Pagos (Todos los medios)
+          </a>
+        </div>
 
         <div class="security-note">
           <i class="fa-solid fa-shield-halved" style="color: #10b981;"></i>
-          Transacción segura y cifrada vía PayPal. No almacenamos datos financieros.
+          Transacciones 100% cifradas y protegidas vía ePayco, Mercado Pago y PayPal. Cero comisiones ocultas.
         </div>
       </div>
 
@@ -527,7 +552,24 @@
   </footer>
 
   <script>
+    const EXCHANGE_RATE = 4000;
+    const MP_SOLO_PLAN_ID = 'ef5d45af5bd347a7830da2fbec0ea42d';
+    const MP_SOLO_URL = `https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id=${MP_SOLO_PLAN_ID}`;
     let currentAmount = 1;
+    let epaycoConfig = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await fetch('/api.php?action=payments_config');
+        if (res.ok) {
+          const data = await res.json();
+          epaycoConfig = data.gateways?.epayco;
+        }
+      } catch (e) {
+        console.warn('Config fetch fallback:', e);
+      }
+      updateDonationLink();
+    });
 
     function selectTier(amount, elem) {
       currentAmount = amount;
@@ -548,11 +590,57 @@
     }
 
     function updateDonationLink() {
-      const btn = document.getElementById('donate-action-btn');
-      const label = document.getElementById('btn-amount-label');
-      if (btn && label) {
-        btn.href = `https://paypal.me/caretechservices/${currentAmount}`;
-        label.textContent = `$${currentAmount} USD`;
+      const copAmount = Math.round(currentAmount * EXCHANGE_RATE);
+      const ppBtn = document.getElementById('donate-action-btn');
+      const ppLabel = document.getElementById('btn-amount-label');
+      const epaycoLabel = document.getElementById('label-epayco-amount');
+      const copEq = document.getElementById('cop-equivalent');
+      const portalBtn = document.getElementById('btn-portal-unificado');
+
+      if (ppBtn && ppLabel) {
+        ppBtn.href = `https://paypal.me/caretechservices/${currentAmount}`;
+        ppLabel.textContent = `$${currentAmount} USD`;
+      }
+      if (epaycoLabel) {
+        epaycoLabel.textContent = `$${copAmount.toLocaleString('es-CO')} COP`;
+      }
+      if (copEq) {
+        copEq.textContent = `~$${copAmount.toLocaleString('es-CO')} COP`;
+      }
+      if (portalBtn) {
+        portalBtn.href = `/pagos/?service=donar&amount=${currentAmount}&currency=USD`;
+      }
+    }
+
+    async function donateWithEpayco() {
+      const copAmount = Math.round(currentAmount * EXCHANGE_RATE);
+      const invoiceRef = `DON_${Date.now()}_${Math.floor(1000 + Math.random() * 9000)}`;
+
+      if (window.ePayco && epaycoConfig && epaycoConfig.publicKey) {
+        const handler = window.ePayco.checkout.configure({
+          key: epaycoConfig.publicKey,
+          test: Boolean(epaycoConfig.testMode)
+        });
+        handler.open({
+          name: "Donación Comunitaria CareTech Games",
+          description: "Apoyo a juegos accesibles y teleasistencia SOS para adultos mayores",
+          invoice: invoiceRef,
+          currency: "cop",
+          amount: String(copAmount),
+          tax_base: "0",
+          tax: "0",
+          country: "co",
+          lang: "es",
+          external: "false",
+          confirmation: "https://caretechservices.com/api.php?action=epayco_confirm",
+          response: "https://caretechservices.com/pagos/respuesta/",
+          name_billing: "Donante Solidario CareTech",
+          email_billing: "donaciones@caretechservices.com",
+          mobilephone_billing: "3164734660"
+        });
+      } else {
+        // Redirigir al Portal Unificado de Pagos si falta la llave o para completar datos
+        window.location.href = `/pagos/?service=donar&amount=${copAmount}&currency=COP&gateway=epayco`;
       }
     }
   </script>

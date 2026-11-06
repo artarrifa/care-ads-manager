@@ -53,9 +53,17 @@ copyDirRecursive(path.join(PUBLIC_DIR, 'business'), path.join(DIST_DIR, 'busines
 copyDirRecursive(path.join(PUBLIC_DIR, 'pets'), path.join(DIST_DIR, 'pets'));
 copyDirRecursive(path.join(PUBLIC_DIR, 'development'), path.join(DIST_DIR, 'development'));
 
-// Secciones auxiliares desde portal/
+// Secciones auxiliares y Portal Unificado de Pagos desde portal/
 copyDirRecursive(path.join(PORTAL_DIR, 'publicidad'), path.join(DIST_DIR, 'publicidad'));
 copyDirRecursive(path.join(PORTAL_DIR, 'donar'), path.join(DIST_DIR, 'donar'));
+copyDirRecursive(path.join(PORTAL_DIR, 'pagos'), path.join(DIST_DIR, 'pagos'));
+fs.copyFileSync(path.join(PORTAL_DIR, 'api.php'), path.join(DIST_DIR, 'api.php'));
+fs.copyFileSync(path.join(PORTAL_DIR, 'api.php'), path.join(DIST_DIR, 'games', 'api.php'));
+
+// Sincronizar en public/ para consistencia local
+copyDirRecursive(path.join(PORTAL_DIR, 'pagos'), path.join(PUBLIC_DIR, 'pagos'));
+copyDirRecursive(path.join(PORTAL_DIR, 'donar'), path.join(PUBLIC_DIR, 'donar'));
+copyDirRecursive(path.join(PORTAL_DIR, 'publicidad'), path.join(PUBLIC_DIR, 'publicidad'));
 
 // 4. Create caretech-games.zip
 console.log('🗜️  [3/3] Comprimiendo caretech-games.zip...');
@@ -65,7 +73,7 @@ const zipRootPath = path.join(ROOT_WORKSPACE, 'caretech-games.zip');
 if (fs.existsSync(zipDeployPath)) fs.unlinkSync(zipDeployPath);
 if (fs.existsSync(zipRootPath)) fs.unlinkSync(zipRootPath);
 
-execSync('zip -r ../caretech-games.zip index.html styles.css app.js games health real-estate business pets development publicidad donar', {
+execSync('zip -r ../caretech-games.zip index.html styles.css app.js api.php games health real-estate business pets development publicidad donar pagos', {
   cwd: DIST_DIR,
   stdio: 'inherit'
 });

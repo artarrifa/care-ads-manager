@@ -37,6 +37,7 @@ if (!file_exists($dataGuard)) {
 $campaignsFile = $dataDir . '/campaigns.json';
 $analyticsFile = $dataDir . '/analytics.json';
 $devicesFile   = $dataDir . '/devices.json';
+$paymentsFile  = $dataDir . '/payments.json';
 
 // Detect Country Server-side (Cloudflare / GeoIP / Forwarded headers)
 function getDetectedCountry() {
@@ -57,24 +58,59 @@ function saveStoredJson($file, $data) {
     file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 }
 
-// Load Private PayPal Configuration (strictly located outside public_html in caretech-private/)
+// Load Private Payments & PayPal Configuration (strictly located outside public_html in caretech-private/)
 $privatePaypalConfig = null;
-$possiblePrivatePaths = [
-    dirname(__DIR__, 2) . '/caretech-private/paypal.php',
-    dirname(__DIR__, 3) . '/caretech-private/paypal.php',
-    __DIR__ . '/../../caretech-private/paypal.php',
-    __DIR__ . '/../../../caretech-private/paypal.php',
-    isset($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] . '/../caretech-private/paypal.php' : null
+$privatePaymentsConfig = null;
+$possiblePrivateDirs = [
+    dirname(__DIR__, 2) . '/caretech-private',
+    dirname(__DIR__, 3) . '/caretech-private',
+    __DIR__ . '/../../caretech-private',
+    __DIR__ . '/../../../caretech-private',
+    isset($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] . '/../caretech-private' : null
 ];
-foreach ($possiblePrivatePaths as $privPath) {
-    if ($privPath && file_exists($privPath)) {
-        $loadedConfig = @include $privPath;
-        if (is_array($loadedConfig)) {
-            $privatePaypalConfig = $loadedConfig;
-            break;
+
+foreach ($possiblePrivateDirs as $privDir) {
+    if (!$privDir || !is_dir($privDir)) continue;
+    $paymentsPath = $privDir . '/payments.php';
+    if (!$privatePaymentsConfig && file_exists($paymentsPath)) {
+        $loaded = @include $paymentsPath;
+        if (is_array($loaded)) {
+            $privatePaymentsConfig = $loaded;
+        }
+    }
+    $paypalPath = $privDir . '/paypal.php';
+    if (!$privatePaypalConfig && file_exists($paypalPath)) {
+        $loaded = @include $paypalPath;
+        if (is_array($loaded)) {
+            $privatePaypalConfig = $loaded;
         }
     }
 }
+
+// Merge PayPal config if defined in payments.php
+if (!empty($privatePaymentsConfig['paypal']) && is_array($privatePaymentsConfig['paypal'])) {
+    $privatePaypalConfig = array_merge($privatePaypalConfig ?: [], $privatePaymentsConfig['paypal']);
+}
+
+// Extracted gateway configurations
+$epaycoConfig = $privatePaymentsConfig['epayco'] ?? [
+    'pCustIdCliente' => '',
+    'publicKey' => '',
+    'privateKey' => '',
+    'pKey' => '',
+    'testMode' => true,
+    'dashboardUrl' => 'https://dashboard.epayco.com/dashboard',
+    'confirmationUrl' => 'https://caretechservices.com/api.php?action=epayco_confirm',
+    'responseUrl' => 'https://caretechservices.com/pagos/respuesta/'
+];
+
+$mercadopagoConfig = $privatePaymentsConfig['mercadopago'] ?? [
+    'soloPlanId' => 'ef5d45af5bd347a7830da2fbec0ea42d',
+    'soloPlanCheckoutUrl' => 'https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id=ef5d45af5bd347a7830da2fbec0ea42d',
+    'publicKey' => '',
+    'accessToken' => '',
+    'webhookUrl' => 'https://caretechservices.com/api.php?action=mercadopago_ipn'
+];
 
 // Load Pricing Config
 $pricingFile = __DIR__ . '/../../config/pricing.json';
@@ -516,6 +552,52 @@ if ((strpos($requestUri, '/api/v1/games/campaigns/create') !== false || $action 
     $restOrderUrl = getPayPalRestOrderUrl($totalUsd, $campaignId, $newCampaign['brandName'], $planId, $pricingData, $privatePaypalConfig);
     $paypalCheckoutUrl = $restOrderUrl ?: $paypalMeUrl;
 
+    // Configuración ePayco para la campaña
+    $epaycoPublicKey = $epaycoConfig['publicKey'] ?? '';
+    $epaycoTestMode = !empty($epaycoConfig['testMode']);
+    $epaycoCheckoutData = [
+        'key' => $epaycoPublicKey,
+        'test' => $epaycoTestMode,
+        'name' => "CareTech Publicidad - {$newCampaign['brandName']}",
+        'description' => "Plan {$planId} en CareTech Games",
+        'invoice' => $campaignId,
+        'currency' => 'cop',
+        'amount' => (string)round($totalCop),
+        'tax_base' => '0',
+        'tax' => '0',
+        'country' => 'co',
+        'lang' => 'es',
+        'external' => 'false',
+        'extra1' => $campaignId,
+        'extra2' => $planId,
+        'confirmation' => $epaycoConfig['confirmationUrl'] ?? 'https://caretechservices.com/api.php?action=epayco_confirm',
+        'response' => $epaycoConfig['responseUrl'] ?? 'https://caretechservices.com/pagos/respuesta/',
+        'name_billing' => $newCampaign['brandName'],
+        'email_billing' => $newCampaign['advertiserEmail'],
+        'mobilephone_billing' => $newCampaign['advertiserPhone']
+    ];
+
+    // Configuración Mercado Pago para la campaña
+    $mpSoloPlanId = $mercadopagoConfig['soloPlanId'] ?? 'ef5d45af5bd347a7830da2fbec0ea42d';
+    $mpSoloPlanUrl = $mercadopagoConfig['soloPlanCheckoutUrl'] ?? "https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id={$mpSoloPlanId}";
+
+    // Registrar en payments.json también para unificación
+    $payments = getStoredJson($paymentsFile);
+    $payments[] = [
+        'reference' => $campaignId,
+        'service' => 'publicidad',
+        'brandName' => $newCampaign['brandName'],
+        'planId' => $planId,
+        'amountUsd' => $totalUsd,
+        'amountCop' => $totalCop,
+        'customerEmail' => $newCampaign['advertiserEmail'],
+        'customerPhone' => $newCampaign['advertiserPhone'],
+        'paymentMethod' => $paymentMethod,
+        'status' => 'PENDING',
+        'createdAt' => date('Y-m-d H:i:s')
+    ];
+    saveStoredJson($paymentsFile, $payments);
+
     echo json_encode([
         'success' => true,
         'message' => 'Campaña registrada y conectada exitosamente a CareTech Games.',
@@ -531,7 +613,13 @@ if ((strpos($requestUri, '/api/v1/games/campaigns/create') !== false || $action 
             'paypalCurrency' => $paypalCurrency,
             'paypalCheckoutUrl' => $paypalCheckoutUrl,
             'paypalParams' => $paypalParams,
-            'binancePayQr' => 'https://pay.binance.com/qr/' . $campaignId
+            'epayco' => $epaycoCheckoutData,
+            'mercadopago' => [
+                'soloPlanId' => $mpSoloPlanId,
+                'soloPlanCheckoutUrl' => $mpSoloPlanUrl
+            ],
+            'binancePayQr' => 'https://pay.binance.com/qr/' . $campaignId,
+            'unifiedPortalUrl' => 'https://caretechservices.com/pagos/?service=publicidad&plan=' . urlencode($planId) . '&ref=' . urlencode($campaignId)
         ]
     ]);
     exit;
@@ -591,6 +679,437 @@ if (($action === 'paypal_ipn' || strpos($requestUri, '/paypal/ipn') !== false ||
 
     http_response_code(200);
     echo "IPN_HANDLED";
+    exit;
+}
+
+// ==============================================================================
+// 6. PORTAL UNIFICADO DE PAGOS - ENDPOINTS API
+// ==============================================================================
+
+// 6.1. GET /api.php?action=payments_config (Configuración pública de pasarelas)
+if (($action === 'payments_config' || strpos($requestUri, '/api/v1/payments/config') !== false) && $method === 'GET') {
+    header('Content-Type: application/json');
+    $epaycoPub = $epaycoConfig['publicKey'] ?? '';
+    $mpSoloId = $mercadopagoConfig['soloPlanId'] ?? 'ef5d45af5bd347a7830da2fbec0ea42d';
+    $mpSoloUrl = $mercadopagoConfig['soloPlanCheckoutUrl'] ?? "https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id={$mpSoloId}";
+
+    echo json_encode([
+        'success' => true,
+        'countryDetected' => getDetectedCountry(),
+        'exchangeRate' => [
+            'copPerUsd' => (float)($pricingData['copExchangeRate'] ?? 4000),
+            'currency' => 'USD'
+        ],
+        'gateways' => [
+            'epayco' => [
+                'name' => 'ePayco (PSE, Nequi, Daviplata, Tarjetas Colombia, Efecty)',
+                'configured' => !empty($epaycoPub),
+                'publicKey' => $epaycoPub,
+                'testMode' => !empty($epaycoConfig['testMode']),
+                'dashboardUrl' => $epaycoConfig['dashboardUrl'] ?? 'https://dashboard.epayco.com/dashboard',
+                'pCustIdCliente' => $epaycoConfig['pCustIdCliente'] ?? '',
+                'responseUrl' => $epaycoConfig['responseUrl'] ?? 'https://caretechservices.com/pagos/respuesta/'
+            ],
+            'mercadopago' => [
+                'name' => 'Mercado Pago (Suscripción Plan Solo, Cuotas y Dinero MP)',
+                'configured' => true,
+                'soloPlanId' => $mpSoloId,
+                'soloPlanCheckoutUrl' => $mpSoloUrl,
+                'hasCustomKey' => !empty($mercadopagoConfig['publicKey'])
+            ],
+            'paypal' => [
+                'name' => 'PayPal & Tarjetas Internacionales (USD)',
+                'configured' => !empty($privatePaypalConfig['clientId']),
+                'clientId' => $privatePaypalConfig['clientId'] ?? '',
+                'mode' => $privatePaypalConfig['mode'] ?? 'live',
+                'merchantEmail' => $privatePaypalConfig['merchantEmail'] ?? 'alexis.tarrifa@gmail.com',
+                'meUsername' => $privatePaypalConfig['meUsername'] ?? 'alexistarrifa'
+            ],
+            'binancePay' => [
+                'name' => 'Binance Pay (Criptomonedas USDT 0% fee)',
+                'configured' => !empty($privatePaymentsConfig['binancePay']['apiKey'])
+            ]
+        ]
+    ]);
+    exit;
+}
+
+// 6.1.1. POST /api.php?action=save_epayco_config (Guardar llaves ePayco obtenidas del Dashboard oficial)
+if (($action === 'save_epayco_config' || strpos($requestUri, '/api/v1/payments/epayco/save-config') !== false) && $method === 'POST') {
+    header('Content-Type: application/json');
+    $raw = file_get_contents('php://input');
+    $data = json_decode($raw, true) ?: [];
+
+    $newPubKey   = trim($data['publicKey'] ?? '');
+    $newPrivKey  = trim($data['privateKey'] ?? '');
+    $newPKey     = trim($data['pKey'] ?? '');
+    $newCustId   = trim($data['pCustIdCliente'] ?? '');
+    $testMode    = !empty($data['testMode']);
+
+    if (empty($newPubKey)) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'La PUBLIC_KEY de ePayco es obligatoria']);
+        exit;
+    }
+
+    // Ubicacion del archivo privado
+    $targetPath = null;
+    foreach ($possiblePrivateDirs as $privDir) {
+        if ($privDir && is_dir($privDir)) {
+            $targetPath = $privDir . '/payments.php';
+            break;
+        }
+    }
+    if (!$targetPath) {
+        $targetPath = dirname(__DIR__, 2) . '/caretech-private/payments.php';
+    }
+
+    $existing = is_array($privatePaymentsConfig) ? $privatePaymentsConfig : [];
+    $existing['currency'] = $existing['currency'] ?? 'USD';
+    $existing['copExchangeRate'] = $existing['copExchangeRate'] ?? 4000;
+    
+    $existing['epayco'] = [
+        'pCustIdCliente' => $newCustId ?: ($existing['epayco']['pCustIdCliente'] ?? ''),
+        'publicKey'      => $newPubKey,
+        'privateKey'     => $newPrivKey ?: ($existing['epayco']['privateKey'] ?? ''),
+        'pKey'           => $newPKey ?: ($existing['epayco']['pKey'] ?? ''),
+        'testMode'       => $testMode,
+        'dashboardUrl'   => 'https://dashboard.epayco.com/dashboard',
+        'confirmationUrl'=> 'https://caretechservices.com/api.php?action=epayco_confirm',
+        'responseUrl'    => 'https://caretechservices.com/pagos/respuesta/'
+    ];
+
+    $existing['mercadopago'] = $existing['mercadopago'] ?? [
+        'soloPlanId' => 'ef5d45af5bd347a7830da2fbec0ea42d',
+        'soloPlanCheckoutUrl' => 'https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id=ef5d45af5bd347a7830da2fbec0ea42d',
+        'publicKey' => '',
+        'accessToken' => '',
+        'webhookUrl' => 'https://caretechservices.com/api.php?action=mercadopago_ipn'
+    ];
+
+    $existing['paypal'] = $existing['paypal'] ?? [
+        'mode' => 'live',
+        'clientId' => 'BAAqqtlAVEAYcI4HczDkLgzyejjP8NInCX8DojUaNHOLrpkdMB9nXNTClEUTSrNqzpDR76fc7T7HWPUEjU',
+        'clientSecret' => 'EAyLUNFbJjUEIsfp7_uayQLPwl-QYngT2279hqh1SCkrMJTcMffhPLOp64k1QT5dIkYpdVHl_7-riCNK',
+        'merchantEmail' => 'alexis.tarrifa@gmail.com',
+        'merchantId' => '6L4ZTMT48MEEL',
+        'meUsername' => 'alexistarrifa'
+    ];
+
+    $exportContent = "<?php\n/**\n * CareTech Services - Private Payments Configuration\n */\nreturn " . var_export($existing, true) . ";\n";
+    @file_put_contents($targetPath, $exportContent);
+    @chmod($targetPath, 0600);
+
+    echo json_encode([
+        'success' => true,
+        'message' => 'Llaves ePayco actualizadas exitosamente en modo ' . ($testMode ? 'Pruebas' : 'Producción (En vivo)'),
+        'publicKey' => $newPubKey,
+        'testMode' => $testMode
+    ]);
+    exit;
+}
+
+// 6.2. POST /api.php?action=create_payment (Crear orden unificada de pago)
+if (($action === 'create_payment' || strpos($requestUri, '/api/v1/payments/create') !== false) && $method === 'POST') {
+    header('Content-Type: application/json');
+    $raw = file_get_contents('php://input');
+    $data = json_decode($raw, true) ?: [];
+
+    $service = $data['service'] ?? 'donar'; // donar, publicidad, plan_solo, loyalty, custom
+    $currency = strtoupper($data['currency'] ?? 'USD');
+    $rawAmount = floatval($data['amount'] ?? 0);
+    $gateway = strtolower($data['gateway'] ?? 'epayco'); // epayco, mercadopago, paypal, binance, auto
+    $rate = floatval($pricingData['copExchangeRate'] ?? 4000);
+
+    if ($rawAmount <= 0) {
+        $rawAmount = ($service === 'donar') ? 5.00 : (($service === 'plan_solo') ? 9.90 : 1.00);
+    }
+
+    if ($currency === 'COP') {
+        $amountCop = $rawAmount;
+        $amountUsd = round($amountCop / $rate, 2);
+    } else {
+        $amountUsd = $rawAmount;
+        $amountCop = round($amountUsd * $rate);
+    }
+
+    $refPrefix = strtoupper(substr($service, 0, 4));
+    $reference = 'PAY_' . $refPrefix . '_' . time() . '_' . rand(1000, 9999);
+
+    $customer = $data['customer'] ?? [];
+    $customerName = trim($customer['name'] ?? $data['name'] ?? 'Usuario CareTech');
+    $customerEmail = trim($customer['email'] ?? $data['email'] ?? '');
+    $customerPhone = trim($customer['phone'] ?? $data['phone'] ?? '');
+    $customerDoc = trim($customer['document'] ?? $data['document'] ?? '');
+
+    $description = $data['description'] ?? ("CareTech Services - " . ucfirst($service) . " (" . $reference . ")");
+    if ($service === 'donar') {
+        $description = "Donación Comunitaria CareTech Games - Estimulación Cognitiva y SOS";
+    } elseif ($service === 'plan_solo') {
+        $description = "Suscripción Plan Solo CareTech (Mercado Pago)";
+    } elseif ($service === 'publicidad') {
+        $description = "Publicidad y Patrocinio CareTech Games (" . ($data['metadata']['planId'] ?? 'Campaña') . ")";
+    }
+
+    $paymentRecord = [
+        'reference' => $reference,
+        'service' => $service,
+        'gateway' => $gateway,
+        'currency' => $currency,
+        'amountUsd' => $amountUsd,
+        'amountCop' => $amountCop,
+        'description' => $description,
+        'customer' => [
+            'name' => $customerName,
+            'email' => $customerEmail,
+            'phone' => $customerPhone,
+            'document' => $customerDoc
+        ],
+        'metadata' => $data['metadata'] ?? [],
+        'status' => 'PENDING',
+        'createdAt' => date('Y-m-d H:i:s'),
+        'countryDetected' => getDetectedCountry()
+    ];
+
+    $payments = getStoredJson($paymentsFile);
+    $payments[] = $paymentRecord;
+    saveStoredJson($paymentsFile, $payments);
+
+    // Preparar payloads específicos de cada pasarela
+    $epaycoPub = $epaycoConfig['publicKey'] ?? '';
+    $epaycoData = [
+        'key' => $epaycoPub,
+        'test' => !empty($epaycoConfig['testMode']),
+        'name' => $description,
+        'description' => $description,
+        'invoice' => $reference,
+        'currency' => 'cop',
+        'amount' => (string)$amountCop,
+        'tax_base' => '0',
+        'tax' => '0',
+        'country' => 'co',
+        'lang' => 'es',
+        'external' => 'false',
+        'extra1' => $reference,
+        'extra2' => $service,
+        'confirmation' => $epaycoConfig['confirmationUrl'] ?? 'https://caretechservices.com/api.php?action=epayco_confirm',
+        'response' => $epaycoConfig['responseUrl'] ?? 'https://caretechservices.com/pagos/respuesta/',
+        'name_billing' => $customerName,
+        'email_billing' => $customerEmail,
+        'mobilephone_billing' => $customerPhone,
+        'number_doc_billing' => $customerDoc
+    ];
+
+    $mpSoloId = $mercadopagoConfig['soloPlanId'] ?? 'ef5d45af5bd347a7830da2fbec0ea42d';
+    $mpSoloUrl = $mercadopagoConfig['soloPlanCheckoutUrl'] ?? "https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id={$mpSoloId}";
+
+    $paypalMeUser = $privatePaypalConfig['meUsername'] ?? 'alexistarrifa';
+    $paypalMeUrl = 'https://www.paypal.com/paypalme/' . rawurlencode($paypalMeUser) . '/' . number_format($amountUsd, 2, '.', '') . 'USD';
+
+    echo json_encode([
+        'success' => true,
+        'reference' => $reference,
+        'service' => $service,
+        'amountUsd' => $amountUsd,
+        'amountCop' => $amountCop,
+        'description' => $description,
+        'gateways' => [
+            'epayco' => $epaycoData,
+            'mercadopago' => [
+                'soloPlanId' => $mpSoloId,
+                'soloPlanCheckoutUrl' => $mpSoloUrl
+            ],
+            'paypal' => [
+                'paypalMeUrl' => $paypalMeUrl,
+                'amountUsd' => $amountUsd
+            ],
+            'binancePay' => [
+                'qrUrl' => 'https://pay.binance.com/qr/' . $reference,
+                'amountUsdt' => $amountUsd
+            ]
+        ],
+        'receiptUrl' => 'https://caretechservices.com/pagos/respuesta/?ref=' . urlencode($reference)
+    ]);
+    exit;
+}
+
+// 6.3. POST/GET /api.php?action=epayco_confirm (Webhook ePayco con validación de firma SHA-256)
+if ($action === 'epayco_confirm' || strpos($requestUri, '/api/v1/payments/epayco/webhook') !== false) {
+    $src = ($_SERVER['REQUEST_METHOD'] === 'POST') ? $_POST : $_GET;
+    if (empty($src)) {
+        $raw = file_get_contents('php://input');
+        $src = json_decode($raw, true) ?: [];
+    }
+
+    $refPayco     = $src['x_ref_payco'] ?? '';
+    $txId         = $src['x_transaction_id'] ?? '';
+    $amount       = $src['x_amount'] ?? '';
+    $currencyCode = $src['x_currency_code'] ?? 'COP';
+    $signature    = $src['x_signature'] ?? '';
+    $codResponse  = intval($src['x_cod_response'] ?? 0);
+    $responseMsg  = $src['x_response'] ?? '';
+    $invoiceRef   = $src['x_extra1'] ?? $src['x_id_invoice'] ?? '';
+
+    // Mapear código de respuesta ePayco:
+    // 1: Aceptada | 2: Rechazada | 3: Pendiente | 4: Fallida / Reversada
+    $newStatus = 'PENDING';
+    if ($codResponse === 1) {
+        $newStatus = 'PAID';
+    } elseif ($codResponse === 3) {
+        $newStatus = 'PENDING';
+    } elseif ($codResponse === 2 || $codResponse === 4) {
+        $newStatus = 'REJECTED';
+    }
+
+    // Validar firma si P_KEY y P_CUST_ID están configurados
+    $pCustId = $epaycoConfig['pCustIdCliente'] ?? '';
+    $pKey    = $epaycoConfig['pKey'] ?? '';
+    $isValidSig = true;
+    if (!empty($pCustId) && !empty($pKey) && !empty($signature)) {
+        $calculatedSig = hash('sha256', "{$pCustId}^{$pKey}^{$refPayco}^{$txId}^{$amount}^{$currencyCode}");
+        if (strcasecmp($calculatedSig, $signature) !== 0) {
+            $isValidSig = false;
+        }
+    }
+
+    // Actualizar registro en payments.json
+    $payments = getStoredJson($paymentsFile);
+    $found = false;
+    foreach ($payments as &$p) {
+        if (($p['reference'] ?? '') === $invoiceRef || ($p['epaycoRef'] ?? '') === $refPayco) {
+            $p['status'] = $newStatus;
+            $p['epaycoRef'] = $refPayco;
+            $p['epaycoTxId'] = $txId;
+            $p['epaycoResponse'] = $responseMsg;
+            $p['paidAt'] = ($newStatus === 'PAID') ? date('Y-m-d H:i:s') : ($p['paidAt'] ?? null);
+            $found = true;
+            break;
+        }
+    }
+    if ($found) {
+        saveStoredJson($paymentsFile, $payments);
+    }
+
+    // Si coincide con una campaña publicitaria, actualizarla
+    if (!empty($invoiceRef)) {
+        $campaigns = getStoredJson($campaignsFile);
+        $campFound = false;
+        foreach ($campaigns as &$c) {
+            if (($c['id'] ?? '') === $invoiceRef) {
+                if ($newStatus === 'PAID') {
+                    $c['status'] = 'ACTIVE';
+                    $c['paymentStatus'] = 'PAID';
+                    $c['paidAt'] = date('Y-m-d H:i:s');
+                    $c['epaycoRef'] = $refPayco;
+                }
+                $campFound = true;
+                break;
+            }
+        }
+        if ($campFound) {
+            saveStoredJson($campaignsFile, $campaigns);
+        }
+    }
+
+    http_response_code(200);
+    header('Content-Type: application/json');
+    echo json_encode([
+        'success' => true,
+        'message' => 'ePayco confirmation processed successfully',
+        'reference' => $invoiceRef,
+        'status' => $newStatus,
+        'sigVerified' => $isValidSig
+    ]);
+    exit;
+}
+
+// 6.4. POST/GET /api.php?action=mercadopago_ipn (Webhook Mercado Pago)
+if ($action === 'mercadopago_ipn' || strpos($requestUri, '/api/v1/payments/mercadopago/webhook') !== false) {
+    $src = ($_SERVER['REQUEST_METHOD'] === 'POST') ? $_POST : $_GET;
+    if (empty($src)) {
+        $raw = file_get_contents('php://input');
+        $src = json_decode($raw, true) ?: [];
+    }
+
+    $mpType = $src['type'] ?? $src['topic'] ?? '';
+    $mpId   = $src['data']['id'] ?? $src['id'] ?? '';
+    $externalRef = $src['external_reference'] ?? '';
+
+    if (!empty($externalRef)) {
+        $payments = getStoredJson($paymentsFile);
+        foreach ($payments as &$p) {
+            if (($p['reference'] ?? '') === $externalRef) {
+                $p['status'] = 'PAID';
+                $p['mercadopagoId'] = $mpId;
+                $p['paidAt'] = date('Y-m-d H:i:s');
+                break;
+            }
+        }
+        saveStoredJson($paymentsFile, $payments);
+    }
+
+    http_response_code(200);
+    echo "MP_NOTIFICATION_RECEIVED";
+    exit;
+}
+
+// 6.5. GET /api.php?action=payment_status (Consultar estado de transacción)
+if ($action === 'payment_status' || strpos($requestUri, '/api/v1/payments/status') !== false) {
+    header('Content-Type: application/json');
+    $ref = $_GET['reference'] ?? $_GET['ref'] ?? $_GET['invoice'] ?? $_GET['ref_payco'] ?? '';
+
+    if (empty($ref)) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'Referencia no especificada']);
+        exit;
+    }
+
+    $payments = getStoredJson($paymentsFile);
+    $matched = null;
+    foreach ($payments as $p) {
+        if (($p['reference'] ?? '') === $ref || ($p['epaycoRef'] ?? '') === $ref || ($p['metadata']['campaignId'] ?? '') === $ref) {
+            $matched = $p;
+            break;
+        }
+    }
+
+    // Fallback: buscar en campañas
+    if (!$matched) {
+        $campaigns = getStoredJson($campaignsFile);
+        foreach ($campaigns as $c) {
+            if (($c['id'] ?? '') === $ref) {
+                $matched = [
+                    'reference' => $c['id'],
+                    'service' => 'publicidad',
+                    'status' => ($c['paymentStatus'] ?? '') === 'PAID' ? 'PAID' : ($c['status'] ?? 'PENDING'),
+                    'amountUsd' => $c['totalUsd'] ?? 0,
+                    'amountCop' => $c['totalCop'] ?? 0,
+                    'description' => "Publicidad CareTech - " . ($c['brandName'] ?? ''),
+                    'customer' => ['name' => $c['brandName'] ?? '', 'email' => $c['advertiserEmail'] ?? ''],
+                    'paidAt' => $c['paidAt'] ?? null,
+                    'createdAt' => $c['createdAt'] ?? null
+                ];
+                break;
+            }
+        }
+    }
+
+    if ($matched) {
+        echo json_encode([
+            'success' => true,
+            'payment' => $matched
+        ]);
+    } else {
+        echo json_encode([
+            'success' => true,
+            'payment' => [
+                'reference' => $ref,
+                'status' => 'PENDING',
+                'service' => 'general',
+                'description' => 'Transacción en proceso de verificación'
+            ]
+        ]);
+    }
     exit;
 }
 

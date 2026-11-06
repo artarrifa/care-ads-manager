@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publicidad en CareTech Games | Tienda de Banners y Patrocinios</title>
+  <meta name="description" content="Anuncia tu marca, causa social o tienda en el ecosistema de juegos accesibles de CareTech Games. Llega a miles de jugadores activos con banners interactivos.">
+  <meta name="theme-color" content="#081325">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- ePayco Smart Checkout SDK Oficial -->
+  <script type="text/javascript" src="https://checkout.epayco.co/checkout.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #081325;
+      --bg-card: #0d1f3d;
+      --bg-card-hover: #132b52;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --primary: #2563eb;
+      --primary-light: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    .site-header {
+      padding: 16px 0;
+      background: rgba(13, 31, 61, 0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+    }
+    .logo-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    .logo-text { font-size: 1.15rem; font-weight: 800; }
+    .logo-text span { color: var(--accent-cyan); }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 40px 0 20px;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(37, 99, 235, 0.15);
+      border: 1px solid rgba(37, 99, 235, 0.3);
+      color: var(--accent-cyan);
+      padding: 4px 14px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, #60a5fa, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 30px;
+      font-size: 1.05rem;
+    }
+
+    /* Main Form Layout (Grid) */
+    .ads-builder-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+
+    .form-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .form-section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      color: #93c5fd;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #cbd5e1;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      background: #081325;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.92rem;
+      transition: all 0.2s;
+    }
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    /* Plans Grid */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .plan-card {
+      background: rgba(0,0,0,0.25);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 14px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .plan-card:hover {
+      border-color: rgba(255,255,255,0.3);
+      transform: translateY(-2px);
+    }
+    .plan-card.active {
+      border-color: var(--accent-cyan);
+      background: rgba(6, 182, 212, 0.12);
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.25);
+    }
+    .plan-title { font-size: 0.85rem; font-weight: 700; color: #93c5fd; }
+    .plan-price { font-size: 1.25rem; font-weight: 800; color: #fff; margin: 4px 0; }
+    .plan-freq { font-size: 0.72rem; color: var(--text-muted); }
+
+    /* Priority Checkbox Box */
+    .priority-box {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.15));
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+      cursor: pointer;
+    }
+    .priority-checkbox {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent-amber);
+      cursor: pointer;
+    }
+
+    /* B2B Value Proposition Grid */
+    .b2b-value-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 20px 0 32px;
+      text-align: left;
+    }
+    .b2b-value-card {
+      background: rgba(13, 31, 61, 0.7);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      transition: var(--transition);
+    }
+    .b2b-value-card:hover {
+      border-color: rgba(59, 130, 246, 0.5);
+      transform: translateY(-2px);
+    }
+    .b2b-icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .b2b-value-card h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .b2b-value-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    /* Dashboard de Métricas B2B */
+    .metrics-dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin: 20px 0 36px;
+    }
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      position: relative;
+      transition: var(--transition);
+    }
+    .metric-card:hover {
+      border-color: rgba(59, 130, 246, 0.5);
+      transform: translateY(-2px);
+    }
+    .metric-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .metric-icon { font-size: 1.4rem; }
+    .metric-badge-trend {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.15);
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .metric-val {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .metric-label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+    .metric-sub {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Live Preview Column */
+    .preview-sticky-wrap {
+      position: sticky;
+      top: 90px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .banner-preview-box {
+      background: #07152c;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .preview-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Simulación Tapete de Juego Solitario */
+    .game-felt-mockup {
+      background: radial-gradient(circle, #0e4428 0%, #072716 100%);
+      border: 2px solid #166534;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .live-banner-display {
+      background: linear-gradient(90deg, #0d2752 0%, #133975 100%);
+      border: 1px solid rgba(59, 130, 246, 0.6);
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+    .live-badge-type {
+      background: rgba(37, 99, 235, 0.4);
+      border: 1px solid rgba(59, 130, 246, 0.6);
+      color: #bfdbfe;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+    .live-banner-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: #2563eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .live-banner-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .live-banner-text {
+      flex-grow: 1;
+      overflow: hidden;
+      min-width: 0;
+    }
+    .live-banner-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .live-banner-desc {
+      font-size: 0.74rem;
+      color: #94a3b8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .live-banner-actions {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .live-btn {
+      padding: 5px 9px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+    .live-btn-web { background: #2563eb; color: #fff; }
+    .live-btn-donate { background: #ec4899; color: #fff; }
+    .live-btn-shop { background: #10b981; color: #fff; }
+    .live-btn-close {
+      color: #94a3b8;
+      font-size: 1.1rem;
+      line-height: 1;
+      padding: 0 3px;
+      cursor: default;
+    }
+    .preview-context-help {
+      font-size: 0.74rem;
+      color: #86efac;
+      margin-top: 10px;
+      text-align: center;
+      opacity: 0.9;
+    }
+
+    /* Order Summary Box */
+    .summary-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 22px;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+    .summary-row.total {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 12px;
+      margin-top: 12px;
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+    .total-cop {
+      font-size: 0.85rem;
+      color: var(--accent-cyan);
+      font-weight: 600;
+      text-align: right;
+      margin-top: 2px;
+    }
+
+    .btn-checkout {
+      width: 100%;
+      padding: 14px;
+      border-radius: 9999px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s;
+      margin-top: 16px;
+    }
+    .btn-paypal {
+      background: linear-gradient(135deg, #0070ba, #003087);
+      color: #fff;
+      box-shadow: 0 8px 25px rgba(0, 112, 186, 0.4);
+    }
+    .btn-paypal:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 112, 186, 0.6); }
+    .btn-crypto {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.35);
+      margin-top: 10px;
+    }
+    .btn-crypto:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(245, 158, 11, 0.5); }
+
+    /* Modal */
+    .success-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 19, 37, 0.9);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .success-modal.active { opacity: 1; pointer-events: auto; }
+    .success-box {
+      background: #0d1f3d;
+      border: 1px solid var(--accent-cyan);
+      border-radius: 20px;
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    }
+
+    @media (max-width: 860px) {
+      .ads-builder-grid { grid-template-columns: 1fr; }
+      .row-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/games/" class="brand-logo">
+        <div class="logo-badge"><i class="fa-solid fa-gamepad"></i></div>
+        <div class="logo-text">CARE<span>GAMES ADS</span></div>
+      </a>
+      <div style="display: flex; align-items: center; gap: 18px;">
+        <a href="/games/" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600;">
+          <i class="fa-solid fa-arrow-left"></i> Volver al Portal
+        </a>
+        <a href="/games/solitario/" style="color: var(--accent-cyan); text-decoration: none; font-size: 0.9rem; font-weight: 600;">
+          <i class="fa-solid fa-play"></i> Ver Solitario en Vivo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-tag"><i class="fa-solid fa-bullhorn"></i> Patrocinios Éticos & Publicidad de Alto Impacto</div>
+      <h1 class="hero-title">Conecta tu Marca con una Audiencia que <span>Valora tu Presencia</span></h1>
+      <p class="hero-desc">
+        No somos un portal de juegos común. Somos un ecosistema de bienestar mental, salud cognitiva y teleasistencia donde adultos mayores y familias juegan con calma y gratitud. Sin ruidos molestos ni trampas, tu mensaje es 100% visible y libre de bloqueadores de anuncios (AdBlock).
+      </p>
+
+      <!-- Los 4 Pilares del Gancho B2B -->
+      <div class="b2b-value-grid">
+        <div class="b2b-value-card">
+          <div class="b2b-icon-wrap" style="color: #60a5fa; background: rgba(96, 165, 250, 0.15);">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <h4>Inmune a AdBlockers</h4>
+            <p>Banners nativos y respetuosos sincronizados por servidor. Los bloqueadores no los eliminan.</p>
+          </div>
+        </div>
+
+        <div class="b2b-value-card">
+          <div class="b2b-icon-wrap" style="color: #34d399; background: rgba(52, 211, 153, 0.15);">
+            <i class="fa-solid fa-eye"></i>
+          </div>
+          <div>
+            <h4>Atención Visual Sostenida</h4>
+            <p>Sesiones de 10 a 20 minutos con la vista en el tablero, superando con creces el scroll fugaz de redes sociales.</p>
+          </div>
+        </div>
+
+        <div class="b2b-value-card">
+          <div class="b2b-icon-wrap" style="color: #f472b6; background: rgba(244, 114, 182, 0.15);">
+            <i class="fa-solid fa-heart"></i>
+          </div>
+          <div>
+            <h4>Simpatía y Gratitud</h4>
+            <p>El usuario agradece que apoyes una plataforma gratuita sin videos forzados ni sonidos estridentes.</p>
+          </div>
+        </div>
+
+        <div class="b2b-value-card">
+          <div class="b2b-icon-wrap" style="color: #ef4444; background: rgba(239, 68, 68, 0.15);">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div>
+            <h4>Entorno de Confianza SOS</h4>
+            <p>Tu marca convive con teleasistencia médica y seguridad para personas al cuidado y adultos mayores.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard de Métricas Transparentes -->
+      <div class="metrics-dashboard-grid">
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-icon" style="color: #60a5fa;"><i class="fa-solid fa-gamepad"></i></span>
+            <span class="metric-badge-trend">+18% este mes</span>
+          </div>
+          <div class="metric-val">+15.000</div>
+          <div class="metric-label">Partidas Jugadas / Mes</div>
+          <div class="metric-sub">Exposición continua y sostenida en Solitario Care</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-icon" style="color: #34d399;"><i class="fa-solid fa-stopwatch"></i></span>
+            <span class="metric-badge-trend">Alta Atención</span>
+          </div>
+          <div class="metric-val">14.5 min</div>
+          <div class="metric-label">Tiempo Promedio por Sesión</div>
+          <div class="metric-sub">Concentración mental activa sin distracciones</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-icon" style="color: #f472b6;"><i class="fa-solid fa-volume-xmark"></i></span>
+            <span class="metric-badge-trend">0% Popups</span>
+          </div>
+          <div class="metric-val">99.4%</div>
+          <div class="metric-label">Tasa de Visibilidad Real</div>
+          <div class="metric-sub">Cero rebote por ruidos molestos o videos forzados</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-icon" style="color: #fbbf24;"><i class="fa-solid fa-earth-americas"></i></span>
+            <span class="metric-badge-trend">Regional</span>
+          </div>
+          <div class="metric-val">4 Países Clave</div>
+          <div class="metric-label">Alcance Principal</div>
+          <div class="metric-sub">🇨🇴 Colombia &bull; 🇪🇸 España &bull; 🇲🇽 México &bull; 🇺🇸 USA</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ads-builder-grid">
+      <!-- Left Column: Ad Creation & Configuration Form -->
+      <div class="form-card">
+        <div class="form-section-title"><i class="fa-solid fa-gamepad"></i> 1. Juego y Ubicación del Banner</div>
+        <div class="row-2 form-group">
+          <div>
+            <label class="form-label">Seleccionar Juego</label>
+            <select id="select-game" class="form-select" onchange="updateAvailability()">
+              <option value="solitario">Solitario Care (Disponible)</option>
+              <option value="sudoku">Sudoku Care (Próximamente)</option>
+              <option value="mahjong">Mahjong Care (Próximamente)</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Ubicación del Banner</label>
+            <select id="select-placement" class="form-select" onchange="updateAvailability()">
+              <option value="top">Banner Superior (Top - 60 slots/h)</option>
+              <option value="bottom">Banner Inferior (Bottom - 60 slots/h)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-section-title"><i class="fa-solid fa-pen-nib"></i> 2. Contenido y Enlaces de Interacción</div>
+        
+        <div class="row-2 form-group">
+          <div>
+            <label class="form-label">Nombre de la Marca / Título</label>
+            <input type="text" id="ad-brand" class="form-input" placeholder="Ej: Clínica Salud Total" value="Mi Empresa o Causa" oninput="updateLivePreview()">
+          </div>
+          <div>
+            <label class="form-label">Logo / Icono (URL de Imagen)</label>
+            <input type="url" id="ad-logo" class="form-input" placeholder="https://ejemplo.com/logo.png" oninput="updateLivePreview()">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Texto Descriptivo del Anuncio (Máx. 90 caracteres)</label>
+          <input type="text" id="ad-desc" class="form-input" maxlength="90" placeholder="Ej: Atención médica prioritaria para toda la familia sin esperas." value="Descubre nuestros servicios y aprovecha las ofertas exclusivas hoy." oninput="updateLivePreview()">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-globe" style="color: #60a5fa;"></i> Enlace 1: Página Web Principal (ad_click)</label>
+          <input type="url" id="ad-web-url" class="form-input" placeholder="https://miempresa.com" value="https://caretechservices.com">
+        </div>
+
+        <div class="row-2 form-group">
+          <div>
+            <label class="form-label"><i class="fa-solid fa-heart" style="color: #f472b6;"></i> Enlace 2: Donaciones (ad_donation_click)</label>
+            <input type="url" id="ad-donation-url" class="form-input" placeholder="https://donar.miempresa.com (Opcional)" oninput="updateLivePreview()">
+          </div>
+          <div>
+            <label class="form-label"><i class="fa-solid fa-cart-shopping" style="color: #34d399;"></i> Enlace 3: Tienda / Ofertas (ad_shop_click)</label>
+            <input type="url" id="ad-shop-url" class="form-input" placeholder="https://tienda.miempresa.com (Opcional)" oninput="updateLivePreview()">
+          </div>
+        </div>
+
+        <div class="form-section-title"><i class="fa-solid fa-calendar-check"></i> 3. Frecuencia de Aparición</div>
+        <div class="plans-grid" id="plans-container">
+          <div class="plan-card" data-plan="entrada" onclick="selectPlan('entrada', 1, 'semana')">
+            <div class="plan-title">Entrada</div>
+            <div class="plan-price">$1 <span style="font-size:0.75rem;">USD</span></div>
+            <div class="plan-freq">1 vez / semana</div>
+          </div>
+          <div class="plan-card" data-plan="presencia" onclick="selectPlan('presencia', 3, 'semana')">
+            <div class="plan-title">Presencia</div>
+            <div class="plan-price">$3 <span style="font-size:0.75rem;">USD</span></div>
+            <div class="plan-freq">3 veces / semana</div>
+          </div>
+          <div class="plan-card" data-plan="diario" onclick="selectPlan('diario', 15, 'mes')">
+            <div class="plan-title">Diario</div>
+            <div class="plan-price">$15 <span style="font-size:0.75rem;">USD</span></div>
+            <div class="plan-freq">1 vez / día</div>
+          </div>
+          <div class="plan-card" data-plan="frecuente" onclick="selectPlan('frecuente', 35, 'mes')">
+            <div class="plan-title">Frecuente</div>
+            <div class="plan-price">$35 <span style="font-size:0.75rem;">USD</span></div>
+            <div class="plan-freq">Cada 6 horas</div>
+          </div>
+          <div class="plan-card" data-plan="intensivo" onclick="selectPlan('intensivo', 60, 'mes')">
+            <div class="plan-title">Intensivo</div>
+            <div class="plan-price">$60 <span style="font-size:0.75rem;">USD</span></div>
+            <div class="plan-freq">Cada 3 horas</div>
+          </div>
+          <div class="plan-card active" data-plan="maximo" onclick="selectPlan('maximo', 120, 'mes')">
+            <div class="plan-title">Máximo</div>
+            <div class="plan-price">$120 <span style="font-size:0.75rem;">USD</span></div>
+            <div class="plan-freq">Cada hora (24/d)</div>
+          </div>
+        </div>
+
+        <label class="priority-box" for="chk-priority">
+          <input type="checkbox" id="chk-priority" class="priority-checkbox" onchange="togglePriority(this.checked)">
+          <div>
+            <strong style="color: #fbbf24; font-size: 0.95rem;"><i class="fa-solid fa-bolt"></i> Pase Prioridad VIP (+ $120 USD)</strong>
+            <div style="font-size: 0.8rem; color: #d1d5db;">Saltarse la lista de espera para el próximo slot disponible compatible.</div>
+          </div>
+        </label>
+
+        <div class="form-section-title"><i class="fa-solid fa-user-shield"></i> 4. Datos de Contacto y Facturación</div>
+        <div class="row-2 form-group">
+          <div>
+            <label class="form-label">Correo Electrónico (Reportes & Factura)</label>
+            <input type="email" id="advertiser-email" class="form-input" placeholder="tu@empresa.com" required>
+          </div>
+          <div>
+            <label class="form-label">WhatsApp / Teléfono</label>
+            <input type="tel" id="advertiser-phone" class="form-input" placeholder="+57 300 000 0000">
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Live Preview & Checkout Summary -->
+      <div class="preview-sticky-wrap">
+        <div class="banner-preview-box">
+          <div class="preview-label">
+            <span><i class="fa-solid fa-eye"></i> Simulación en Tablero Real</span>
+            <span style="color: #34d399;"><i class="fa-solid fa-clock"></i> 60s / slot</span>
+          </div>
+
+          <!-- Mesa de simulación con aspecto real de Solitario Care -->
+          <div class="game-felt-mockup">
+            <div class="live-banner-display">
+              <span class="live-badge-type" id="prev-badge">ANUNCIO</span>
+              
+              <div class="live-banner-logo" id="prev-logo">
+                <i class="fa-solid fa-bullhorn"></i>
+              </div>
+              
+              <div class="live-banner-text">
+                <div class="live-banner-title" id="prev-title">Mi Empresa o Causa</div>
+                <div class="live-banner-desc" id="prev-desc">Descubre nuestros servicios y aprovecha las ofertas exclusivas hoy.</div>
+              </div>
+
+              <!-- Los 3 Botones Interactivos Reales -->
+              <div class="live-banner-actions">
+                <span class="live-btn live-btn-web" id="prev-btn-web" title="Visita a tu sitio web o página comercial">
+                  <i class="fa-solid fa-globe"></i> <span>Web</span>
+                </span>
+                <span class="live-btn live-btn-donate" id="prev-btn-donate" title="Enlace a donaciones o causa social">
+                  <i class="fa-solid fa-heart"></i>
+                </span>
+                <span class="live-btn live-btn-shop" id="prev-btn-shop" title="Enlace a tienda online, oferta o checkout">
+                  <i class="fa-solid fa-cart-shopping"></i>
+                </span>
+                <span class="live-btn-close" title="Cierre de cortesía de 60s">&times;</span>
+              </div>
+            </div>
+            
+            <div class="preview-context-help">
+              <i class="fa-solid fa-circle-info"></i> Ubicación fija sin popups intrusivos. Los 3 botones se activan según los enlaces que configures.
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <h4 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 14px;">Resumen del Pedido</h4>
+
+          <div class="summary-row">
+            <span>Juego:</span>
+            <strong id="sum-game" style="color: #fff;">Solitario Care</strong>
+          </div>
+          <div class="summary-row">
+            <span>Ubicación:</span>
+            <strong id="sum-placement" style="color: #fff;">Banner Superior</strong>
+          </div>
+          <div class="summary-row">
+            <span>Plan Seleccionado:</span>
+            <strong id="sum-plan" style="color: #93c5fd;">Máximo (Cada hora)</strong>
+          </div>
+          <div class="summary-row">
+            <span>Precio Base:</span>
+            <strong id="sum-price">$120.00 USD</strong>
+          </div>
+          <div class="summary-row" id="sum-priority-row" style="display: none; color: #fbbf24;">
+            <span>Prioridad VIP (Saltar cola):</span>
+            <strong>+ $120.00 USD</strong>
+          </div>
+
+          <div class="summary-row total">
+            <span>Total a Pagar:</span>
+            <span id="sum-total-usd">$120.00 USD</span>
+          </div>
+          <div class="total-cop" id="sum-total-cop">&asymp; $480.000 COP (Tasa 4.000 COP/USD)</div>
+
+          <!-- Checkout Buttons -->
+          <button class="btn-checkout" style="background: linear-gradient(135deg, #ff7a00, #d95d00); margin-bottom: 8px;" onclick="submitCampaign('EPAYCO')">
+            <i class="fa-solid fa-building-columns"></i> Pagar con ePayco (PSE &bull; Nequi &bull; Tarjetas Colombia)
+          </button>
+
+          <button class="btn-checkout" style="background: linear-gradient(135deg, #009ee3, #007eb5); margin-bottom: 8px;" onclick="submitCampaign('MERCADOPAGO')">
+            <i class="fa-solid fa-handshake"></i> Suscripción con Mercado Pago (Plan Solo)
+          </button>
+
+          <button class="btn-checkout btn-paypal" style="margin-bottom: 8px;" onclick="submitCampaign('PAYPAL')">
+            <i class="fa-brands fa-paypal"></i> Pagar con PayPal (Tarjetas Internacionales / USD)
+          </button>
+
+          <button class="btn-checkout btn-crypto" style="margin-bottom: 8px;" onclick="submitCampaign('CRYPTO')">
+            <i class="fa-brands fa-bitcoin"></i> Pagar con Criptomonedas (Binance Pay)
+          </button>
+
+          <a id="btn-portal-ads" href="/pagos/?service=publicidad" class="btn-checkout" style="background: linear-gradient(135deg, #10b981, #059669); text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <i class="fa-solid fa-shield-halved"></i> Abrir en Portal Unificado de Pagos
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Success Confirmation Modal -->
+  <div id="success-modal" class="success-modal">
+    <div class="success-box">
+      <div style="font-size: 3rem; color: #10b981; margin-bottom: 10px;"><i class="fa-solid fa-circle-check"></i></div>
+      <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 8px;">¡Anuncio Publicado con Éxito!</h3>
+      <p style="color: #94a3b8; font-size: 0.92rem; margin-bottom: 20px;">
+        Tu campaña ha sido registrada y conectada en tiempo real con <strong>Solitario Care</strong>.
+      </p>
+
+      <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 14px; text-align: left; margin-bottom: 20px; font-size: 0.88rem;">
+        <div><strong>ID de Campaña:</strong> <span id="res-campaign-id" style="color: var(--accent-cyan);"></span></div>
+        <div><strong>Método de Pago:</strong> <span id="res-payment-method"></span></div>
+        <div><strong>Total Facturado:</strong> <span id="res-total" style="color: #fbbf24;"></span></div>
+      </div>
+
+      <!-- ePayco Container -->
+      <div id="res-epayco-container" style="display: none; margin-bottom: 20px;">
+        <button id="res-epayco-action" type="button" class="btn-checkout" style="background: linear-gradient(135deg, #ff7a00, #d95d00); width: 100%; margin-bottom: 8px;">
+          <i class="fa-solid fa-building-columns"></i> Iniciar Pago Seguro ePayco (PSE / Nequi / Tarjetas)
+        </button>
+      </div>
+
+      <!-- Mercado Pago Container -->
+      <div id="res-mp-container" style="display: none; margin-bottom: 20px;">
+        <a id="res-mp-action" href="#" target="_blank" class="btn-checkout" style="background: linear-gradient(135deg, #009ee3, #007eb5); text-decoration: none; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;">
+          <i class="fa-solid fa-handshake"></i> Continuar Suscripción Mercado Pago (Plan Solo)
+        </a>
+      </div>
+
+      <!-- PayPal Container -->
+      <div id="res-paypal-container" style="display: none; margin-bottom: 20px;">
+        <a id="res-paypal-action" href="#" target="_blank" class="btn-checkout btn-paypal" style="text-decoration: none; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;">
+          <i class="fa-brands fa-paypal"></i> Continuar al Pago en PayPal
+        </a>
+        <a id="res-paypalme-action" href="#" target="_blank" class="btn-checkout btn-paypal" style="background: #00457C; text-decoration: none; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <i class="fa-solid fa-bolt"></i> Pagar Rápido con PayPal.Me ($1 USD)
+        </a>
+        <p style="font-size: 0.78rem; color: #94a3b8; margin-top: 8px;">
+          Cuenta receptora: <strong>alexis.tarrifa@gmail.com</strong>.
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <a href="/games/solitario/" class="live-btn live-btn-web" style="padding: 12px 20px; font-size: 0.95rem;">
+          <i class="fa-solid fa-play"></i> Ver Anuncio en Solitario Care
+        </a>
+        <button onclick="document.getElementById('success-modal').classList.remove('active')" style="background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 12px 20px; border-radius: 6px; cursor: pointer;">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentPlan = 'maximo';
+    let basePrice = 120;
+    let hasPriority = false;
+    const COP_RATE = 4000;
+
+    function selectPlan(planId, price, cycle) {
+      currentPlan = planId;
+      basePrice = price;
+      document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('active'));
+      document.querySelector(`[data-plan="${planId}"]`).classList.add('active');
+      
+      const planNames = {
+        entrada: 'Entrada (1/semana)',
+        presencia: 'Presencia (3/semana)',
+        diario: 'Diario (1/día)',
+        frecuente: 'Frecuente (Cada 6h)',
+        intensivo: 'Intensivo (Cada 3h)',
+        maximo: 'Máximo (Cada hora)'
+      };
+      document.getElementById('sum-plan').textContent = planNames[planId];
+      document.getElementById('sum-price').textContent = `$${price.toFixed(2)} USD`;
+      updateTotals();
+    }
+
+    function togglePriority(enabled) {
+      hasPriority = enabled;
+      document.getElementById('sum-priority-row').style.display = enabled ? 'flex' : 'none';
+      updateTotals();
+    }
+
+    function updateTotals() {
+      const totalUsd = basePrice + (hasPriority ? 120 : 0);
+      const totalCop = totalUsd * COP_RATE;
+      document.getElementById('sum-total-usd').textContent = `$${totalUsd.toFixed(2)} USD`;
+      document.getElementById('sum-total-cop').innerHTML = `Cobro directo en <strong>USD</strong> vía PayPal &bull; ≈ $${totalCop.toLocaleString('es-CO')} COP`;
+    }
+
+    function updateLivePreview() {
+      const brand = document.getElementById('ad-brand').value || 'Mi Empresa o Causa';
+      const desc = document.getElementById('ad-desc').value || 'Descripción de tu anuncio';
+      const logoUrl = document.getElementById('ad-logo').value;
+      const donationUrl = document.getElementById('ad-donation-url').value;
+      const shopUrl = document.getElementById('ad-shop-url').value;
+      const placement = document.getElementById('select-placement').value;
+
+      document.getElementById('prev-title').textContent = brand;
+      document.getElementById('prev-desc').textContent = desc;
+
+      const badgeElem = document.getElementById('prev-badge');
+      if (badgeElem) {
+        badgeElem.textContent = placement === 'bottom' ? 'PATROCINADO' : 'ANUNCIO';
+      }
+
+      const logoContainer = document.getElementById('prev-logo');
+      if (logoUrl) {
+        logoContainer.innerHTML = `<img src="${logoUrl}" alt="Logo" onerror="this.parentElement.innerHTML='<i class=\\'fa-solid fa-bullhorn\\'></i>'">`;
+      } else {
+        logoContainer.innerHTML = '<i class="fa-solid fa-bullhorn"></i>';
+      }
+
+      const btnDonate = document.getElementById('prev-btn-donate');
+      if (btnDonate) {
+        if (donationUrl && donationUrl.trim()) {
+          btnDonate.style.opacity = '1';
+          btnDonate.style.pointerEvents = 'auto';
+          btnDonate.title = 'Enlace de donación configurado';
+        } else {
+          btnDonate.style.opacity = '0.35';
+          btnDonate.style.pointerEvents = 'none';
+          btnDonate.title = 'Donaciones no configuradas (opcional)';
+        }
+      }
+
+      const btnShop = document.getElementById('prev-btn-shop');
+      if (btnShop) {
+        if (shopUrl && shopUrl.trim()) {
+          btnShop.style.opacity = '1';
+          btnShop.style.pointerEvents = 'auto';
+          btnShop.title = 'Enlace de tienda configurado';
+        } else {
+          btnShop.style.opacity = '0.35';
+          btnShop.style.pointerEvents = 'none';
+          btnShop.title = 'Tienda no configurada (opcional)';
+        }
+      }
+    }
+
+    function updateAvailability() {
+      const gameSelect = document.getElementById('select-game');
+      const placementSelect = document.getElementById('select-placement');
+      document.getElementById('sum-game').textContent = gameSelect.options[gameSelect.selectedIndex].text;
+      document.getElementById('sum-placement').textContent = placementSelect.options[placementSelect.selectedIndex].text;
+      updateLivePreview();
+    }
+
+    // Inicializar estados
+    document.addEventListener('DOMContentLoaded', () => {
+      updateAvailability();
+      updateLivePreview();
+    });
+
+    async function submitCampaign(paymentMethod) {
+      const email = document.getElementById('advertiser-email').value;
+      if (!email || !email.includes('@')) {
+        alert('Por favor ingresa un correo electrónico válido.');
+        return;
+      }
+
+      const payload = {
+        brandName: document.getElementById('ad-brand').value || 'Mi Empresa o Causa',
+        headline: document.getElementById('ad-brand').value || 'Mi Empresa o Causa',
+        description: document.getElementById('ad-desc').value || '',
+        logoUrl: document.getElementById('ad-logo').value || '',
+        webUrl: document.getElementById('ad-web-url').value || 'https://caretechservices.com',
+        donationUrl: document.getElementById('ad-donation-url').value || '',
+        shopUrl: document.getElementById('ad-shop-url').value || '',
+        gameId: document.getElementById('select-game').value,
+        placement: document.getElementById('select-placement').value,
+        planId: currentPlan,
+        hasPriority: hasPriority,
+        advertiserEmail: email,
+        advertiserPhone: document.getElementById('advertiser-phone').value || '',
+        paymentMethod: paymentMethod
+      };
+
+      try {
+        const res = await fetch('/games/api/v1/games/campaigns/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('res-campaign-id').textContent = data.campaign.id;
+          
+          let methodLabel = 'PayPal (USD)';
+          if (paymentMethod === 'EPAYCO') methodLabel = 'ePayco (PSE / Nequi / Tarjetas Colombia)';
+          else if (paymentMethod === 'MERCADOPAGO') methodLabel = 'Mercado Pago (Suscripción Plan Solo)';
+          else if (paymentMethod === 'CRYPTO') methodLabel = 'Binance Pay (Cripto USDT 0%)';
+          document.getElementById('res-payment-method').textContent = methodLabel;
+          document.getElementById('res-total').textContent = `$${data.campaign.totalUsd} USD (≈ $${data.campaign.totalCop.toLocaleString('es-CO')} COP)`;
+          
+          const epaycoContainer = document.getElementById('res-epayco-container');
+          const mpContainer = document.getElementById('res-mp-container');
+          const paypalContainer = document.getElementById('res-paypal-container');
+          
+          epaycoContainer.style.display = 'none';
+          mpContainer.style.display = 'none';
+          paypalContainer.style.display = 'none';
+
+          // 1. Manejo ePayco
+          if (paymentMethod === 'EPAYCO' && data.checkout?.epayco) {
+            epaycoContainer.style.display = 'block';
+            const epaycoBtn = document.getElementById('res-epayco-action');
+            const epData = data.checkout.epayco;
+            epaycoBtn.onclick = () => {
+              if (window.ePayco && epData.key) {
+                const handler = window.ePayco.checkout.configure({
+                  key: epData.key,
+                  test: Boolean(epData.test)
+                });
+                handler.open(epData);
+              } else {
+                window.location.href = `/pagos/?service=publicidad&plan=${encodeURIComponent(currentPlan)}&ref=${encodeURIComponent(data.campaign.id)}&gateway=epayco`;
+              }
+            };
+            // Autodisparo si es posible
+            if (window.ePayco && epData.key) {
+              try {
+                const handler = window.ePayco.checkout.configure({ key: epData.key, test: Boolean(epData.test) });
+                handler.open(epData);
+              } catch(e) {}
+            }
+          }
+
+          // 2. Manejo Mercado Pago
+          else if (paymentMethod === 'MERCADOPAGO') {
+            mpContainer.style.display = 'block';
+            const mpAction = document.getElementById('res-mp-action');
+            const mpUrl = data.checkout?.mercadopago?.soloPlanCheckoutUrl || 'https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id=ef5d45af5bd347a7830da2fbec0ea42d';
+            mpAction.href = mpUrl;
+            try {
+              window.open(mpUrl, '_blank');
+            } catch(e) {}
+          }
+
+          // 3. Manejo PayPal
+          else if (paymentMethod === 'PAYPAL' && data.checkout) {
+            const paypalAction = document.getElementById('res-paypal-action');
+            const paypalMeAction = document.getElementById('res-paypalme-action');
+            if (data.checkout.paypalCheckoutUrl && paypalAction) {
+              paypalAction.href = data.checkout.paypalCheckoutUrl;
+            }
+            if (data.checkout.paypalMeUrl && paypalMeAction) {
+              paypalMeAction.href = data.checkout.paypalMeUrl;
+              paypalMeAction.innerHTML = `<i class="fa-solid fa-bolt"></i> Pagar Rápido con PayPal.Me ($${data.campaign.totalUsd} USD)`;
+            }
+            paypalContainer.style.display = 'block';
+            try {
+              window.open(data.checkout.paypalCheckoutUrl, '_blank');
+            } catch(e) {}
+          }
+
+          document.getElementById('success-modal').classList.add('active');
+        } else {
+          alert('Error al registrar la campaña: ' + (data.message || 'Error del servidor'));
+        }
+      } catch (err) {
+        alert('Error conectando con el servidor: ' + err.message);
+      }
+    }
+  </script>
+</body>
+</html>

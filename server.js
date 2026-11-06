@@ -237,6 +237,7 @@ const server = http.createServer((req, res) => {
 
   // Endpoint API Config
   if (pathname === '/api/config' && req.method === 'GET') {
+    const mpPlanId = process.env.MERCADO_PAGO_SOLO_PLAN_ID || 'ef5d45af5bd347a7830da2fbec0ea42d';
     res.writeHead(200, { 'Content-Type': 'application/json' });
     return res.end(JSON.stringify({
       whatsappNumber: process.env.WHATSAPP_NUMBER || '573164734660',
@@ -247,7 +248,134 @@ const server = http.createServer((req, res) => {
       wompiConfigured: Boolean(process.env.WOMPI_PUBLIC_KEY),
       paypalConfigured: Boolean(process.env.PAYPAL_CLIENT_ID && process.env.PAYPAL_CLIENT_SECRET),
       paypalClientId: process.env.PAYPAL_CLIENT_ID || '',
-      paypalMode: (process.env.PAYPAL_MODE || 'sandbox').toLowerCase().trim()
+      paypalMode: (process.env.PAYPAL_MODE || 'sandbox').toLowerCase().trim(),
+      epaycoConfigured: Boolean(process.env.EPAYCO_PUBLIC_KEY),
+      epaycoPublicKey: process.env.EPAYCO_PUBLIC_KEY || '',
+      mercadopagoConfigured: true,
+      mercadopagoSoloPlanId: mpPlanId,
+      mercadopagoSoloPlanUrl: `https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id=${mpPlanId}`
+    }));
+  }
+
+  // Endpoint API: Unified Payments Config
+  if ((pathname === '/api/payments/config' || pathname === '/api/v1/payments/config') && req.method === 'GET') {
+    const mpPlanId = process.env.MERCADO_PAGO_SOLO_PLAN_ID || 'ef5d45af5bd347a7830da2fbec0ea42d';
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({
+      success: true,
+      exchangeRate: { copPerUsd: 4000, currency: 'USD' },
+      gateways: {
+        epayco: {
+          name: 'ePayco (PSE, Nequi, Daviplata, Tarjetas Colombia, Efecty)',
+          configured: Boolean(process.env.EPAYCO_PUBLIC_KEY),
+          publicKey: process.env.EPAYCO_PUBLIC_KEY || '',
+          testMode: process.env.EPAYCO_TEST_MODE !== 'false',
+          dashboardUrl: 'https://dashboard.epayco.com/dashboard',
+          responseUrl: 'https://caretechservices.com/pagos/respuesta/'
+        },
+        mercadopago: {
+          name: 'Mercado Pago (Suscripción Plan Solo & Cuotas)',
+          configured: true,
+          soloPlanId: mpPlanId,
+          soloPlanCheckoutUrl: `https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id=${mpPlanId}`
+        },
+        paypal: {
+          name: 'PayPal & Tarjetas Internacionales (USD)',
+          configured: Boolean(process.env.PAYPAL_CLIENT_ID),
+          clientId: process.env.PAYPAL_CLIENT_ID || '',
+          mode: (process.env.PAYPAL_MODE || 'sandbox').toLowerCase().trim()
+        },
+        binancePay: {
+          name: 'Binance Pay (Criptomonedas USDT)',
+          configured: Boolean(process.env.BINANCE_PAY_API_KEY)
+        }
+      }
+    }));
+  }
+
+  // Endpoint API: Unified Payment Creation
+  if ((pathname === '/api/payments/create' || pathname === '/api/v1/payments/create') && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk.toString(); });
+    req.on('end', () => {
+      try {
+        const data = JSON.parse(body || '{}');
+        const service = data.service || 'donar';
+        const currency = (data.currency || 'USD').toUpperCase();
+        const rawAmount = parseFloat(data.amount || 5);
+        const rate = 4000;
+        const amountUsd = currency === 'COP' ? Math.round((rawAmount / rate) * 100) / 100 : rawAmount;
+        const amountCop = currency === 'COP' ? rawAmount : Math.round(rawAmount * rate);
+
+        const refPrefix = service.slice(0, 4).toUpperCase();
+        const reference = `PAY_${refPrefix}_${Date.now()}_${Math.floor(1000 + Math.random() * 9000)}`;
+
+        const mpPlanId = process.env.MERCADO_PAGO_SOLO_PLAN_ID || 'ef5d45af5bd347a7830da2fbec0ea42d';
+        const mpSoloUrl = `https://www.mercadopago.com.co/subscriptions/checkout?preapproval_plan_id=${mpPlanId}`;
+
+        const payment = {
+          reference,
+          service,
+          amountUsd,
+          amountCop,
+          currency,
+          status: 'PENDING',
+          customer: data.customer || {},
+          createdAt: new Date().toISOString()
+        };
+        orders.set(reference, payment);
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({
+          success: true,
+          reference,
+          service,
+          amountUsd,
+          amountCop,
+          gateways: {
+            epayco: {
+              key: process.env.EPAYCO_PUBLIC_KEY || '',
+              test: process.env.EPAYCO_TEST_MODE !== 'false',
+              name: `CareTech - ${service}`,
+              description: `Pago CareTech ${service}`,
+              invoice: reference,
+              currency: 'cop',
+              amount: String(amountCop),
+              response: 'https://caretechservices.com/pagos/respuesta/'
+            },
+            mercadopago: {
+              soloPlanId: mpPlanId,
+              soloPlanCheckoutUrl: mpSoloUrl
+            },
+            paypal: {
+              paypalMeUrl: `https://www.paypal.com/paypalme/alexistarrifa/${amountUsd}USD`
+            },
+            binancePay: {
+              qrUrl: `https://pay.binance.com/qr/${reference}`
+            }
+          },
+          receiptUrl: `https://caretechservices.com/pagos/respuesta/?ref=${encodeURIComponent(reference)}`
+        }));
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ error: 'JSON inválido' }));
+      }
+    });
+    return;
+  }
+
+  // Endpoint API: Payment Status Check
+  if ((pathname === '/api/payments/status' || pathname === '/api/v1/payments/status') && req.method === 'GET') {
+    const ref = parsedUrl.query.reference || parsedUrl.query.ref || parsedUrl.query.invoice;
+    if (!ref) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: 'Parámetro reference requerido' }));
+    }
+    const order = orders.get(ref);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({
+      success: true,
+      payment: order || { reference: ref, status: 'PENDING', message: 'Orden en verificación' }
     }));
   }
 

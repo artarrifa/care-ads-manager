@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Care Ads Manager V1.0 | Panel de Control, Contratos & Finanzas</title>
+  <meta name="theme-color" content="#081325">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-dark: #081325;
+      --bg-card: #0d1f3d;
+      --border: rgba(255, 255, 255, 0.1);
+      --primary: #2563eb;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 24px;
+    }
+    .container { max-width: 1240px; margin: 0 auto; }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand { font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+    .brand span { color: var(--accent-cyan); }
+    .header-actions { display: flex; align-items: center; gap: 14px; }
+    .user-pill {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-logout {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* Tabs */
+    .tabs-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tab-btn.active {
+      background: rgba(37, 99, 235, 0.15);
+      border-color: rgba(37, 99, 235, 0.4);
+      color: #fff;
+    }
+
+    /* KPI Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .kpi-label { font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+    .kpi-value { font-size: 1.7rem; font-weight: 800; margin: 4px 0; color: #fff; }
+    .kpi-sub { font-size: 0.75rem; color: var(--accent-emerald); }
+
+    /* Tables */
+    .panel-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 24px;
+    }
+    .panel-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    th { color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .badge-active { background: rgba(16, 185, 129, 0.2); color: var(--accent-emerald); }
+    .badge-pending { background: rgba(245, 158, 11, 0.2); color: var(--accent-amber); }
+    .badge-paused { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
+    .badge-rejected { background: rgba(239, 68, 68, 0.2); color: var(--accent-rose); }
+
+    .btn-action {
+      border: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      margin-right: 4px;
+    }
+    .btn-approve { background: #10b981; color: #fff; }
+    .btn-pause { background: #f59e0b; color: #000; }
+    .btn-reject { background: #ef4444; color: #fff; }
+
+    /* Login Modal Overlay */
+    #login-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 19, 37, 0.95);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .login-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px; color: #cbd5e1; }
+    .form-input {
+      width: 100%;
+      background: #081325;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 0.92rem;
+    }
+    .btn-submit {
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Modal Obligatorio -->
+  <div id="login-overlay">
+    <div class="login-box">
+      <div style="text-align: center; margin-bottom: 22px;">
+        <i class="fa-solid fa-shield-halved" style="font-size: 2.2rem; color: var(--accent-cyan); margin-bottom: 10px;"></i>
+        <h2 style="font-size: 1.3rem; font-weight: 800;">Acceso Administrativo</h2>
+        <p style="font-size: 0.82rem; color: var(--text-muted);">Care Ads Manager V1.0 &bull; Autenticación Segura & 2FA</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Correo Administrador</label>
+        <input type="email" id="login-email" class="form-input" value="admin@caretechservices.com">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Contraseña</label>
+        <input type="password" id="login-pass" class="form-input" placeholder="••••••••••••">
+      </div>
+
+      <div class="form-group" id="group-2fa" style="display: none;">
+        <label class="form-label"><i class="fa-solid fa-key" style="color: #fbbf24;"></i> Código de Autenticación 2FA (6 dígitos)</label>
+        <input type="text" id="login-totp" class="form-input" placeholder="123456" maxlength="6">
+      </div>
+
+      <div id="login-error" style="color: #f87171; font-size: 0.8rem; margin-bottom: 12px; display: none;"></div>
+
+      <button class="btn-submit" onclick="submitLogin()">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i> Iniciar Sesión Segura
+      </button>
+    </div>
+  </div>
+
+  <!-- Panel Principal Autenticado -->
+  <div class="container" id="admin-panel" style="display: none;">
+    <header>
+      <div class="brand">
+        <i class="fa-solid fa-shield-halved" style="color: var(--accent-cyan);"></i>
+        CARE <span>ADS MANAGER V1.0</span>
+      </div>
+      <div class="header-actions">
+        <div class="user-pill" id="user-display">
+          <i class="fa-solid fa-user-check" style="color: var(--accent-emerald);"></i>
+          <span id="user-name">admin@caretechservices.com</span>
+        </div>
+        <button class="btn-logout" onclick="logout()">
+          <i class="fa-solid fa-power-off"></i> Salir
+        </button>
+      </div>
+    </header>
+
+    <!-- Pestañas de Navegación -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('dashboard')"><i class="fa-solid fa-chart-line"></i> Dashboard</button>
+      <button class="tab-btn" onclick="switchTab('campaigns')"><i class="fa-solid fa-rectangle-ad"></i> Campañas Reales</button>
+      <button class="tab-btn" onclick="switchTab('audit')"><i class="fa-solid fa-link"></i> Auditoría Inmutable</button>
+      <button class="tab-btn" onclick="switchTab('security')"><i class="fa-solid fa-lock"></i> Seguridad 2FA</button>
+    </div>
+
+    <!-- Pestaña 1: Dashboard -->
+    <div id="tab-content-dashboard">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Campañas Activas (ON LINE)</div>
+          <div class="kpi-value" id="kpi-active" style="color: #34d399;">0</div>
+          <div class="kpi-sub">En rotación en Solitario Care</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Total Campañas Contratadas</div>
+          <div class="kpi-value" id="kpi-total">0</div>
+          <div class="kpi-sub" id="kpi-pending-sub">0 pendientes de moderación</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Ingresos Contratados</div>
+          <div class="kpi-value" id="kpi-usd">$0.00 <span style="font-size:0.9rem;">USD</span></div>
+          <div class="kpi-sub" id="kpi-cop" style="color: #fbbf24;">≈ $0 COP</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Impresiones IAB Medidas</div>
+          <div class="kpi-value" id="kpi-impressions">0</div>
+          <div class="kpi-sub" id="kpi-ctr">CTR Promedio: 0.0%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pestaña 2: Campañas Reales (PostgreSQL) -->
+    <div id="tab-content-campaigns" style="display: none;">
+      <div class="panel-card">
+        <div class="panel-title">
+          <span><i class="fa-solid fa-rectangle-ad" style="color: var(--accent-cyan);"></i> Campañas Publicitarias Reales</span>
+          <button class="btn-action" style="background: rgba(255,255,255,0.1); color:#fff;" onclick="loadCampaigns()"><i class="fa-solid fa-rotate"></i> Actualizar</button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>ID / Empresa</th>
+              <th>Anuncio / Creatividad</th>
+              <th>Espacio</th>
+              <th>Fechas de Vuelo</th>
+              <th>Importe</th>
+              <th>Pago</th>
+              <th>Estado</th>
+              <th>Acciones Reales</th>
+            </tr>
+          </thead>
+          <tbody id="campaigns-tbody">
+            <tr><td colspan="8" style="text-align:center; padding: 20px;">Cargando campañas de PostgreSQL...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pestaña 3: Auditoría Inmutable (Hash Chaining) -->
+    <div id="tab-content-audit" style="display: none;">
+      <div class="panel-card">
+        <div class="panel-title">
+          <span><i class="fa-solid fa-link" style="color: #fbbf24;"></i> Verificación Criptográfica de la Cadena de Auditoría</span>
+          <button class="btn-action" style="background: var(--primary); color:#fff; padding: 8px 16px;" onclick="verifyAuditChain()">
+            <i class="fa-solid fa-shield-virus"></i> Ejecutar Auditoría
+          </button>
+        </div>
+        <div id="audit-result-box" style="padding: 16px; border-radius: 8px; background: rgba(0,0,0,0.3); font-family: monospace; font-size: 0.88rem;">
+          Haz clic en "Ejecutar Auditoría" para verificar la integridad de todos los hashes SHA-256 encadenados.
+        </div>
+      </div>
+    </div>
+
+    <!-- Pestaña 4: Seguridad 2FA -->
+    <div id="tab-content-security" style="display: none;">
+      <div class="panel-card" style="max-width: 600px;">
+        <div class="panel-title"><i class="fa-solid fa-lock" style="color: var(--accent-emerald);"></i> Autenticación de Dos Factores (2FA)</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">
+          Protege el acceso a Care Ads Manager exigiendo un código temporal de 6 dígitos desde Google Authenticator o Authy.
+        </p>
+
+        <button class="btn-action" style="background: var(--primary); color: #fff; padding: 8px 16px; margin-bottom: 16px;" onclick="setup2FA()">
+          <i class="fa-solid fa-qrcode"></i> Configurar / Enrolar 2FA
+        </button>
+
+        <div id="mfa-setup-box" style="display: none; background: rgba(0,0,0,0.3); padding: 18px; border-radius: 10px;">
+          <div style="text-align: center; margin-bottom: 14px;">
+            <img id="mfa-qr-img" src="" alt="QR 2FA" style="border-radius: 8px; border: 4px solid #fff;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Ingresa el código de 6 dígitos de tu aplicación:</label>
+            <input type="text" id="mfa-confirm-code" class="form-input" placeholder="123456" maxlength="6">
+          </div>
+          <button class="btn-submit" onclick="confirm2FA()">Confirmar y Activar 2FA</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let authToken = localStorage.getItem('care_ads_admin_token') || '';
+    const API_BASE = 'http://localhost:8000/api/v1'; // Conectable a producción o microservicio local
+
+    async function submitLogin() {
+      const email = document.getElementById('login-email').value;
+      const pass = document.getElementById('login-pass').value;
+      const totp = document.getElementById('login-totp').value;
+      const errBox = document.getElementById('login-error');
+
+      errBox.style.display = 'none';
+
+      try {
+        const res = await fetch(`${API_BASE}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password: pass, totp_code: totp || null })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          if (data.mfa_required) {
+            document.getElementById('group-2fa').style.display = 'block';
+            errBox.textContent = 'Ingresa el código de 6 dígitos de tu app de 2FA.';
+            errBox.style.display = 'block';
+            return;
+          }
+
+          authToken = data.access_token;
+          localStorage.setItem('care_ads_admin_token', authToken);
+          document.getElementById('login-overlay').style.display = 'none';
+          document.getElementById('admin-panel').style.display = 'block';
+          loadDashboard();
+        } else {
+          errBox.textContent = data.detail || 'Credenciales inválidas.';
+          errBox.style.display = 'block';
+        }
+      } catch (err) {
+        errBox.textContent = 'Error conectando con Care Ads Backend: ' + err.message;
+        errBox.style.display = 'block';
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('care_ads_admin_token');
+      location.reload();
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+
+      ['dashboard', 'campaigns', 'audit', 'security'].forEach(t => {
+        document.getElementById(`tab-content-${t}`).style.display = t === tabId ? 'block' : 'none';
+      });
+
+      if (tabId === 'dashboard') loadDashboard();
+      if (tabId === 'campaigns') loadCampaigns();
+    }
+
+    async function loadDashboard() {
+      try {
+        const res = await fetch(`${API_BASE}/admin/dashboard`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        if (res.status === 401) { logout(); return; }
+        const data = await res.json();
+        if (data.success) {
+          const m = data.metrics;
+          document.getElementById('kpi-active').textContent = m.campaigns.active_online;
+          document.getElementById('kpi-total').textContent = m.campaigns.total;
+          document.getElementById('kpi-pending-sub').textContent = `${m.campaigns.pending_review} pendientes de moderación`;
+          document.getElementById('kpi-usd').textContent = `$${m.finance.total_contracted_usd.toFixed(2)} USD`;
+          document.getElementById('kpi-cop').textContent = `≈ $${m.finance.total_contracted_cop.toLocaleString('es-CO')} COP`;
+          document.getElementById('kpi-impressions').textContent = m.delivery.impressions_valid_iab.toLocaleString();
+          document.getElementById('kpi-ctr').textContent = `CTR Promedio: ${m.delivery.ctr_percentage}%`;
+        }
+      } catch (e) {}
+    }
+
+    async function loadCampaigns() {
+      const tbody = document.getElementById('campaigns-tbody');
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">Consultando base de datos PostgreSQL...</td></tr>';
+
+      try {
+        const res = await fetch(`${API_BASE}/campaigns/list`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        const data = await res.json();
+
+        if (data.success && data.campaigns.length > 0) {
+          tbody.innerHTML = data.campaigns.map(c => {
+            const badgeClass = c.status === 'ACTIVE' ? 'badge-active' :
+                               c.status === 'PAUSED' ? 'badge-paused' :
+                               c.status === 'REJECTED' ? 'badge-rejected' : 'badge-pending';
+            return `
+              <tr>
+                <td><strong>${c.company_name}</strong><br><span style="font-size:0.75rem; color:#94a3b8;">${c.code}</span></td>
+                <td>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    ${c.logo_url ? `<img src="${c.logo_url}" style="width:24px; height:24px; border-radius:4px; object-fit:contain;">` : ''}
+                    <div>
+                      <div style="font-weight:600;">${c.headline}</div>
+                      <div style="font-size:0.75rem; color:#94a3b8;">${c.description}</div>
+                    </div>
+                  </div>
+                </td>
+                <td><strong>${c.game_id}</strong> (${c.placement_name.includes('Superior') ? 'Top' : 'Bottom'})</td>
+                <td><span style="font-size:0.75rem;">${c.start_date ? c.start_date.substring(0,10) : '-'} al ${c.end_date ? c.end_date.substring(0,10) : '-'}</span></td>
+                <td><strong>$${c.total_usd} USD</strong></td>
+                <td><span style="font-size:0.75rem; color: #34d399; font-weight:700;">${c.payment_status}</span></td>
+                <td><span class="status-badge ${badgeClass}">${c.status}</span></td>
+                <td>
+                  ${c.status !== 'ACTIVE' ? `<button class="btn-action btn-approve" onclick="approveCampaign('${c.id}')"><i class="fa-solid fa-play"></i> On Line</button>` : ''}
+                  ${c.status === 'ACTIVE' ? `<button class="btn-action btn-pause" onclick="pauseCampaign('${c.id}')"><i class="fa-solid fa-pause"></i> Pausar</button>` : ''}
+                  <button class="btn-action btn-reject" onclick="rejectCampaign('${c.id}')"><i class="fa-solid fa-ban"></i></button>
+                </td>
+              </tr>
+            `;
+          }).join('');
+        } else {
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding: 24px; color:#94a3b8;">No hay campañas registradas en PostgreSQL aún. Las órdenes nuevas creadas aparecerán aquí.</td></tr>';
+        }
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="8" style="color:#f87171; text-align:center;">Error cargando campañas: ${e.message}</td></tr>`;
+      }
+    }
+
+    async function approveCampaign(id) {
+      if (!confirm('¿Deseas autorizar esta campaña y pasarla a ON LINE en los juegos?')) return;
+      const res = await fetch(`${API_BASE}/campaigns/${id}/approve`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${authToken}` }
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(data.message);
+        loadCampaigns();
+        loadDashboard();
+      } else {
+        alert('Error: ' + data.detail);
+      }
+    }
+
+    async function pauseCampaign(id) {
+      const res = await fetch(`${API_BASE}/campaigns/${id}/pause`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${authToken}` }
+      });
+      const data = await res.json();
+      if (data.success) {
+        loadCampaigns();
+        loadDashboard();
+      }
+    }
+
+    async function rejectCampaign(id) {
+      const reason = prompt('Indica el motivo de rechazo formal:');
+      if (!reason) return;
+      const res = await fetch(`${API_BASE}/campaigns/${id}/reject?reason=${encodeURIComponent(reason)}`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${authToken}` }
+      });
+      const data = await res.json();
+      if (data.success) {
+        loadCampaigns();
+        loadDashboard();
+      }
+    }
+
+    async function verifyAuditChain() {
+      const box = document.getElementById('audit-result-box');
+      box.innerHTML = 'Verificando hashes encadenados en PostgreSQL...';
+      try {
+        const res = await fetch(`${API_BASE}/admin/audit/verify`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        const data = await res.json();
+        if (data.status === 'INTEGRITY_VERIFIED_PASS') {
+          box.innerHTML = `<span style="color: #34d399; font-weight:700;">✓ INTEGRITY_VERIFIED_PASS</span><br>Se verificaron ${data.total_events_checked} eventos encadenados con SHA-256. Ningún registro ha sido alterado o manipulado.`;
+        } else {
+          box.innerHTML = `<span style="color: #f87171; font-weight:700;">✗ INTEGRITY_COMPROMISED_FAIL</span><br>Se detectó alteración en la cadena de auditoría en los siguientes eventos: ${JSON.stringify(data.tampered_events)}`;
+        }
+      } catch (e) {
+        box.innerHTML = `Error ejecutando auditoría: ${e.message}`;
+      }
+    }
+
+    async function setup2FA() {
+      const res = await fetch(`${API_BASE}/auth/mfa/setup`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${authToken}` }
+      });
+      const data = await res.json();
+      if (data.qr_code_base64) {
+        document.getElementById('mfa-qr-img').src = data.qr_code_base64;
+        document.getElementById('mfa-setup-box').style.display = 'block';
+      }
+    }
+
+    async function confirm2FA() {
+      const code = document.getElementById('mfa-confirm-code').value;
+      const res = await fetch(`${API_BASE}/auth/mfa/verify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+        body: JSON.stringify({ code })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('¡Autenticación 2FA activada exitosamente!');
+        document.getElementById('mfa-setup-box').style.display = 'none';
+      } else {
+        alert(data.detail || 'Código 2FA no válido.');
+      }
+    }
+
+    // Inicializar al cargar si hay token previo
+    if (authToken) {
+      document.getElementById('login-overlay').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+      loadDashboard();
+    }
+  </script>
+</body>
+</html>

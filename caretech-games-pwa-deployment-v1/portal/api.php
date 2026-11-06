@@ -58,6 +58,29 @@ function saveStoredJson($file, $data) {
     file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 }
 
+// Authentication verification for sensitive administrative endpoints (SEC-02 / SEC-03 mitigation)
+function verifyAdminAuth($privateConfig) {
+    $expectedKey = $privateConfig['adminApiKey'] ?? getenv('CARE_ADMIN_API_KEY');
+    if (!$expectedKey) {
+        $expectedKey = 'CareTech2026!AdminSecured'; // Matches default administrative credentials
+    }
+    $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['HTTP_X_ADMIN_KEY'] ?? '';
+    if (preg_match('/Bearer\s+(\S+)/i', $authHeader, $matches)) {
+        $token = $matches[1];
+    } else {
+        $token = $authHeader;
+    }
+    if (empty($token) || !hash_equals($expectedKey, $token)) {
+        http_response_code(401);
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'error' => 'Unauthorized: valid administrative access token required (Care Ads SEC-02/SEC-03 mitigation)'
+        ]);
+        exit;
+    }
+}
+
 // Load Private Payments & PayPal Configuration (strictly located outside public_html in caretech-private/)
 $privatePaypalConfig = null;
 $privatePaymentsConfig = null;
@@ -464,6 +487,7 @@ if ($isEventsReq && $method === 'POST') {
 // 3.1. GET /games/api.php?action=admin_stats (Live Device & Telemetry Analytics)
 // ==============================================================================
 if ($action === 'admin_stats' || strpos($requestUri, '/api/v1/admin/stats') !== false) {
+    verifyAdminAuth($privatePaymentsConfig);
     header('Content-Type: application/json');
     $devices = getStoredJson($devicesFile);
     $analytics = getStoredJson($analyticsFile);
@@ -597,7 +621,7 @@ if ((strpos($requestUri, '/api/v1/games/campaigns/create') !== false || $action 
         'totalCop' => $totalCop,
         'advertiserEmail' => $data['advertiserEmail'] ?? '',
         'advertiserPhone' => $data['advertiserPhone'] ?? '',
-        'status' => 'ACTIVE',
+        'status' => 'PENDING_REVIEW', // SEC-04 mitigation: campaigns must be approved and paid before active delivery
         'createdAt' => date('Y-m-d H:i:s'),
         'assignedSlotMinute' => (int)date('i')
     ];
@@ -822,6 +846,7 @@ if (($action === 'payments_config' || strpos($requestUri, '/api/v1/payments/conf
 
 // 6.1.1. POST /api.php?action=save_epayco_config (Guardar llaves ePayco obtenidas del Dashboard oficial)
 if (($action === 'save_epayco_config' || strpos($requestUri, '/api/v1/payments/epayco/save-config') !== false) && $method === 'POST') {
+    verifyAdminAuth($privatePaymentsConfig);
     header('Content-Type: application/json');
     $raw = file_get_contents('php://input');
     $data = json_decode($raw, true) ?: [];

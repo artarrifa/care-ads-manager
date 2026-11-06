@@ -10,3 +10,8 @@ backups/
 # Server-only secrets
 caretech-private/
 private-config/paypal.php
+
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/

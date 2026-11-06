@@ -487,11 +487,6 @@
           <a id="donate-action-btn" href="https://paypal.me/caretechservices/1" target="_blank" rel="noopener" class="donate-submit-btn">
             <i class="fa-brands fa-paypal"></i> Donar <span id="btn-amount-label">$1 USD</span> con PayPal / Tarjeta Internacional
           </a>
-
-          <!-- Portal Unificado de Pagos -->
-          <a id="btn-portal-unificado" href="/pagos/?service=donar&amount=1&currency=USD" class="donate-submit-btn" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);">
-            <i class="fa-solid fa-shield-halved"></i> Abrir en el Portal Unificado de Pagos (Todos los medios)
-          </a>
         </div>
 
         <div class="security-note">
@@ -595,7 +590,6 @@
       const ppLabel = document.getElementById('btn-amount-label');
       const epaycoLabel = document.getElementById('label-epayco-amount');
       const copEq = document.getElementById('cop-equivalent');
-      const portalBtn = document.getElementById('btn-portal-unificado');
 
       if (ppBtn && ppLabel) {
         ppBtn.href = `https://paypal.me/caretechservices/${currentAmount}`;
@@ -606,9 +600,6 @@
       }
       if (copEq) {
         copEq.textContent = `~$${copAmount.toLocaleString('es-CO')} COP`;
-      }
-      if (portalBtn) {
-        portalBtn.href = `/pagos/?service=donar&amount=${currentAmount}&currency=USD`;
       }
     }
 

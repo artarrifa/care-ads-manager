@@ -183,6 +183,105 @@
       gap: 14px;
     }
 
+    /* Dual Logo Input Styles */
+    .logo-mode-switch {
+      display: inline-flex;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 3px;
+    }
+    .logo-tab-btn {
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      font-size: 0.74rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+    .logo-tab-btn.active {
+      background: #2563eb;
+      color: #fff;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+    }
+    .logo-dropzone {
+      border: 2px dashed rgba(59, 130, 246, 0.4);
+      border-radius: var(--radius-sm);
+      padding: 7px 12px;
+      background: #081325;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-dropzone:hover, .logo-dropzone.dragover {
+      border-color: #38bdf8;
+      background: rgba(14, 165, 233, 0.08);
+    }
+    .logo-file-empty {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #94a3b8;
+      font-size: 0.82rem;
+    }
+    .logo-file-preview-wrap {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+    .logo-file-thumb {
+      width: 28px;
+      height: 28px;
+      border-radius: 5px;
+      object-fit: contain;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      flex-shrink: 0;
+    }
+    .logo-file-meta {
+      flex-grow: 1;
+      text-align: left;
+      overflow: hidden;
+    }
+    .logo-file-name {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .logo-file-size {
+      font-size: 0.7rem;
+      color: #34d399;
+    }
+    .logo-btn-remove {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #f87171;
+      border-radius: 5px;
+      padding: 3px 8px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .logo-btn-remove:hover {
+      background: rgba(239, 68, 68, 0.3);
+      color: #fff;
+    }
+
     /* Plans Grid */
     .plans-grid {
       display: grid;
@@ -692,8 +791,43 @@
             <input type="text" id="ad-brand" class="form-input" placeholder="Ej: Clínica Salud Total" value="Mi Empresa o Causa" oninput="updateLivePreview()">
           </div>
           <div>
-            <label class="form-label">Logo / Icono (URL de Imagen)</label>
-            <input type="url" id="ad-logo" class="form-input" placeholder="https://ejemplo.com/logo.png" oninput="updateLivePreview()">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label class="form-label" style="margin-bottom: 0;">Logo / Icono</label>
+              <div class="logo-mode-switch">
+                <button type="button" id="tab-logo-file" class="logo-tab-btn active" onclick="switchLogoMode('file')">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> Subir Logo
+                </button>
+                <button type="button" id="tab-logo-url" class="logo-tab-btn" onclick="switchLogoMode('url')">
+                  <i class="fa-solid fa-link"></i> URL Web
+                </button>
+              </div>
+            </div>
+
+            <!-- Opción A: Subir Imagen (PNG, JPG, SVG, WebP) -->
+            <div id="logo-file-container">
+              <input type="file" id="ad-logo-file" accept="image/png, image/jpeg, image/webp, image/svg+xml, image/gif" style="display:none;" onchange="handleLogoFileUpload(event)">
+              <div id="logo-dropzone" class="logo-dropzone" onclick="document.getElementById('ad-logo-file').click()" title="Haz clic para seleccionar una imagen de tu dispositivo">
+                <div id="logo-file-empty" class="logo-file-empty">
+                  <i class="fa-solid fa-image" style="color: #60a5fa; font-size: 1.15rem;"></i>
+                  <span>Haz clic o arrastra tu logo <span style="font-size: 0.72rem; color: #64748b;">(PNG, JPG, SVG)</span></span>
+                </div>
+                <div id="logo-file-preview-wrap" class="logo-file-preview-wrap">
+                  <img id="logo-file-thumb" class="logo-file-thumb" src="" alt="Vista previa logo">
+                  <div class="logo-file-meta">
+                    <div id="logo-file-name" class="logo-file-name">logo.png</div>
+                    <div id="logo-file-size" class="logo-file-size">Optimizado para el banner</div>
+                  </div>
+                  <button type="button" class="logo-btn-remove" onclick="event.stopPropagation(); removeUploadedLogo();" title="Quitar o cambiar logo">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Opción B: Pegar Enlace (URL) -->
+            <div id="logo-url-container" style="display: none;">
+              <input type="url" id="ad-logo" class="form-input" placeholder="https://ejemplo.com/logo.png" oninput="handleLogoUrlInput()">
+            </div>
           </div>
         </div>
 
@@ -909,6 +1043,39 @@
         </p>
       </div>
 
+      <!-- Binance Pay (Crypto) Container -->
+      <div id="res-crypto-container" style="display: none; margin-bottom: 20px;">
+        <div style="background: rgba(243, 186, 47, 0.08); border: 1px solid rgba(243, 186, 47, 0.4); border-radius: 14px; padding: 18px; margin-bottom: 12px; text-align: center;">
+          <div style="display: inline-flex; align-items: center; gap: 8px; background: #f3ba2f; color: #000; font-weight: 800; font-size: 0.82rem; padding: 4px 12px; border-radius: 999px; margin-bottom: 12px;">
+            <i class="fa-brands fa-bitcoin"></i> Binance Pay (0% Comisión)
+          </div>
+          <p style="font-size: 0.88rem; color: #cbd5e1; margin-bottom: 12px;">
+            Escanea el código QR desde tu app de Binance o continúa al pago digital:
+          </p>
+          <div style="background: #ffffff; padding: 10px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+            <img id="res-binance-qr" src="" alt="QR Binance Pay" style="width: 190px; height: 190px; display: block; border-radius: 6px;">
+          </div>
+          <div style="margin-top: 14px; font-size: 0.95rem;">
+            <span style="color: #94a3b8;">Monto a transferir:</span>
+            <strong id="res-binance-amount" style="color: #f3ba2f; font-size: 1.15rem; margin-left: 6px;">120 USDT</strong>
+          </div>
+          <div style="margin-top: 8px; font-size: 0.82rem; color: #94a3b8; word-break: break-all;">
+            Referencia de orden: <code id="res-binance-ref" style="color: #38bdf8; font-weight: 700;">-</code>
+            <button type="button" onclick="copyBinanceRef()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 2px 8px; border-radius: 4px; cursor: pointer; margin-left: 6px; font-size: 0.75rem;">
+              <i class="fa-solid fa-copy"></i> Copiar
+            </button>
+          </div>
+        </div>
+
+        <a id="res-binance-action" href="#" target="_blank" rel="noopener" class="btn-checkout btn-crypto" style="text-decoration: none; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir Checkout en Binance Pay
+        </a>
+
+        <a id="res-binance-whatsapp" href="#" target="_blank" rel="noopener" class="btn-checkout" style="background: #25D366; color: #fff; text-decoration: none; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;">
+          <i class="fa-brands fa-whatsapp"></i> Confirmar Pago en WhatsApp (+57 316 4734660)
+        </a>
+      </div>
+
       <div style="display: flex; gap: 10px; justify-content: center;">
         <a href="/games/solitario/" class="live-btn live-btn-web" style="padding: 12px 20px; font-size: 0.95rem;">
           <i class="fa-solid fa-play"></i> Ver Anuncio en Solitario Care
@@ -925,6 +1092,161 @@
     let basePrice = 120;
     let hasPriority = false;
     const COP_RATE = 4000;
+
+    let uploadedLogoBase64 = '';
+    let currentLogoMode = 'file'; // 'file' o 'url'
+
+    function switchLogoMode(mode) {
+      currentLogoMode = mode;
+      const tabFile = document.getElementById('tab-logo-file');
+      const tabUrl = document.getElementById('tab-logo-url');
+      const fileContainer = document.getElementById('logo-file-container');
+      const urlContainer = document.getElementById('logo-url-container');
+
+      if (mode === 'file') {
+        if (tabFile) tabFile.classList.add('active');
+        if (tabUrl) tabUrl.classList.remove('active');
+        if (fileContainer) fileContainer.style.display = 'block';
+        if (urlContainer) urlContainer.style.display = 'none';
+      } else {
+        if (tabUrl) tabUrl.classList.add('active');
+        if (tabFile) tabFile.classList.remove('active');
+        if (urlContainer) urlContainer.style.display = 'block';
+        if (fileContainer) fileContainer.style.display = 'none';
+      }
+      updateLivePreview();
+    }
+
+    function handleLogoFileUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        alert('Por favor selecciona un archivo de imagen válido (PNG, JPG, WebP o SVG).');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const rawSrc = e.target.result;
+
+        // Si es SVG, se conserva tal cual
+        if (file.type === 'image/svg+xml') {
+          setUploadedLogoState(rawSrc, file.name, 'SVG Vectorial');
+          return;
+        }
+
+        // Si es imagen raster, optimizar y redimensionar vía canvas para ligereza y rapidez
+        const img = new Image();
+        img.onload = function() {
+          const maxDim = 256;
+          let width = img.width;
+          let height = img.height;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          let finalDataUrl;
+          try {
+            finalDataUrl = canvas.toDataURL('image/webp', 0.88);
+            if (!finalDataUrl.startsWith('data:image/webp')) {
+              finalDataUrl = canvas.toDataURL('image/png');
+            }
+          } catch(err) {
+            finalDataUrl = canvas.toDataURL('image/png');
+          }
+
+          const sizeKb = Math.max(1, Math.round((finalDataUrl.length * 3 / 4) / 1024));
+          setUploadedLogoState(finalDataUrl, file.name, `${width}x${height}px • ${sizeKb} KB`);
+        };
+        img.onerror = function() {
+          setUploadedLogoState(rawSrc, file.name, 'Imagen cargada');
+        };
+        img.src = rawSrc;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function setUploadedLogoState(dataUrl, fileName, infoText) {
+      uploadedLogoBase64 = dataUrl;
+      const emptyEl = document.getElementById('logo-file-empty');
+      const previewWrap = document.getElementById('logo-file-preview-wrap');
+      const thumbEl = document.getElementById('logo-file-thumb');
+      const nameEl = document.getElementById('logo-file-name');
+      const sizeEl = document.getElementById('logo-file-size');
+
+      if (emptyEl) emptyEl.style.display = 'none';
+      if (previewWrap) previewWrap.style.display = 'flex';
+      if (thumbEl) thumbEl.src = dataUrl;
+      if (nameEl) nameEl.textContent = fileName;
+      if (sizeEl) sizeEl.textContent = infoText || 'Listo para el banner';
+      updateLivePreview();
+    }
+
+    function removeUploadedLogo() {
+      uploadedLogoBase64 = '';
+      const fileInput = document.getElementById('ad-logo-file');
+      if (fileInput) fileInput.value = '';
+      const emptyEl = document.getElementById('logo-file-empty');
+      const previewWrap = document.getElementById('logo-file-preview-wrap');
+      const thumbEl = document.getElementById('logo-file-thumb');
+
+      if (emptyEl) emptyEl.style.display = 'flex';
+      if (previewWrap) previewWrap.style.display = 'none';
+      if (thumbEl) thumbEl.src = '';
+      updateLivePreview();
+    }
+
+    function handleLogoUrlInput() {
+      updateLivePreview();
+    }
+
+    function getActiveLogoUrl() {
+      if (currentLogoMode === 'file') {
+        return uploadedLogoBase64 || '';
+      } else {
+        const urlInput = document.getElementById('ad-logo');
+        return urlInput ? urlInput.value.trim() : '';
+      }
+    }
+
+    function initLogoDropzone() {
+      const dropzone = document.getElementById('logo-dropzone');
+      if (!dropzone) return;
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.add('dragover');
+        });
+      });
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove('dragover');
+        });
+      });
+      dropzone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const files = dt && dt.files;
+        if (files && files.length > 0) {
+          handleLogoFileUpload({ target: { files: files } });
+        }
+      });
+    }
 
     function selectPlan(planId, price, cycle) {
       currentPlan = planId;
@@ -961,7 +1283,7 @@
     function updateLivePreview() {
       const brand = document.getElementById('ad-brand').value || 'Mi Empresa o Causa';
       const desc = document.getElementById('ad-desc').value || 'Descripción de tu anuncio';
-      const logoUrl = document.getElementById('ad-logo').value;
+      const logoUrl = getActiveLogoUrl();
       const donationUrl = document.getElementById('ad-donation-url').value;
       const shopUrl = document.getElementById('ad-shop-url').value;
       const placement = document.getElementById('select-placement').value;
@@ -1018,6 +1340,7 @@
 
     // Inicializar estados
     document.addEventListener('DOMContentLoaded', () => {
+      initLogoDropzone();
       updateAvailability();
       updateLivePreview();
     });
@@ -1033,7 +1356,7 @@
         brandName: document.getElementById('ad-brand').value || 'Mi Empresa o Causa',
         headline: document.getElementById('ad-brand').value || 'Mi Empresa o Causa',
         description: document.getElementById('ad-desc').value || '',
-        logoUrl: document.getElementById('ad-logo').value || '',
+        logoUrl: getActiveLogoUrl(),
         webUrl: document.getElementById('ad-web-url').value || 'https://caretechservices.com',
         donationUrl: document.getElementById('ad-donation-url').value || '',
         shopUrl: document.getElementById('ad-shop-url').value || '',
@@ -1067,10 +1390,12 @@
           const epaycoContainer = document.getElementById('res-epayco-container');
           const mpContainer = document.getElementById('res-mp-container');
           const paypalContainer = document.getElementById('res-paypal-container');
+          const cryptoContainer = document.getElementById('res-crypto-container');
           
           epaycoContainer.style.display = 'none';
           mpContainer.style.display = 'none';
           paypalContainer.style.display = 'none';
+          if (cryptoContainer) cryptoContainer.style.display = 'none';
 
           // 1. Manejo ePayco
           if (paymentMethod === 'EPAYCO' && data.checkout?.epayco) {
@@ -1125,12 +1450,50 @@
             } catch(e) {}
           }
 
+          // 4. Manejo Binance Pay (Criptomonedas USDT)
+          else if (paymentMethod === 'CRYPTO') {
+            if (cryptoContainer) {
+              cryptoContainer.style.display = 'block';
+              const bp = data.checkout?.binancePay || {};
+              const totalUsd = data.campaign.totalUsd;
+              const qrUrl = bp.qrCodeUrl || bp.qrUrl || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent('https://pay.binance.com/checkout?tradeNo=' + data.campaign.id + '&amount=' + totalUsd + '&currency=USDT')}`;
+              const checkoutUrl = bp.checkoutUrl || `https://pay.binance.com/checkout?tradeNo=${encodeURIComponent(data.campaign.id)}&amount=${totalUsd}&currency=USDT`;
+              const waUrl = bp.supportWhatsApp || `https://wa.me/573164734660?text=${encodeURIComponent('Hola CareTech, he generado la orden publicitaria ' + data.campaign.id + ' por valor de ' + totalUsd + ' USDT mediante Binance Pay. Adjunto comprobante.')}`;
+
+              const qrImg = document.getElementById('res-binance-qr');
+              if (qrImg) qrImg.src = qrUrl;
+              const amtElem = document.getElementById('res-binance-amount');
+              if (amtElem) amtElem.textContent = `${totalUsd} USDT`;
+              const refElem = document.getElementById('res-binance-ref');
+              if (refElem) refElem.textContent = data.campaign.id;
+              const actBtn = document.getElementById('res-binance-action');
+              if (actBtn) actBtn.href = checkoutUrl;
+              const waBtn = document.getElementById('res-binance-whatsapp');
+              if (waBtn) waBtn.href = waUrl;
+
+              try {
+                window.open(checkoutUrl, '_blank');
+              } catch(e) {}
+            }
+          }
+
           document.getElementById('success-modal').classList.add('active');
         } else {
           alert('Error al registrar la campaña: ' + (data.message || 'Error del servidor'));
         }
       } catch (err) {
         alert('Error conectando con el servidor: ' + err.message);
+      }
+    }
+
+    function copyBinanceRef() {
+      const refElem = document.getElementById('res-binance-ref');
+      if (refElem && refElem.textContent) {
+        navigator.clipboard.writeText(refElem.textContent).then(() => {
+          alert('¡Referencia ' + refElem.textContent + ' copiada al portapapeles!');
+        }).catch(() => {
+          prompt('Copia tu referencia:', refElem.textContent);
+        });
       }
     }
   </script>

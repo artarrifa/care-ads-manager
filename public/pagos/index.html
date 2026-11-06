@@ -1067,7 +1067,7 @@
 
         // 4. Manejo Binance Pay
         else if (currentGateway === 'binance') {
-          window.location.href = data.receiptUrl;
+          openBinancePayModal(data);
         }
 
       } catch (err) {
@@ -1134,6 +1134,52 @@
         saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Guardar y Activar ePayco';
       }
     }
+
+    // Modal de Checkout Binance Pay
+    function openBinancePayModal(data) {
+      const modal = document.getElementById('binance-pay-modal');
+      const bp = data.gateways?.binancePay || {};
+      const amountUsdt = bp.amountUsdt || data.amountUsd;
+      const ref = data.reference;
+      const qrUrl = bp.qrCodeUrl || bp.qrUrl || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent('https://pay.binance.com/checkout?tradeNo=' + ref + '&amount=' + amountUsdt + '&currency=USDT')}`;
+      const checkoutUrl = bp.checkoutUrl || `https://pay.binance.com/checkout?tradeNo=${encodeURIComponent(ref)}&amount=${amountUsdt}&currency=USDT`;
+      const waUrl = bp.supportWhatsApp || `https://wa.me/573164734660?text=${encodeURIComponent('Hola CareTech, he realizado el pago de ' + amountUsdt + ' USDT para la orden ' + ref + ' mediante Binance Pay. Adjunto comprobante.')}`;
+
+      const qrImg = document.getElementById('bp-modal-qr');
+      if (qrImg) qrImg.src = qrUrl;
+      const amtElem = document.getElementById('bp-modal-amount');
+      if (amtElem) amtElem.textContent = `${Number(amountUsdt).toFixed(2)} USDT`;
+      const refElem = document.getElementById('bp-modal-ref');
+      if (refElem) refElem.textContent = ref;
+      const payBtn = document.getElementById('bp-modal-pay-btn');
+      if (payBtn) payBtn.href = checkoutUrl;
+      const waBtn = document.getElementById('bp-modal-wa-btn');
+      if (waBtn) waBtn.href = waUrl;
+      const recBtn = document.getElementById('bp-modal-receipt-btn');
+      if (recBtn) recBtn.href = data.receiptUrl;
+
+      if (modal) modal.style.display = 'flex';
+      
+      try {
+        window.open(checkoutUrl, '_blank');
+      } catch(e) {}
+    }
+
+    function closeBinancePayModal() {
+      const modal = document.getElementById('binance-pay-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function copyBpModalRef() {
+      const refElem = document.getElementById('bp-modal-ref');
+      if (refElem && refElem.textContent) {
+        navigator.clipboard.writeText(refElem.textContent).then(() => {
+          alert('¡Referencia ' + refElem.textContent + ' copiada!');
+        }).catch(() => {
+          prompt('Copia tu referencia:', refElem.textContent);
+        });
+      }
+    }
   </script>
 
   <!-- Modal Configuracion ePayco -->
@@ -1179,6 +1225,50 @@
         <button type="button" onclick="closeEpaycoConfigModal()" class="btn-submit-payment" style="background: rgba(255,255,255,0.1); width: auto; padding: 0 20px;">
           Cancelar
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Checkout Binance Pay -->
+  <div id="binance-pay-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: var(--bg-card); border: 1px solid rgba(243, 186, 47, 0.4); border-radius: var(--radius-lg); max-width: 480px; width: 100%; padding: 26px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); position: relative; text-align: center;">
+      <button type="button" onclick="closeBinancePayModal()" style="position: absolute; top: 18px; right: 18px; background: transparent; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer;">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div style="display: inline-flex; align-items: center; gap: 8px; background: #f3ba2f; color: #000; font-weight: 800; font-size: 0.82rem; padding: 4px 14px; border-radius: 999px; margin-bottom: 12px;">
+        <i class="fa-brands fa-bitcoin"></i> Binance Pay (0% Comisión)
+      </div>
+
+      <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 6px;">Escanea con tu App de Binance</h3>
+      <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 16px;">
+        Abre tu app de Binance, pulsa en el ícono de escanear o haz clic en el botón de pago:
+      </p>
+
+      <div style="background: #ffffff; padding: 12px; border-radius: 14px; display: inline-block; box-shadow: 0 6px 25px rgba(0,0,0,0.4); margin-bottom: 14px;">
+        <img id="bp-modal-qr" src="" alt="QR Binance Pay" style="width: 200px; height: 200px; display: block; border-radius: 6px;">
+      </div>
+
+      <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 12px; margin-bottom: 16px; font-size: 0.9rem;">
+        <div><span style="color: #94a3b8;">Total exacto a transferir:</span> <strong id="bp-modal-amount" style="color: #f3ba2f; font-size: 1.2rem; margin-left: 4px;">-</strong></div>
+        <div style="margin-top: 6px; font-size: 0.8rem; color: #94a3b8;">
+          Orden: <code id="bp-modal-ref" style="color: #38bdf8; font-weight: 700;">-</code>
+          <button type="button" onclick="copyBpModalRef()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 2px 8px; border-radius: 4px; cursor: pointer; margin-left: 6px; font-size: 0.72rem;">
+            <i class="fa-solid fa-copy"></i> Copiar
+          </button>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <a id="bp-modal-pay-btn" href="#" target="_blank" rel="noopener" class="btn-submit-payment" style="background: linear-gradient(135deg, #f3ba2f, #ca9517); color: #000; text-decoration: none; justify-content: center;">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir Checkout en Binance Pay
+        </a>
+        <a id="bp-modal-wa-btn" href="#" target="_blank" rel="noopener" class="btn-submit-payment" style="background: #25D366; color: #fff; text-decoration: none; justify-content: center;">
+          <i class="fa-brands fa-whatsapp"></i> Confirmar Pago en WhatsApp (+57 316 4734660)
+        </a>
+        <a id="bp-modal-receipt-btn" href="#" class="btn-submit-payment" style="background: rgba(255,255,255,0.08); color: #cbd5e1; text-decoration: none; justify-content: center; font-size: 0.85rem; padding: 10px;">
+          <i class="fa-solid fa-receipt"></i> Ver Comprobante / Estado
+        </a>
       </div>
     </div>
   </div>

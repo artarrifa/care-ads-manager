@@ -487,11 +487,16 @@
           <a id="donate-action-btn" href="https://paypal.me/caretechservices/1" target="_blank" rel="noopener" class="donate-submit-btn">
             <i class="fa-brands fa-paypal"></i> Donar <span id="btn-amount-label">$1 USD</span> con PayPal / Tarjeta Internacional
           </a>
+
+          <!-- Binance Pay (Criptomonedas USDT 0% comision) -->
+          <a id="btn-binance-donate" href="/pagos/?service=donar&amount=1&currency=USD&gateway=binance" class="donate-submit-btn" style="background: linear-gradient(135deg, #f3ba2f, #ca9517); color: #000; box-shadow: 0 10px 25px rgba(243, 186, 47, 0.4); text-decoration: none;">
+            <i class="fa-brands fa-bitcoin"></i> Donar <span id="label-binance-amount">1 USDT</span> con Binance Pay (0% Comisión)
+          </a>
         </div>
 
         <div class="security-note">
           <i class="fa-solid fa-shield-halved" style="color: #10b981;"></i>
-          Transacciones 100% cifradas y protegidas vía ePayco, Mercado Pago y PayPal. Cero comisiones ocultas.
+          Transacciones 100% cifradas y protegidas vía ePayco, Mercado Pago, PayPal y Binance Pay. Cero comisiones ocultas.
         </div>
       </div>
 
@@ -597,6 +602,12 @@
       }
       if (epaycoLabel) {
         epaycoLabel.textContent = `$${copAmount.toLocaleString('es-CO')} COP`;
+      }
+      const binanceBtn = document.getElementById('btn-binance-donate');
+      const binanceLabel = document.getElementById('label-binance-amount');
+      if (binanceBtn && binanceLabel) {
+        binanceBtn.href = `/pagos/?service=donar&amount=${currentAmount}&currency=USD&gateway=binance`;
+        binanceLabel.textContent = `${currentAmount} USDT`;
       }
       if (copEq) {
         copEq.textContent = `~$${copAmount.toLocaleString('es-CO')} COP`;

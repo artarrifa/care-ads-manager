@@ -260,12 +260,21 @@
 
       const headlineEl = document.getElementById(`${placement}-ad-headline`);
       const subtextEl = document.getElementById(`${placement}-ad-subtext`);
+      const iconEl = document.getElementById(`${placement}-ad-icon`);
       const webBtn = document.getElementById(`${placement}-ad-web-btn`);
       const donateBtn = document.getElementById(`${placement}-ad-donate-btn`);
       const shopBtn = document.getElementById(`${placement}-ad-shop-btn`);
 
       if (headlineEl && (ad.headline || ad.brandName)) headlineEl.textContent = ad.headline || ad.brandName;
       if (subtextEl && ad.description) subtextEl.textContent = ad.description;
+
+      if (iconEl) {
+        if (ad.logo) {
+          iconEl.innerHTML = `<img src="${ad.logo}" alt="Logo" style="width:100%;height:100%;object-fit:cover;border-radius:6px;" onerror="this.parentElement.innerHTML='<i class=\\'fa-solid fa-bullhorn\\'></i>'">`;
+        } else {
+          iconEl.innerHTML = '<i class="fa-solid fa-bullhorn"></i>';
+        }
+      }
 
       if (webBtn) {
         if (ad.webUrl) {

@@ -216,6 +216,27 @@
       </div>
     </div>
 
+    <!-- Binance Pay Assistance Box (Shown if gateway is Binance) -->
+    <div id="binance-box" style="display: none; background: rgba(243, 186, 47, 0.08); border: 1px solid rgba(243, 186, 47, 0.4); border-radius: var(--radius-md); padding: 18px; margin-bottom: 24px; text-align: center;">
+      <div style="display: inline-flex; align-items: center; gap: 8px; background: #f3ba2f; color: #000; font-weight: 800; font-size: 0.8rem; padding: 4px 12px; border-radius: 999px; margin-bottom: 10px;">
+        <i class="fa-brands fa-bitcoin"></i> Binance Pay (0% Fee)
+      </div>
+      <p style="font-size: 0.86rem; color: #cbd5e1; margin-bottom: 12px;">
+        Escanea el QR con tu app de Binance o confirma tu transacción:
+      </p>
+      <div style="background: #ffffff; padding: 10px; border-radius: 12px; display: inline-block; margin-bottom: 12px;">
+        <img id="bp-resp-qr" src="" alt="QR Binance Pay" style="width: 170px; height: 170px; display: block; border-radius: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <a id="bp-resp-action" href="#" target="_blank" rel="noopener" class="btn-action" style="background: linear-gradient(135deg, #f3ba2f, #ca9517); color: #000;">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir Binance Pay
+        </a>
+        <a id="bp-resp-wa" href="#" target="_blank" rel="noopener" class="btn-action" style="background: #25D366; color: #fff;">
+          <i class="fa-brands fa-whatsapp"></i> Confirmar Pago en WhatsApp (+57 316 4734660)
+        </a>
+      </div>
+    </div>
+
     <div class="receipt-actions">
       <button type="button" class="btn-action btn-print" onclick="window.print()">
         <i class="fa-solid fa-print"></i> Imprimir Recibo
@@ -298,6 +319,20 @@
               const amtCop = p.amountCop ? `$${p.amountCop.toLocaleString('es-CO')} COP` : '';
               const amtUsd = p.amountUsd ? `$${p.amountUsd.toFixed(2)} USD` : '';
               document.getElementById('val-amount').textContent = amtCop || amtUsd || '$0 COP';
+
+              if (p.gateway === 'binance' || (params.get('gateway') || '').toLowerCase() === 'binance') {
+                document.getElementById('val-gateway').textContent = 'Binance Pay (Criptomonedas USDT 0%)';
+                const amtUsdt = p.amountUsd || 0;
+                document.getElementById('val-amount').textContent = `${Number(amtUsdt).toFixed(2)} USDT`;
+                const binBox = document.getElementById('binance-box');
+                if (binBox) {
+                  binBox.style.display = 'block';
+                  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent('https://pay.binance.com/checkout?tradeNo=' + p.reference + '&amount=' + amtUsdt + '&currency=USDT')}`;
+                  document.getElementById('bp-resp-qr').src = qrUrl;
+                  document.getElementById('bp-resp-action').href = `https://pay.binance.com/checkout?tradeNo=${encodeURIComponent(p.reference)}&amount=${amtUsdt}&currency=USDT`;
+                  document.getElementById('bp-resp-wa').href = `https://wa.me/573164734660?text=${encodeURIComponent('Hola CareTech, he realizado el pago de ' + amtUsdt + ' USDT para la orden ' + p.reference + ' mediante Binance Pay. Adjunto comprobante.')}`;
+                }
+              }
 
               if (p.status === 'PAID') {
                 setStatus('paid', 'Pago Confirmado');

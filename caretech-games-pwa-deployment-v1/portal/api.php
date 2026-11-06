@@ -208,6 +208,89 @@ function getPayPalRestOrderUrl($totalUsd, $campaignId, $brandName, $planId, $pri
     return null;
 }
 
+// Generar datos oficiales o interactivos para Binance Pay (USDT)
+function getBinancePayCheckoutData($reference, $amountUsdt, $description, $privatePaymentsConfig) {
+    $apiKey = $privatePaymentsConfig['binancePay']['apiKey'] ?? '';
+    $secretKey = $privatePaymentsConfig['binancePay']['secretKey'] ?? '';
+    $baseUrl = $privatePaymentsConfig['binancePay']['baseUrl'] ?? 'https://bpay.binanceapi.com';
+
+    $amountFormatted = number_format((float)$amountUsdt, 2, '.', '');
+    $demoQrPayload = "https://pay.binance.com/checkout?tradeNo=" . urlencode($reference) . "&amount=" . $amountFormatted . "&currency=USDT";
+    $result = [
+        'merchantTradeNo' => $reference,
+        'amountUsdt' => (float)$amountFormatted,
+        'currency' => 'USDT',
+        'isLive' => false,
+        'qrCodeUrl' => 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' . urlencode($demoQrPayload),
+        'qrUrl' => 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' . urlencode($demoQrPayload),
+        'checkoutUrl' => 'https://pay.binance.com/checkout?tradeNo=' . urlencode($reference) . '&amount=' . $amountFormatted . '&currency=USDT',
+        'deepLink' => 'binance://pay?tradeNo=' . urlencode($reference),
+        'supportWhatsApp' => 'https://wa.me/573164734660?text=' . urlencode("Hola CareTech, he realizado el pago de {$amountFormatted} USDT para la orden {$reference} mediante Binance Pay. Adjunto comprobante.")
+    ];
+
+    if (!empty($apiKey) && !empty($secretKey)) {
+        try {
+            $timestamp = round(microtime(true) * 1000);
+            $nonce = bin2hex(random_bytes(16));
+            $orderPayload = [
+                'env' => ['terminalType' => 'WEB'],
+                'merchantTradeNo' => $reference,
+                'orderAmount' => (float)$amountFormatted,
+                'currency' => 'USDT',
+                'goods' => [
+                    'goodsType' => '02',
+                    'goodsCategory' => '6000',
+                    'referenceGoodsId' => $reference,
+                    'goodsName' => substr($description, 0, 200),
+                    'goodsDetail' => substr($description, 0, 200)
+                ],
+                'returnUrl' => 'https://caretechservices.com/pagos/respuesta/?ref=' . urlencode($reference),
+                'cancelUrl' => 'https://caretechservices.com/pagos/?ref=' . urlencode($reference),
+                'webhookUrl' => 'https://caretechservices.com/api.php?action=binance_webhook'
+            ];
+
+            $jsonBody = json_encode($orderPayload, JSON_UNESCAPED_SLASHES);
+            $sigPayload = $timestamp . "\n" . $nonce . "\n" . $jsonBody . "\n";
+            $signature = strtoupper(hash_hmac('sha512', $sigPayload, $secretKey));
+
+            $ch = curl_init(rtrim($baseUrl, '/') . '/binancepay/openapi/v2/order');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json',
+                'BinancePay-Timestamp: ' . $timestamp,
+                'BinancePay-Nonce: ' . $nonce,
+                'BinancePay-Certificate-SN: ' . $apiKey,
+                'BinancePay-Signature: ' . $signature
+            ]);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+            $res = curl_exec($ch);
+            $curlErr = curl_error($ch);
+            curl_close($ch);
+
+            if (!$curlErr && $res) {
+                $apiData = json_decode($res, true);
+                if (isset($apiData['status']) && $apiData['status'] === 'SUCCESS' && !empty($apiData['data'])) {
+                    $d = $apiData['data'];
+                    $result['isLive'] = true;
+                    $result['prepayId'] = $d['prepayId'] ?? '';
+                    if (!empty($d['checkoutUrl'])) $result['checkoutUrl'] = $d['checkoutUrl'];
+                    if (!empty($d['qrcodeLink'])) {
+                        $result['qrCodeUrl'] = $d['qrcodeLink'];
+                        $result['qrUrl'] = $d['qrcodeLink'];
+                    }
+                    if (!empty($d['deeplink'])) $result['deepLink'] = $d['deeplink'];
+                }
+            }
+        } catch (\Throwable $t) {
+            // Silently fall back to interactive sandbox
+        }
+    }
+
+    return $result;
+}
+
 // ==============================================================================
 // 1. GET /wp-json/careads/v1/banners (Also matches /games/api.php?action=banners)
 // ==============================================================================
@@ -598,6 +681,8 @@ if ((strpos($requestUri, '/api/v1/games/campaigns/create') !== false || $action 
     ];
     saveStoredJson($paymentsFile, $payments);
 
+    $binancePayData = getBinancePayCheckoutData($campaignId, $totalUsd, "Publicidad Solitario Care - " . $brandName, $privatePaymentsConfig);
+
     echo json_encode([
         'success' => true,
         'message' => 'Campaña registrada y conectada exitosamente a CareTech Games.',
@@ -618,7 +703,8 @@ if ((strpos($requestUri, '/api/v1/games/campaigns/create') !== false || $action 
                 'soloPlanId' => $mpSoloPlanId,
                 'soloPlanCheckoutUrl' => $mpSoloPlanUrl
             ],
-            'binancePayQr' => 'https://pay.binance.com/qr/' . $campaignId,
+            'binancePay' => $binancePayData,
+            'binancePayQr' => $binancePayData['qrCodeUrl'],
             'unifiedPortalUrl' => 'https://caretechservices.com/pagos/?service=publicidad&plan=' . urlencode($planId) . '&ref=' . urlencode($campaignId)
         ]
     ]);
@@ -906,6 +992,8 @@ if (($action === 'create_payment' || strpos($requestUri, '/api/v1/payments/creat
     $paypalMeUser = $privatePaypalConfig['meUsername'] ?? 'alexistarrifa';
     $paypalMeUrl = 'https://www.paypal.com/paypalme/' . rawurlencode($paypalMeUser) . '/' . number_format($amountUsd, 2, '.', '') . 'USD';
 
+    $binancePayData = getBinancePayCheckoutData($reference, $amountUsd, $description, $privatePaymentsConfig);
+
     echo json_encode([
         'success' => true,
         'reference' => $reference,
@@ -923,10 +1011,7 @@ if (($action === 'create_payment' || strpos($requestUri, '/api/v1/payments/creat
                 'paypalMeUrl' => $paypalMeUrl,
                 'amountUsd' => $amountUsd
             ],
-            'binancePay' => [
-                'qrUrl' => 'https://pay.binance.com/qr/' . $reference,
-                'amountUsdt' => $amountUsd
-            ]
+            'binancePay' => $binancePayData
         ],
         'receiptUrl' => 'https://caretechservices.com/pagos/respuesta/?ref=' . urlencode($reference)
     ]);
@@ -1050,6 +1135,43 @@ if ($action === 'mercadopago_ipn' || strpos($requestUri, '/api/v1/payments/merca
 
     http_response_code(200);
     echo "MP_NOTIFICATION_RECEIVED";
+    exit;
+}
+
+// 6.4.1. POST /api.php?action=binance_webhook (Webhook Binance Pay)
+if ($action === 'binance_webhook' || strpos($requestUri, '/api/binance-pay/webhook') !== false || strpos($requestUri, '/payments/crypto/webhook') !== false) {
+    header('Content-Type: application/json');
+    $raw = file_get_contents('php://input');
+    $data = json_decode($raw, true) ?: [];
+    $bizStatus = $data['bizStatus'] ?? '';
+    $tradeNo = $data['merchantTradeNo'] ?? ($data['data']['merchantTradeNo'] ?? '');
+
+    if (!empty($tradeNo)) {
+        $payments = getStoredJson($paymentsFile);
+        foreach ($payments as &$p) {
+            if (($p['reference'] ?? '') === $tradeNo) {
+                if ($bizStatus === 'PAY_SUCCESS' || ($data['status'] ?? '') === 'PAID') {
+                    $p['status'] = 'PAID';
+                    $p['paidAt'] = date('Y-m-d H:i:s');
+                }
+            }
+        }
+        saveStoredJson($paymentsFile, $payments);
+
+        $campaigns = getStoredJson($campaignsFile);
+        foreach ($campaigns as &$c) {
+            if (($c['id'] ?? '') === $tradeNo) {
+                if ($bizStatus === 'PAY_SUCCESS' || ($data['status'] ?? '') === 'PAID') {
+                    $c['status'] = 'ACTIVE';
+                    $c['paymentStatus'] = 'PAID';
+                    $c['paidAt'] = date('Y-m-d H:i:s');
+                }
+            }
+        }
+        saveStoredJson($campaignsFile, $campaigns);
+    }
+
+    echo json_encode(['returnCode' => 'SUCCESS', 'returnMessage' => 'OK']);
     exit;
 }
 

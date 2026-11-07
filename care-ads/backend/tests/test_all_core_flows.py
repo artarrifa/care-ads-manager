@@ -74,6 +74,14 @@ async def test_auth_login_and_2fa_workflow(client: AsyncClient):
     assert res_full_login.status_code == 200
     assert res_full_login.json()["access_token"] is not None
 
+    # Teardown: Restablecer mfa_enabled = False para el uso administrativo en vivo
+    async with AsyncSessionLocal() as s_end:
+        res_end = await s_end.execute(select(User).where(User.email == "admin@caretechservices.com"))
+        u_end = res_end.scalar_one_or_none()
+        if u_end:
+            u_end.mfa_enabled = False
+            await s_end.commit()
+
 
 @pytest.mark.asyncio
 async def test_campaign_contract_and_lifecycle(client: AsyncClient):

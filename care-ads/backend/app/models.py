@@ -58,6 +58,28 @@ class PaymentStatus(str, enum.Enum):
     CAPTURED = "CAPTURED"
     FAILED = "FAILED"
     REFUNDED = "REFUNDED"
+
+
+class CommunicationType(str, enum.Enum):
+    WEEKLY_REPORT = "WEEKLY_REPORT"
+    RENEWAL_NOTICE = "RENEWAL_NOTICE"
+    PAYMENT_RECEIPT = "PAYMENT_RECEIPT"
+    INVOICE = "INVOICE"
+    AUDIT_CERTIFICATE = "AUDIT_CERTIFICATE"
+    UPGRADE_PROMO = "UPGRADE_PROMO"
+
+
+class CommunicationChannel(str, enum.Enum):
+    EMAIL = "EMAIL"
+    WHATSAPP = "WHATSAPP"
+    SMS = "SMS"
+
+
+class CommunicationStatus(str, enum.Enum):
+    QUEUED = "QUEUED"
+    SENT = "SENT"
+    DELIVERED = "DELIVERED"
+    FAILED = "FAILED"
     CHARGEBACK = "CHARGEBACK"
     RECONCILED = "RECONCILED"
 
@@ -331,8 +353,38 @@ class AuditEvent(Base):
     timestamp_utc = Column(DateTime(timezone=True), default=utcnow, nullable=False)
 
 
+# ==============================================================================
+# 9. CLIENT COMMUNICATIONS & MULTI-CHANNEL DISPATCH (Email, WhatsApp, SMS)
+# ==============================================================================
+
+class ClientCommunication(Base):
+    __tablename__ = "client_communications"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    advertiser_id = Column(UUID(as_uuid=True), ForeignKey("advertisers.id", ondelete="CASCADE"), nullable=False)
+    campaign_order_id = Column(UUID(as_uuid=True), ForeignKey("campaign_orders.id", ondelete="SET NULL"), nullable=True)
+    
+    communication_type = Column(SAEnum(CommunicationType), nullable=False)
+    channel = Column(SAEnum(CommunicationChannel), nullable=False)
+    recipient = Column(String(255), nullable=False)  # Correo o Teléfono con código país (+57...)
+    
+    subject = Column(String(255), nullable=True)
+    message_body = Column(Text, nullable=False)
+    
+    status = Column(SAEnum(CommunicationStatus), default=CommunicationStatus.QUEUED, nullable=False)
+    provider_message_id = Column(String(128), nullable=True)
+    metadata_snapshot = Column(JSON, default=dict, nullable=False)
+    
+    sent_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), default=utcnow, nullable=False)
+
+    advertiser = relationship("Advertiser")
+    campaign_order = relationship("CampaignOrder")
+
+
 # Índices estratégicos para alto rendimiento de Ad-Server
 Index("idx_orders_placement_status", CampaignOrder.placement_id, CampaignOrder.status)
 Index("idx_decisions_placement_time", AdDecision.placement_id, AdDecision.decision_time)
 Index("idx_events_order_timestamp", DeliveryEvent.order_id, DeliveryEvent.timestamp_utc)
 Index("idx_audit_resource", AuditEvent.resource_type, AuditEvent.resource_id)
+Index("idx_communications_order_status", ClientCommunication.campaign_order_id, ClientCommunication.status)

@@ -8,6 +8,7 @@ from app.api.auth import router as auth_router
 from app.api.campaigns import router as campaigns_router
 from app.api.delivery import router as delivery_router
 from app.api.admin import router as admin_router
+from app.api.communications import router as comms_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -33,6 +34,7 @@ app.include_router(auth_router, prefix=settings.API_V1_PREFIX)
 app.include_router(campaigns_router, prefix=settings.API_V1_PREFIX)
 app.include_router(delivery_router, prefix=settings.API_V1_PREFIX)
 app.include_router(admin_router, prefix=settings.API_V1_PREFIX)
+app.include_router(comms_router, prefix=settings.API_V1_PREFIX)
 
 # Montar Frontends Estáticos (Admin Console & Advertiser Portal)
 admin_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../frontend/admin"))

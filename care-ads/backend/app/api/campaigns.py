@@ -239,6 +239,7 @@ async def list_campaigns(
         results.append({
             "id": str(order.id),
             "code": order.code,
+            "advertiser_id": str(adv.id),
             "company_name": adv.company_name,
             "advertiser_email": adv.email,
             "headline": creative.title if creative else adv.company_name,

@@ -272,6 +272,7 @@
       <button class="tab-btn" onclick="switchTab('campaigns')"><i class="fa-solid fa-rectangle-ad"></i> Campañas Reales</button>
       <button class="tab-btn" onclick="switchTab('audit')"><i class="fa-solid fa-link"></i> Auditoría Inmutable</button>
       <button class="tab-btn" onclick="switchTab('security')"><i class="fa-solid fa-lock"></i> Seguridad 2FA</button>
+      <button class="tab-btn" onclick="switchTab('communications')"><i class="fa-solid fa-paper-plane"></i> Comunicaciones & Reportes</button>
     </div>
 
     <!-- Pestaña 1: Dashboard -->
@@ -367,6 +368,73 @@
         </div>
       </div>
     </div>
+
+    <!-- Pestaña 5: Comunicaciones & Reportes Multicanal -->
+    <div id="tab-content-communications" style="display: none;">
+      <div class="panel-card" style="margin-bottom: 24px;">
+        <div class="panel-title">
+          <span><i class="fa-solid fa-paper-plane" style="color: var(--accent-cyan);"></i> Comunicaciones con Anunciantes & Reportes</span>
+          <button class="btn-action" style="background: var(--accent-emerald); color:#fff; padding: 8px 16px;" onclick="triggerBatchWeeklyReports()">
+            <i class="fa-solid fa-bolt"></i> Disparar Reportes Semanales (Lote)
+          </button>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 18px;">
+          Envía automáticamente reportes semanales con métricas IAB, avisos de renovación, comprobantes de pago/facturas y promociones a través de <strong>Email</strong>, <strong>WhatsApp</strong> y <strong>SMS</strong>.
+        </p>
+
+        <!-- Formulario de Envío Rápido -->
+        <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 20px;">
+          <h4 style="font-size: 0.95rem; margin-bottom: 12px; color: #fff;"><i class="fa-solid fa-envelope-open-text"></i> Envío Manual / Programado a Cliente</h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 14px;">
+            <div>
+              <label class="form-label">Campaña / Anunciante</label>
+              <select id="comm-campaign-select" class="form-input"></select>
+            </div>
+            <div>
+              <label class="form-label">Tipo de Notificación</label>
+              <select id="comm-type-select" class="form-input">
+                <option value="WEEKLY_REPORT">📊 Reporte Semanal de Ejecución & IAB</option>
+                <option value="RENEWAL_NOTICE">🔔 Aviso de Renovación de Pauta</option>
+                <option value="PAYMENT_RECEIPT">✅ Confirmación de Pago & Factura</option>
+                <option value="UPGRADE_PROMO">🚀 Promoción de Nuevos Espacios & Upgrades</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Canales de Entrega</label>
+              <div style="display:flex; gap: 12px; margin-top: 8px; font-size: 0.85rem;">
+                <label style="display:flex; align-items:center; gap:4px; cursor:pointer;"><input type="checkbox" id="chk-email" checked> <i class="fa-solid fa-envelope" style="color:var(--accent-cyan);"></i> Email</label>
+                <label style="display:flex; align-items:center; gap:4px; cursor:pointer;"><input type="checkbox" id="chk-whatsapp" checked> <i class="fa-brands fa-whatsapp" style="color:var(--accent-emerald);"></i> WhatsApp</label>
+                <label style="display:flex; align-items:center; gap:4px; cursor:pointer;"><input type="checkbox" id="chk-sms" checked> <i class="fa-solid fa-comment-sms" style="color:#fbbf24;"></i> SMS</label>
+              </div>
+            </div>
+          </div>
+          <button class="btn-action" style="background: var(--primary); color:#fff; padding: 8px 18px;" onclick="sendCustomCommunication()">
+            <i class="fa-solid fa-paper-plane"></i> Despachar Comunicación Multicanal
+          </button>
+          <span id="comm-send-status" style="margin-left: 14px; font-size: 0.85rem;"></span>
+        </div>
+
+        <!-- Historial de Envíos Recientes -->
+        <h4 style="font-size: 0.95rem; margin-bottom: 10px; color: #fff;"><i class="fa-solid fa-clock-rotate-left"></i> Historial de Despachos Recientes</h4>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Canal</th>
+                <th>Tipo</th>
+                <th>Destinatario</th>
+                <th>Fecha y Hora</th>
+                <th>Estado</th>
+                <th>ID de Mensaje</th>
+              </tr>
+            </thead>
+            <tbody id="communications-history-tbody">
+              <tr><td colspan="6" style="text-align:center; color: var(--text-muted); padding: 20px;">Cargando historial...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -449,12 +517,147 @@
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       event.target.classList.add('active');
 
-      ['dashboard', 'campaigns', 'audit', 'security'].forEach(t => {
-        document.getElementById(`tab-content-${t}`).style.display = t === tabId ? 'block' : 'none';
+      ['dashboard', 'campaigns', 'audit', 'security', 'communications'].forEach(t => {
+        const el = document.getElementById(`tab-content-${t}`);
+        if (el) el.style.display = t === tabId ? 'block' : 'none';
       });
 
       if (tabId === 'dashboard') loadDashboard();
       if (tabId === 'campaigns') loadCampaigns();
+      if (tabId === 'communications') loadCommunicationsData();
+    }
+
+    async function loadCommunicationsData() {
+      // 1. Cargar selector de campañas
+      try {
+        const res = await fetch(`${API_BASE}/campaigns/list`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        const data = await res.json();
+        const select = document.getElementById('comm-campaign-select');
+        if (data.success && data.campaigns.length > 0) {
+          select.innerHTML = data.campaigns.map(c => 
+            `<option value="${c.id}" data-adv="${c.advertiser_id || ''}">${c.company_name} — ${c.code} (${c.status})</option>`
+          ).join('');
+          if (data.campaigns[0]) {
+            loadCampaignHistory(data.campaigns[0].id);
+          }
+        } else {
+          select.innerHTML = '<option value="">Sin campañas activas registradas</option>';
+        }
+      } catch (e) {}
+    }
+
+    async function loadCampaignHistory(orderId) {
+      const tbody = document.getElementById('communications-history-tbody');
+      try {
+        const res = await fetch(`${API_BASE}/communications/history/${orderId}`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        const history = await res.json();
+        if (history && history.length > 0) {
+          tbody.innerHTML = history.map(h => {
+            const chIcon = h.channel === 'EMAIL' ? '<i class="fa-solid fa-envelope" style="color:var(--accent-cyan);"></i> Email' :
+                           h.channel === 'WHATSAPP' ? '<i class="fa-brands fa-whatsapp" style="color:var(--accent-emerald);"></i> WhatsApp' :
+                           '<i class="fa-solid fa-comment-sms" style="color:#fbbf24;"></i> SMS';
+            return `
+              <tr>
+                <td>${chIcon}</td>
+                <td><strong>${h.type}</strong></td>
+                <td>${h.recipient}</td>
+                <td>${new Date(h.created_at).toLocaleString()}</td>
+                <td><span class="badge badge-active">${h.status}</span></td>
+                <td><code style="font-size:0.75rem; color:#94a3b8;">${h.provider_message_id || '-'}</code></td>
+              </tr>
+            `;
+          }).join('');
+        } else {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--text-muted); padding: 20px;">No hay mensajes registrados para esta campaña.</td></tr>';
+        }
+      } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--text-muted); padding: 20px;">Sin historial.</td></tr>';
+      }
+    }
+
+    async function sendCustomCommunication() {
+      const select = document.getElementById('comm-campaign-select');
+      const orderId = select.value;
+      const type = document.getElementById('comm-type-select').value;
+      const statusSpan = document.getElementById('comm-send-status');
+
+      if (!orderId) {
+        alert('Por favor selecciona una campaña válida.');
+        return;
+      }
+
+      const channels = [];
+      if (document.getElementById('chk-email').checked) channels.push('EMAIL');
+      if (document.getElementById('chk-whatsapp').checked) channels.push('WHATSAPP');
+      if (document.getElementById('chk-sms').checked) channels.push('SMS');
+
+      if (channels.length === 0) {
+        alert('Debes seleccionar al menos un canal (Email, WhatsApp o SMS).');
+        return;
+      }
+
+      statusSpan.style.color = 'var(--accent-cyan)';
+      statusSpan.textContent = 'Despachando mensaje multicanal...';
+
+      try {
+        // Enviar con campaign_order_id y el backend obtiene advertiser_id automáticamente
+        const res = await fetch(`${API_BASE}/communications/send`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+          },
+          body: JSON.stringify({
+            advertiser_id: select.options[select.selectedIndex].getAttribute('data-adv') || '00000000-0000-0000-0000-000000000000',
+            campaign_order_id: orderId,
+            communication_type: type,
+            channels: channels
+          })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          statusSpan.style.color = 'var(--accent-emerald)';
+          statusSpan.textContent = `✓ Despachado por ${channels.join(', ')} con éxito.`;
+          loadCampaignHistory(orderId);
+        } else {
+          statusSpan.style.color = '#f87171';
+          statusSpan.textContent = `Error: ${data.detail || 'Fallo de envío'}`;
+        }
+      } catch (err) {
+        statusSpan.style.color = '#f87171';
+        statusSpan.textContent = `Error de red: ${err.message}`;
+      }
+    }
+
+    async function triggerBatchWeeklyReports() {
+      if (!confirm('¿Deseas generar y despachar los reportes semanales de ejecución a todos los clientes activos por Email y WhatsApp?')) {
+        return;
+      }
+      try {
+        const res = await fetch(`${API_BASE}/communications/batch/weekly`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+          },
+          body: JSON.stringify({
+            channels: ['EMAIL', 'WHATSAPP']
+          })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          alert(`Lote completado: ${data.dispatched_successfully} reportes enviados exitosamente.`);
+          loadCommunicationsData();
+        } else {
+          alert(`Error en lote: ${data.detail}`);
+        }
+      } catch (e) {
+        alert('Error ejecutando lote: ' + e.message);
+      }
     }
 
     async function loadDashboard() {

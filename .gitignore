@@ -15,3 +15,4 @@ private-config/paypal.php
 __pycache__/
 *.pyc
 .pytest_cache/
+caretech-games-pwa-deployment-v1/portal/data/

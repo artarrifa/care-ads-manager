@@ -115,6 +115,40 @@ if (!empty($privatePaymentsConfig['paypal']) && is_array($privatePaymentsConfig[
     $privatePaypalConfig = array_merge($privatePaypalConfig ?: [], $privatePaymentsConfig['paypal']);
 }
 
+// ==============================================================================
+// CARE ADS MANAGER V1.0 - TRANSPARENT PROXY BRIDGE (OPCIÓN B)
+// ==============================================================================
+$careAdsBackendUrl = getenv('CARE_ADS_BACKEND_URL') ?: ($privatePaymentsConfig['careAdsBackendUrl'] ?? 'http://127.0.0.1:8000');
+
+function proxyToCareAds($url, $method = 'GET', $payload = null, $timeoutSec = 2) {
+    if (!function_exists('curl_init')) return null;
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, $timeoutSec);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    
+    $headers = ['User-Agent: CareTech-PHP-ProxyBridge/1.0', 'Accept: application/json'];
+    if ($method === 'POST') {
+        curl_setopt($ch, CURLOPT_POST, true);
+        if ($payload !== null) {
+            $jsonPayload = is_string($payload) ? $payload : json_encode($payload);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonPayload);
+            $headers[] = 'Content-Type: application/json';
+        }
+    }
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $err = curl_error($ch);
+    curl_close($ch);
+
+    if ($err || $httpCode < 200 || $httpCode >= 300 || empty($response)) {
+        return null;
+    }
+    return json_decode($response, true);
+}
+
 // Extracted gateway configurations
 $epaycoConfig = $privatePaymentsConfig['epayco'] ?? [
     'pCustIdCliente' => '',
@@ -342,6 +376,33 @@ if ($isBannersReq && $method === 'GET') {
         exit;
     }
 
+    // ==========================================================================
+    // 1. OPCIÓN B: Consulta transparente a Care Ads Manager V1.0 (FastAPI + PostgreSQL)
+    // ==========================================================================
+    if (!empty($careAdsBackendUrl)) {
+        $backendAdUrl = rtrim($careAdsBackendUrl, '/') . "/api/v1/delivery/ad?game=" . urlencode($game) . "&placement=" . urlencode($placement);
+        $coreDecision = proxyToCareAds($backendAdUrl, 'GET', null, 2);
+        if ($coreDecision && !empty($coreDecision['success'])) {
+            header("X-Care-Ads-Engine: Care-Ads-Manager-V1.0-PostgreSQL");
+            echo json_encode([
+                'campaignId' => $coreDecision['campaignId'] ?? '',
+                'decisionId' => $coreDecision['decisionId'] ?? '',
+                'brandName' => $coreDecision['brandName'] ?? '',
+                'headline' => $coreDecision['headline'] ?? '',
+                'description' => $coreDecision['description'] ?? '',
+                'logo' => $coreDecision['logo'] ?? '',
+                'webUrl' => $coreDecision['webUrl'] ?? '',
+                'donationUrl' => $coreDecision['donationUrl'] ?? '',
+                'shopUrl' => $coreDecision['shopUrl'] ?? '',
+                'slotMinute' => $coreDecision['slotMinute'] ?? (int)date('i'),
+                'syncTime' => $coreDecision['syncTime'] ?? time(),
+                'backend' => 'CARE_ADS_MANAGER_V1'
+            ]);
+            exit;
+        }
+    }
+
+    // 2. Fallback local en Hostinger (si el backend no estuviese disponible temporalmente)
     $campaigns = getStoredJson($campaignsFile);
     $matched = [];
     foreach ($campaigns as $camp) {
@@ -462,6 +523,7 @@ if ($isEventsReq && $method === 'POST') {
 
     $events = $data['events'] ?? [];
     if (!empty($events)) {
+        // A. Guardar en Hostinger local (analytics.json) como respaldo seguro
         $analytics = getStoredJson($analyticsFile);
         foreach ($events as $evt) {
             $evt['country'] = $country;
@@ -473,12 +535,30 @@ if ($isEventsReq && $method === 'POST') {
             $analytics = array_slice($analytics, -5000);
         }
         saveStoredJson($analyticsFile, $analytics);
+
+        // B. OPCIÓN B: Reenvío transparente a Care Ads Manager V1.0 (PostgreSQL delivery_events)
+        if (!empty($careAdsBackendUrl)) {
+            $backendEventsUrl = rtrim($careAdsBackendUrl, '/') . "/api/v1/delivery/events/batch";
+            $payloadList = [];
+            foreach ($events as $evt) {
+                $payloadList[] = [
+                    'decision_id' => $evt['decisionId'] ?? null,
+                    'campaign_id' => $evt['campaignId'] ?? null,
+                    'event_type' => $evt['type'] ?? $evt['event_type'] ?? 'ad_viewable',
+                    'viewable_duration_ms' => (int)($evt['durationMs'] ?? $evt['viewable_duration_ms'] ?? 1000),
+                    'is_offline_sync' => !empty($evt['isOfflineSync']),
+                    'timestamp' => isset($evt['timestamp']) ? (int)$evt['timestamp'] : time()
+                ];
+            }
+            proxyToCareAds($backendEventsUrl, 'POST', $payloadList, 2);
+        }
     }
 
     echo json_encode([
         'success' => true,
         'countryDetected' => $country,
-        'eventsRecorded' => count($events)
+        'eventsRecorded' => count($events),
+        'bridge' => 'CareAds-Proxy-OptionB'
     ]);
     exit;
 }
@@ -629,6 +709,28 @@ if ((strpos($requestUri, '/api/v1/games/campaigns/create') !== false || $action 
     $campaigns = getStoredJson($campaignsFile);
     $campaigns[] = $newCampaign;
     saveStoredJson($campaignsFile, $campaigns);
+
+    // OPCIÓN B: Reenvío transparente a Care Ads Manager V1.0 (PostgreSQL campaign_orders)
+    if (!empty($careAdsBackendUrl)) {
+        proxyToCareAds(rtrim($careAdsBackendUrl, '/') . '/api/v1/campaigns/create', 'POST', [
+            'company_name' => $newCampaign['brandName'],
+            'advertiser_email' => $newCampaign['advertiserEmail'] ?: 'anunciante@caretechservices.com',
+            'advertiser_phone' => $newCampaign['advertiserPhone'] ?: '',
+            'country' => 'CO',
+            'brand_name' => $newCampaign['brandName'],
+            'headline' => $newCampaign['headline'],
+            'description' => $newCampaign['description'],
+            'logo_url' => $newCampaign['logoUrl'] ?: null,
+            'web_url' => $newCampaign['webUrl'],
+            'donation_url' => $newCampaign['donationUrl'] ?: null,
+            'shop_url' => $newCampaign['shopUrl'] ?: null,
+            'game_id' => $gameId,
+            'placement_position' => $placement,
+            'plan_id' => $planId,
+            'has_priority' => $hasPriority,
+            'accept_terms' => true
+        ], 2);
+    }
 
     // Configuración y URLs de PayPal Website Payments y PayPal.Me
     $paypalEmail = $pricingData['paypalMerchantEmail'] ?? 'alexis.tarrifa@gmail.com';
